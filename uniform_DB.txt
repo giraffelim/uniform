@@ -1,0 +1,239 @@
+uniform 프로젝트 필요한 데이터베이스 관련 문서
+
+/* Create Tables */
+
+-- 회원테이블과 공유작업실 테이블의 참조키
+CREATE TABLE NEW_TABLE
+(
+	mno number(10,0) NOT NULL,
+	sno number(10,0) NOT NULL
+);
+
+
+CREATE TABLE uni_confirm
+(
+	cno number(10,0) NOT NULL,
+	cName varchar2(20) NOT NULL,
+	cPhone varchar2(20) NOT NULL,
+	title varchar2(40) NOT NULL,
+	reservation varchar2(50) NOT NULL,
+	location varchar2(50) NOT NULL,
+	thumbnail varchar2(200) NOT NULL,
+	price number(10,0) NOT NULL,
+	hName varchar2(20) NOT NULL,
+	hPhone varchar2(20) NOT NULL,
+	-- 누구에게 데이터를 보여줄지 저장하는 값 mno들
+	mno number(10,0) NOT NULL,
+	myDate varchar2(20),
+	PRIMARY KEY (cno)
+);
+
+
+CREATE TABLE uni_guin
+(
+	gno number(10,0) NOT NULL,
+	gTitle varchar2(40) NOT NULL,
+	gLocation varchar2(50) NOT NULL,
+	gThumbnail varchar2(200),
+	gPeople number(10,0) DEFAULT 0,
+	gGrade varchar2(50),
+	gGender char(1) NOT NULL,
+	gPrice varchar2(20) NOT NULL,
+	gwDate varchar2(30),
+	gwDay varchar2(30) NOT NULL,
+	gAge varchar2(10) NOT NULL,
+	gType varchar2(10) NOT NULL,
+	gHire varchar2(10) NOT NULL,
+	gContext varchar2(1000) NOT NULL,
+	mno number(10,0) NOT NULL,
+	PRIMARY KEY (gno)
+);
+
+
+CREATE TABLE uni_guzic
+(
+	jno number(10,0) NOT NULL,
+	jHire varchar2(10) NOT NULL,
+	jTitle varchar2(40) NOT NULL,
+	jName varchar2(20) NOT NULL,
+	jPhone varchar2(12) NOT NULL,
+	jEmail varchar2(50) NOT NULL,
+	jAge varchar2(10) NOT NULL,
+	jGender char(1) NOT NULL,
+	jAddress varchar2(50) NOT NULL,
+	jGrade varchar2(50) NOT NULL,
+	jCertificate varchar2(100),
+	jwDate varchar2(30) NOT NULL,
+	jwType varchar2(10) NOT NULL,
+	jLocation varchar2(50),
+	jPrice varchar2(20) NOT NULL,
+	jContext varchar2(1000) NOT NULL,
+	jExp varchar2(100),
+	jLink varchar2(500),
+	PRIMARY KEY (jno)
+);
+
+
+CREATE TABLE uni_member
+(
+	mno number(10,0) NOT NULL,
+	userID varchar2(20) NOT NULL,
+	userPW varchar2(40) NOT NULL,
+	name varchar2(20) NOT NULL,
+	phone varchar2(12) NOT NULL,
+	email varchar2(50) NOT NULL,
+	photo varchar2(200),
+	regDate date DEFAULT sysdate,
+	PRIMARY KEY (mno)
+);
+
+
+CREATE TABLE uni_photo
+(
+	pno number(10,0) NOT NULL,
+	path varchar2(100) NOT NULL,
+	uuid varchar2(100) NOT NULL,
+	filename varchar2(50) NOT NULL,
+	ino number(10,0) NOT NULL,
+	jno number(10,0) NOT NULL,
+	PRIMARY KEY (pno)
+);
+
+
+CREATE TABLE uni_review
+(
+	hno number(10,0) NOT NULL,
+	content varchar2(1000) NOT NULL,
+	regDate date DEFAULT sysdate,
+	star number,
+	rno number(10,0) NOT NULL,
+	ino number(10,0) NOT NULL,
+	mno number(10,0) NOT NULL,
+	reservation varchar2(50) NOT NULL,
+	PRIMARY KEY (hno)
+);
+
+
+CREATE TABLE uni_sinchung
+(
+	rno number(10,0) NOT NULL,
+	reservation varchar2(50) NOT NULL,
+	-- 기업이면 C
+	-- 개인이면 P
+	flag char NOT NULL,
+	ino number(10,0) NOT NULL,
+	mno number(10,0) NOT NULL,
+	sno number(10,0) NOT NULL,
+	PRIMARY KEY (rno, reservation)
+);
+
+
+CREATE TABLE uni_workplace_i
+(
+	ino number(10,0) NOT NULL,
+	title varchar2(40) NOT NULL,
+	location varchar2(50) NOT NULL,
+	thumbnail varchar2(200) NOT NULL,
+	comforts varchar2(100) NOT NULL,
+	price number(10,0) NOT NULL,
+	context varchar2(1000) NOT NULL,
+	rDate date DEFAULT sysdate NOT NULL,
+	mno number(10,0) NOT NULL,
+	readCount number(10,0) DEFAULT 0 NOT NULL,
+	PRIMARY KEY (ino)
+);
+
+
+CREATE TABLE uni_workplace_s
+(
+	sno number(10,0) NOT NULL,
+	title varchar2(40) NOT NULL,
+	location varchar2(50) NOT NULL,
+	thumbnail varchar2(200) NOT NULL,
+	comforts varchar2(100) NOT NULL,
+	price number(10,0) NOT NULL,
+	context varchar2(1000) NOT NULL,
+	rDate date NOT NULL,
+	pCount number(10,0) NOT NULL,
+	myTime varchar2(150) NOT NULL,
+	readCount number DEFAULT 0 NOT NULL,
+	myDate varchar2(50) NOT NULL,
+	PRIMARY KEY (sno)
+);
+
+
+
+/* Create Foreign Keys */
+
+ALTER TABLE uni_photo
+	ADD FOREIGN KEY (jno)
+	REFERENCES uni_guzic (jno)
+;
+
+
+ALTER TABLE NEW_TABLE
+	ADD FOREIGN KEY (mno)
+	REFERENCES uni_member (mno)
+;
+
+
+ALTER TABLE uni_guin
+	ADD FOREIGN KEY (mno)
+	REFERENCES uni_member (mno)
+;
+
+
+ALTER TABLE uni_review
+	ADD FOREIGN KEY (mno)
+	REFERENCES uni_member (mno)
+;
+
+
+ALTER TABLE uni_sinchung
+	ADD FOREIGN KEY (mno)
+	REFERENCES uni_member (mno)
+;
+
+
+ALTER TABLE uni_workplace_i
+	ADD FOREIGN KEY (mno)
+	REFERENCES uni_member (mno)
+;
+
+
+ALTER TABLE uni_review
+	ADD FOREIGN KEY (rno, reservation)
+	REFERENCES uni_sinchung (rno, reservation)
+;
+
+
+ALTER TABLE uni_photo
+	ADD FOREIGN KEY (ino)
+	REFERENCES uni_workplace_i (ino)
+;
+
+
+ALTER TABLE uni_review
+	ADD FOREIGN KEY (ino)
+	REFERENCES uni_workplace_i (ino)
+;
+
+
+ALTER TABLE uni_sinchung
+	ADD FOREIGN KEY (ino)
+	REFERENCES uni_workplace_i (ino)
+;
+
+
+ALTER TABLE NEW_TABLE
+	ADD FOREIGN KEY (sno)
+	REFERENCES uni_workplace_s (sno)
+;
+
+
+ALTER TABLE uni_sinchung
+	ADD FOREIGN KEY (sno)
+	REFERENCES uni_workplace_s (sno)
+;
+
+
