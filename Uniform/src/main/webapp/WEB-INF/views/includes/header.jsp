@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -51,7 +52,7 @@
 			<!-- navigation --------------------- -->
 			<nav id="colorlib-main-menu" role="navigation">
 				<ul>
-					<li class="colorlib-active"><a href="index">Home</a></li>
+					<li class="colorlib-active"><a href="/">Home</a></li>
 					<li><a href="list">작업실 Share</a>
 						<ul class="side_ul">
 							<li><a href="about.html">임대</a></li>
@@ -67,7 +68,32 @@
                     <li><a href="contact.html">Contact</a></li>-->
 				</ul>
 				<p class="social">
-					<span><a href="#">로그인</a></span> <span><a href="#">회원가입</a></span>
+					<sec:authorize access="isAnonymous()">
+					<span><a href="login">로그인</a></span>
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
+					<span><a href="#" id="logout">로그아웃</a>					
+					</span>
+					<script>
+						$(function(){
+							$("#logout").click(function(e){
+								e.preventDefault();
+								var frm = document.createElement("form");
+								frm.method = "post";
+								frm.action = "/logout";
+								
+								var i = document.createElement("input");
+								i.type = "hidden";
+								i.name = "${_csrf.parameterName }";
+								i.value = "${_csrf.token }";
+								frm.appendChild(i);
+								document.body.appendChild(frm);
+								frm.submit();
+							});
+						});
+					</script>
+					</sec:authorize>
+					 <span><a href="#">회원가입</a></span>
 					<span><a href="#">마이페이지</a></span>
 				</p>
 			</nav>
