@@ -28,4 +28,19 @@
   			uni_member mem LEFT OUTER JOIN uni_member_auth auth on mem.mno = auth.mno
   		where mem.userID = #{userID}
   	</select>
+  
+
+	<!-- ID 찾기 select -->
+	<select id="find_id" resultType="com.uni.domain.uni_MemberVO">
+		select * from uni_member where
+		name = #{name} and email = #{email}
+	</select>
+
+	<!-- PW 찾기 update -->
+	<update id="find_pw">
+		update uni_member set userPW = #{userPW} where userID
+		= #{userID} and email = #{email}
+	</update>
+
+  	
   </mapper>
