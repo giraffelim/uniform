@@ -33,6 +33,9 @@ public class MemberController {
 
 	@Setter(onMethod_ = @Autowired)
 	private MemberService service;
+	
+	@Autowired
+	private PasswordEncoder pwencoder;
 
 	@RequestMapping(value = "find_id", method = RequestMethod.POST)
 	public String find_id(String name, String email, Model model) {
@@ -45,37 +48,10 @@ public class MemberController {
 	@RequestMapping(value = "find_pw", method = RequestMethod.POST)
 	public String find_pw(String userPW, String userID, String email, Model model) {
 		log.info(userPW + " : " + userID + " : " + email);
-<<<<<<< .merge_file_a09772
 		model.addAttribute("find_pw", service.find_pw(userPW, userID, email));
-=======
-
-		String encoding_userPW = pwencoder.encode(userPW);
-
-		if (service.find_pw(encoding_userPW, userID, email)) {
-
-			String subject = "UNIFORM �엫�떆 鍮꾨�踰덊샇";
-			final String msg = "<div align='center' style='border: 1px solid black'>"
-					+ "<h3 style='color: blue'>�엫�떆 鍮꾨�踰덊샇 <h3>" + "<div style='font-size: 130%'> �엫�떆 鍮꾨�踰덊샇 : <strong>"
-					+ userPW + "<strong> �엯�땲�떎.";
-
-			final MimeMessagePreparator preparator = new MimeMessagePreparator() {
-
-				@Override
-				public void prepare(MimeMessage mimeMessage) throws Exception {
-
-					final MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-					helper.setFrom("uniform@gmail.com");
-					helper.setTo(email);
-					helper.setSubject(subject);
-					helper.setText(msg, true);
-				}
-			};
-			mailSender.send(preparator);
-		}
-		model.addAttribute("find_pw", service.find_pw(encoding_userPW, userID, email));
->>>>>>> .merge_file_a11128
 		return "login";
 	}
+	
 	@GetMapping("/join")
 	public void join() {
 		log.info("join");
