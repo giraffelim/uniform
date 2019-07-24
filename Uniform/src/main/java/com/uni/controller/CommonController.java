@@ -1,19 +1,32 @@
 package com.uni.controller;
 
-import javax.servlet.http.HttpServletRequest;
 
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.social.google.connect.GoogleConnectionFactory;
+import org.springframework.social.oauth2.GrantType;
+import org.springframework.social.oauth2.OAuth2Operations;
+import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.uni.domain.uni_MemberVO;
 import com.uni.mapper.uni_MemberMapper;
+import com.uni.service.CommonService;
+import com.uni.swp.auth.SNSLogin;
+import com.uni.swp.auth.SnsValue;
 
 import lombok.extern.log4j.Log4j;
 
@@ -24,6 +37,43 @@ public class CommonController {
 	@Autowired
 	private uni_MemberMapper mapper;
 	
+	@Inject
+	private SnsValue naverSns;
+	
+	@Inject
+	private SnsValue googleSns;
+	
+	@Inject
+	private GoogleConnectionFactory googleConnectionFactory;
+	
+	@Inject
+	private OAuth2Parameters googleOAuth2Parameters;
+	
+	@Inject
+	private CommonService service;
+	
+	@RequestMapping(value = "/auth/{snsService}/callback", method= {RequestMethod.GET, RequestMethod.POST})
+	public String snsLoginCallBack(@PathVariable String snsService, Model model, @RequestParam String code)  throws Exception{
+		log.info("snsLoginCallBack: service="+snsService);
+		
+		SnsValue sns = null;
+		
+		if(StringUtils.equals("naver", snsService)) {
+			sns = naverSns;
+		}else {
+			sns = googleSns;
+		}
+		
+		boolean flag = service.readOAuthMember(sns, code);
+		
+		// 첫 방문자라면
+		if(flag) {
+			return "redirect:/list";
+		}
+
+		return "redirect:/";
+	}
+	
 	@PreAuthorize("isAnonymous()")
 	@GetMapping("/login")
 	public void login(HttpServletRequest request, String error, Model model) {
@@ -33,7 +83,15 @@ public class CommonController {
 			model.addAttribute("error", "비밀번호를 확인해주세요");
 		}
 		log.info("--- get login ---");
+		
+		SNSLogin snsLogin = new SNSLogin(naverSns);
+		model.addAttribute("naver_url", snsLogin.getNaverAuthURL());
+		
+		/* 구글code 발행을 위한 URL 생성 */
+		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
+		String url = oauthOperations.buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, googleOAuth2Parameters);
 
+		model.addAttribute("google_url", url);
 	}
 
 	@PostMapping("/logout")

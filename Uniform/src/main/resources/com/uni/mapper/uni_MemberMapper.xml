@@ -28,4 +28,17 @@
   			uni_member mem LEFT OUTER JOIN uni_member_auth auth on mem.mno = auth.mno
   		where mem.userID = #{userID}
   	</select>
+  	
+  	<select id="getByNaver" resultMap="memberMap">
+  		select mem.mno ,userID, userPW, name, phone, email, photo, regDate, auth, naverID
+  		from
+  			uni_member mem LEFT OUTER JOIN uni_member_auth auth on mem.mno = auth.mno
+  		where mem.naverID = #{snsID}
+  	</select>
+  	<select id="getByGoogle" resultMap="memberMap">
+  		select mem.mno ,userID, userPW, name, phone, email, photo, regDate, auth, googleID
+  		from
+  			uni_member mem LEFT OUTER JOIN uni_member_auth auth on mem.mno = auth.mno
+  		where mem.googleID = #{snsID}
+  	</select>
   </mapper>

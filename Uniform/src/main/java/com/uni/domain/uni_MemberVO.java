@@ -14,6 +14,8 @@ public class uni_MemberVO {
 	private String phone;
 	private String email;
 	private String photo;
+	private String naverId;
+	private String googleId;
 	private Date regDate;
 	private List<uni_member_authVO> authList;
 }

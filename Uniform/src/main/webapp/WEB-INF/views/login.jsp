@@ -34,15 +34,10 @@
         <input type="button" value="ID/PW 찾기" id="selectUP">
         <input type="submit" value="로그인" id = "logins">
 		<input type="hidden" name="${_csrf.parameterName }"  value="${_csrf.token }">
+		<a href="${naver_url }"><img width="270" src="/resources/images/naver-login.png" alt="Naver Login"></a>
+    	<a href="${google_url }"><img style="margin-top:5px;" width="270" src="/resources/images/google-login.png" alt="Google Login"></a>
     </form>
     <script src="/resources/js/script.js"></script>
 </body>
 </html>
-<script>
-$(document.body).on("keydown", this, 
-	    function (event) { 
-	      if (event.keyCode == 116) { alert('F5 pressed!'); 
-	     } 
-	}); 
-</script>
 <%@include file="includes/footer.jsp"%>
