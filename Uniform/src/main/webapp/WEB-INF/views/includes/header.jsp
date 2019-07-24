@@ -101,7 +101,7 @@
 
 			<div class="colorlib-footer">
 				<h1 id="colorlib-logo">
-					<a href="index.html">Uniform</a>
+					<a href="/">Uniform</a>
 				</h1>
 			</div>
 		</aside>

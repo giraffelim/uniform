@@ -50,7 +50,7 @@ $(function() {
 		$("#resultID_modal").trigger("click");
 	}
 
-	if (result_pw != null) {
+	if (result_pw) {
 		$("#resultPW_modal").trigger("click");
 	}
 
