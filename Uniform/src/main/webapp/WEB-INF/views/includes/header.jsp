@@ -93,7 +93,7 @@
 						});
 					</script>
 					</sec:authorize>
-					 <span><a href="#">회원가입</a></span>
+					 <span><a href="/uniform/join">회원가입</a></span>
 					<span><a href="#">마이페이지</a></span>
 				</p>
 			</nav>
