@@ -10,6 +10,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.uni.domain.uni_MemberVO;
 import com.uni.mapper.uni_MemberMapper;
@@ -69,4 +70,24 @@ public class MemberServiceImpl implements MemberService {
 		
 		return mapper.find_pw(encoding_userPW, userID, email) == true ? true : false;
 	}
+
+	@Transactional
+	@Override
+	public void insertSelectKey(uni_MemberVO member) {
+		mapper.insertSelectKey(member);
+		mapper.insert(member.getMno());
+		
+		
+		
+	}
+
+	@Override
+	public uni_MemberVO checkID(String userID) {
+
+		log.info("--------------- userid : " + mapper.checkID(userID));
+		return mapper.checkID(userID);
+	}
+
+	
+
 }
