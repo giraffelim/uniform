@@ -21,7 +21,9 @@
 		<property name="jdbcUrl"
 			value="jdbc:log4jdbc:oracle:thin:@localhost:1521:orcl"></property>
 		<property name="username" value="ora_user"></property>
+
 		<property name="password" value="1234"></property>
+
 	</bean>
 
 	<!--HikariCP Configration -->
@@ -34,22 +36,33 @@
 		class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
-	
+
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 
-	 <mybatis-spring:scan
-		base-package="com.uni.mapper" />
-<!--
-	<context:component-scan
-		base-package="org.zerock.service"></context:component-scan>
+	<!-- 메일을 보내기 위한 bean 설정 -->
+	<bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="ghkfks98@gmail.com" />
+		<property name="password" value="wldyd0818." />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
 
-	<tx:annotation-driven/>
-	
-	<task:annotation-driven/>
-	
-	<context:component-scan base-package="org.zerock.task"></context:component-scan> -->
+	<mybatis-spring:scan base-package="com.uni.mapper" />
+
+	<context:component-scan
+		base-package="com.uni.service"></context:component-scan>
+
+	<!-- <tx:annotation-driven/> <task:annotation-driven/> <context:component-scan 
+		base-package="org.zerock.task"></context:component-scan> -->
 
 </beans>
