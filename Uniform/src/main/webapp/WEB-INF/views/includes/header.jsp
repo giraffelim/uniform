@@ -94,7 +94,9 @@
 					</script>
 					</sec:authorize>
 					 <span><a href="#">회원가입</a></span>
-					<span><a href="#">마이페이지</a></span>
+					 <sec:authorize access="isAuthenticated()">
+					 	<span><a href="#">마이페이지</a></span>
+					 </sec:authorize>
 				</p>
 			</nav>
 			<!--navigation-->
