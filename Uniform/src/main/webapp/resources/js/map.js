@@ -6,16 +6,14 @@ var count = 0;
 var result;
 
 $(function() {
-	result = $("input[id*='avg_star']");
-	console.log(result);
+	result = $("div");
 
 	result.each(function(index, item) {
 		index = index + 1;
-		var num = $("input[id*='avg_star" + index + "']").val();
+		var list = $("#avg_star"+index).next().val();
+		var num = $("input[id*='avg_star" + list + "']").val();
 		var width = num * 15;
-		console.log(num + " : " + width);
-		console.log(".star-input" + index + ">.input");
-		$(".star-input" + index + ">.input").css("background-position",
+		$(".star-input" + list + ">.input").css("background-position",
 				"0 bottom").css("width", width + "px").css("z-index", "100");
 
 	});

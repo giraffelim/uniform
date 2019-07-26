@@ -48,6 +48,8 @@
 											<c:if test="${list.ino == star.ino }">
 												<input type="hidden" id="avg_star${star.ino }"
 													value="${star.avg }">
+												<input type="hidden" id="num_star${star.ino }"
+													value="${list.ino }">
 											</c:if>
 										</c:forEach>
 										<div class="col-md-12">
