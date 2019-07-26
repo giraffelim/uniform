@@ -1,0 +1,34 @@
+.star-wrap, .result-wrap {
+	width: 150px;
+	height: 37px !important;
+	position: relative;
+}
+
+.result-wrap {
+	top: -35px;
+	left: -1px;
+}
+
+span[class*='star-input']>.input, .result {
+	background: url('/resources/images/star_img.png') no-repeat;
+}
+
+span[class*='star-input'] {
+	white-space: nowrap;
+	width: 160px;
+	height: 25px;
+}
+
+span[class*='star-input']>.input, .result {
+	display: inline-block;
+	width: 150px;
+	background-size: 150px;
+	height: 28px;
+	white-space: nowrap;
+	overflow: hidden;
+	position: relative;
+}
+
+.meta-wrap {
+	height: 5em !important;
+}

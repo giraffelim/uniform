@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
+<%@taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,10 +38,9 @@
 <link rel="stylesheet" href="/resources/css/flaticon.css">
 <link rel="stylesheet" href="/resources/css/icomoon.css">
 <link rel="stylesheet" href="/resources/css/style.css">
-<script
-	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d"></script>
-
-<script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript"
+	src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&libraries=services"></script>
 
 </head>
 
@@ -92,17 +92,17 @@
 							});
 						});
 					</script>
-					</sec:authorize>
-					 <span><a href="/uniform/join">회원가입</a></span>
-					<span><a href="#">마이페이지</a></span>
-				</p>
-			</nav>
-			<!--navigation-->
+</sec:authorize>
+<span><a href="/uniform/join">회원가입</a></span>
+<span><a href="#">마이페이지</a></span>
+</p>
+</nav>
+<!--navigation-->
 
-			<div class="colorlib-footer">
-				<h1 id="colorlib-logo">
-					<a href="/">Uniform</a>
-				</h1>
-			</div>
-		</aside>
-		<!-- END COLORLIB-ASIDE -->
+<div class="colorlib-footer">
+	<h1 id="colorlib-logo">
+		<a href="/">Uniform</a>
+	</h1>
+</div>
+</aside>
+<!-- END COLORLIB-ASIDE -->
