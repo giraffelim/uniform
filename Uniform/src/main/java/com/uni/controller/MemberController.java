@@ -1,39 +1,36 @@
 package com.uni.controller;
 
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URLDecoder;
-import java.nio.file.Files;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
-import javax.mail.internet.MimeMessage;
 
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.uni.domain.uni_MemberVO;
+import com.uni.domain.uni_hotTopicVO;
 import com.uni.service.MemberService;
 
 import lombok.AllArgsConstructor;
@@ -44,6 +41,7 @@ import net.coobird.thumbnailator.Thumbnailator;
 @Controller
 @AllArgsConstructor
 @Log4j
+@RequestMapping("/uniform/*")
 public class MemberController {
 
 	@Setter(onMethod_ = @Autowired)
@@ -51,9 +49,6 @@ public class MemberController {
 
 	@Autowired
 	private PasswordEncoder pwencoder;
-
-	@Autowired
-	private JavaMailSenderImpl mailSender;
 
 	@RequestMapping(value = "find_id", method = RequestMethod.POST)
 	public String find_id(String name, String email, Model model) {
@@ -65,51 +60,91 @@ public class MemberController {
 
 	@RequestMapping(value = "find_pw", method = RequestMethod.POST)
 	public String find_pw(String userPW, String userID, String email, Model model) {
-		UUID uuid = UUID.randomUUID();
-		String str = Long.toString(uuid.getLeastSignificantBits(), 16);
-		userPW = str.substring(9);
-
 		log.info(userPW + " : " + userID + " : " + email);
-
-		String encoding_userPW = pwencoder.encode(userPW);
-
-		if (service.find_pw(encoding_userPW, userID, email)) {
-
-			String subject = "UNIFORM 임시 비밀번호";
-			final String msg = "<div align='center' style='border: 1px solid black'>"
-					+ "<h3 style='color: blue'>임시 비밀번호 <h3>" + "<div style='font-size: 130%'> 임시 비밀번호 : <strong>"
-					+ userPW + "<strong> 입니다.";
-
-			final MimeMessagePreparator preparator = new MimeMessagePreparator() {
-
-				@Override
-				public void prepare(MimeMessage mimeMessage) throws Exception {
-
-					final MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-					helper.setFrom("uniform@gmail.com");
-					helper.setTo(email);
-					helper.setSubject(subject);
-					helper.setText(msg, true);
-				}
-			};
-			mailSender.send(preparator);
-		}
-		model.addAttribute("find_pw", service.find_pw(encoding_userPW, userID, email));
+		model.addAttribute("find_pw", service.find_pw(userPW, userID, email));
 		return "login";
 	}
 
+	@GetMapping("/join")
+	public void join() {
+		log.info("join");
+	}
+
+	@PostMapping("/join")
+	public String join(uni_MemberVO member) {
+		member.setUserPW(pwencoder.encode(member.getUserPW()));
+		service.insertSelectKey(member);
+
+		log.info("==========================이것은인코딩후패스워드:" + member.getUserPW());
+		return "redirect:/uniform/index";
+	}
+
+	@GetMapping("/uniform/index")
+	public void index() {
+
+	}
+
+	// end user가 로그인화면에서 input id에 아이디를 입력했을 경우
+	// 아이디의 존재 유무를 확인해주는 컨트롤러
+	@GetMapping(value = "/idcheck/{id}", produces = "text/plain; charset=utf-8")
+	@ResponseBody
+	public String confirmID(@PathVariable("id") String id) {
+		uni_MemberVO vo = service.checkID(id);
+		log.info("uni_Membr: " + vo);
+		return vo == null ? "okay" : "";
+
+	}
+
+	// index에서 마이페이지 클릭시 이동
+	@GetMapping("/mypage")
+	public void mypage() {
+		log.info("=======================mypage 컨트롤러==============================");
+	}
+
+	// 마이페이지에서 profile 수정버튼 클릭시 회원정보 수정 페이지로 이동
+	/*
+	 * @GetMapping("/MemberModify") public void memberModify() {
+	 * log.info("=======================memberModify컨트롤러=========================");
+	 * }
+	 */
+
+	// index에서 작업실 share클릭시 핫토핏 리스트로 이동
+	@GetMapping("/hotTopicList")
+	public void hotTopicList(Model model) {
+		log.info("=======================hotTopicList컨트롤러============================");
+		String CurrentDate = service.CurrentDate();
+		model.addAttribute("currentDate", CurrentDate);
+		log.info("=======================" + CurrentDate);
+
+		List<uni_hotTopicVO> hotTopicListImde = service.listImde();
+		List<uni_hotTopicVO> hotTopicList = service.list();
+		for (int i = 0; i < hotTopicList.size(); i++) {
+			log.info(i + "번째 인덱스 값" + hotTopicList.get(i));
+
+		}
+		model.addAttribute("hotTopicList", hotTopicList);
+		model.addAttribute("hotTopicListImde", hotTopicListImde);
+
+	}
+
+	@GetMapping("/login")
+	public String login() {
+		return "login";
+	}
+
+	//회원정보수정으로 이동
 	@GetMapping("/uniform/updateMember")
 	public void memberUpdate() {
 		log.info("==get!!!! updateMember 호출됨=========================");
 	}
-
+	//회원정보수정
+	
 	@PostMapping("/uniform/updateMember")
 	public String memberUpdate(RedirectAttributes rttr, uni_MemberVO vo) {
 		log.info("==post!!!! updateMember 호출됨=========================" + vo);
-
-		if (service.updateMember(vo)) {
-			rttr.addFlashAttribute("result", "success");
-		}
+		
+		vo.setUserPW(pwencoder.encode(vo.getUserPW()));
+		service.updateMember(vo);
 
 		return "redirect:/";
 	}
@@ -254,6 +289,28 @@ public class MemberController {
 		}
 		
 		return false;
+	}
+
+	// 핫토픽에서 검색 시 값(지역, 시작, 끝 날짜, 타입) 을 보내주는 컨트롤러
+	@GetMapping("/workplaceList")
+	public void workplaceList(@RequestParam("location") String location, @RequestParam("firstDate") String firstDate,
+			@RequestParam("lastDate") String lastDate, @RequestParam("selectChoice") String selectChoice, Model model) {
+		model.addAttribute("location", location);
+		model.addAttribute("firstDate", firstDate);
+		model.addAttribute("lastDate", lastDate);
+		model.addAttribute("selectChoice", selectChoice);
+
+	}
+
+	@GetMapping("/goShare")
+	public void goShare() {
+
+	}
+
+	@GetMapping("/goImde")
+	public void goImde() {
+
+
 	}
 
 }

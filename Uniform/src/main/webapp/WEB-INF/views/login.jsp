@@ -65,7 +65,7 @@
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 				<div class="modal-body">
-					<form method="post" action="find_id" id="id_form">
+					<form method="post" action="/uniform/find_id" id="id_form">
 						<input type="hidden" name="${_csrf.parameterName }"
 							value="${_csrf.token }" /> <label>Name</label> <input
 							type="text" class="find" id="id_userName" name="name"
@@ -95,7 +95,7 @@
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 				<div class="modal-body">
-					<form method="post" action="find_pw" id="pw_form">
+					<form method="post" action="/uniform/find_pw" id="pw_form">
 						<input type="hidden" name="${_csrf.parameterName }"
 							value="${_csrf.token }" /> <label id="id-label">ID</label> <input
 							type="text" class="find form-group" id="pw_userID" name="userID"
@@ -146,7 +146,7 @@
 	</c:if>
 
 	<!-- 비밀번호를 찾으면 자동으로 임시 비밀번호가 전송되었다고  modal이 띄워지는 부분 -->
-	<c:if test="${find_pw != null}">
+	<c:if test="${find_pw}">
 		<input type="hidden" id="resultPW_modal" class="btn-default"
 			data-toggle="modal" data-target="#resultPW"></input>
 
