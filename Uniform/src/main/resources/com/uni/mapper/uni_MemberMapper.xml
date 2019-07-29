@@ -97,7 +97,6 @@
 		m.mno = r.mno group by w.ino, w.readcount, m.name, m.photo,
 		w.context,w.thumbnail order by w.readcount desc
 
-
 	</select>
 
 </mapper>
