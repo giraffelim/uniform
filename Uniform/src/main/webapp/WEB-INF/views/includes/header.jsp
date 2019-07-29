@@ -55,7 +55,7 @@
 					<li class="colorlib-active"><a href="/">Home</a></li>
 					<li><a href="list">작업실 Share</a>
 						<ul class="side_ul">
-							<li><a href="about.html">임대</a></li>
+							<li><a href="/uniform/leaseInsert">임대</a></li>
 							<li><a href="services.html">공유</a></li>
 						</ul></li>
 					<li><a href="about.html">인력풀</a>
@@ -69,7 +69,7 @@
 				</ul>
 				<p class="social">
 					<sec:authorize access="isAnonymous()">
-					<span><a href="login">로그인</a></span>
+					<span><a href="/login">로그인</a></span>
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
 					<span><a href="#" id="logout">로그아웃</a>					
@@ -95,9 +95,6 @@
 					</sec:authorize>
 					 <span><a href="/uniform/join">회원가입</a></span>
 					<span><a href="#">마이페이지</a></span>
-					<span>
-						<sec:authentication property="principal"/>
-					</span>
 				</p>
 			</nav>
 			<!--navigation-->

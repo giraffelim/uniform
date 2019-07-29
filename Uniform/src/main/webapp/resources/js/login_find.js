@@ -14,7 +14,7 @@ $(function() {
 		$("#findPW").modal("show");
 	});
 	
-	$("#id_modal").on("click", function(e) {
+	$("#selectUP").on("click", function(e) {
 		$("#findUP").modal("show");
 		$("#findPW").modal("hide");
 	});

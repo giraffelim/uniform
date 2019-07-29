@@ -61,9 +61,12 @@ public class SNSLogin {
 			}
 			String displayName = rootNode.get("displayName").asText();
 			JsonNode nameNode = rootNode.path("name");
+			JsonNode imageNode = rootNode.path("image");
 			
 			String name = nameNode.get("familyName").asText()+nameNode.get("givenName").asText();
 			user.setName(name);
+			String image = imageNode.get("url").asText();
+			user.setPhoto(image);
 			Iterator<JsonNode> iterEmails = rootNode.path("emails").elements();
 			while(iterEmails.hasNext()) {
 				JsonNode emailNode = iterEmails.next();

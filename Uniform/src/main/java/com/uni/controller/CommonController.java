@@ -1,12 +1,18 @@
 package com.uni.controller;
 
 
+/*
+ *  작성자 : 임태양
+ *  공통 컨트롤러
+ *  OAuth2 인증 & 로그인
+ *  */
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.oauth2.GrantType;
@@ -17,6 +23,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,11 +73,6 @@ public class CommonController {
 		}
 		
 		boolean flag = service.readOAuthMember(sns, code);
-		
-		// 첫 방문자라면
-		if(flag) {
-			return "redirect:/list";
-		}
 
 		return "redirect:/";
 	}
@@ -116,5 +119,14 @@ public class CommonController {
 		log.warn("listasdasdas");
 	}
 	
-
+	@GetMapping("/addInfo")
+	public void addInfo() {
+		
+	}
+	
+	@GetMapping("/dummy")
+	public void callLogout() {
+		
+	}
+	
 }

@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="/resources/css/style_dong.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-<%@include file="../includes/header.jsp"%>
+<%@include file="includes/header.jsp"%>
 
 
 <style>
@@ -16,7 +16,10 @@
 <script>
 
   $(document).ready(function(){
-	  
+	  var oauth2LoginUser = '	<sec:authentication property="principal.member.mno"/>';
+	  if(oauth2LoginUser != 0){
+	  	location.href="/";
+	  }
 	  //서밋하기위해 플레그설정
 	  var sFlag = [false,false,false,false,false,false];
 	 
@@ -66,55 +69,6 @@
 		 
 	 });
 	 
-	 //password에 포커싱 벗어낫을때
-	 $("#password").on("focusout",function(){
-		//userpw에 입력된 값가져옴
-		 var password = $("#password").val();
-		if($(this).val().length==0){
-			$("#pw_null").css("display","block");
-		    $('#pw_form').css('display', 'none');
-		    sFlag[1] = false;
-		} 
-		else if(!PW.test($(this).val())){
-            $('#pw_null').css('display','none');
-            $('#pw_form').css('display', 'block');
-            sFlag[1] = false;
-		}
-            else if(PW.test($(this).val())){
-                $('#pw_null').css('display','none');
-                $('#pw_form').css('display','none');
-                sFlag[1] = true;
-            }
-		
-	 });
-	 
-	 //비밀번호 확인에 포커싱 벗어났을떄
-	 $("#passwordcheck").on("focusout",function(){
-		//userpw에 입력된 값가져옴
-		 var passwordcheck = $("#passwordcheck").val();
-		 var password = $("#password").val();
-		 console.log($(this).val());
-		 console.log(passwordcheck);
-			if($(this).val().length==0){
-				$("#pw_null2").css("display","block");
-				$('#pw_check').css('display', 'none');
-				sFlag[2] = false;
-			} 
-			else if(password != $(this).val()){
-	            $('#pw_null2').css('display','none');
-	            $('#pw_check').css('display', 'block');
-	            sFlag[2] = false;
-	        
-			}
-	            else if(password === $(this).val()){
-	                $('#pw_null2').css('display','none');
-	                $('#pw_check').css('display','none');
-	                sFlag[2] = true;
-	            }
-			
-			
-		 });
-	 
 	 //이름에 포커싱 벗어났을때
 	 $("#name").on("focusout",function(){
 			if($(this).val().length==0){
@@ -146,9 +100,76 @@
 	                $('#phone_null').css('display','none');
 	                $('#phone_form').css('display', 'none');
 	                sFlag[4] = true;
+	                var name = $("#name").val();
+	    				var enName = encodeURI(name);
+		    			$.ajax({
+		    				url : "/uniform/confirm/"+enName+"/"+$("#phone").val(),
+		    				type : "get",
+		    				dataType : "json",
+		    				success : function(result){
+		    					console.log(result);
+		    					if(result != " "){
+		    						var mno = result.mno;
+		    						var result = confirm("이미 아이디가 존재합니다. 병합을 진행하시겠습니까?");
+		    						if(result == false){
+		    							alert("병합을 하셔야 기존 서비스 유지가 가능하십니다.");
+		    							$("#exists").css("display","block");
+		    							return false;
+		    						}else{
+		    							/* alert("병합을 진행합니다."); */
+		    							var naverId = "<sec:authentication property = 'principal.member.naverId'/>";
+		    							var csrfHeaderName = "${_csrf.headerName }";
+		    							var csrfTokenValue = "${_csrf.token }";
+		    							if(naverId != "null"){
+		    								var sendData = {
+		    										naverId : naverId,
+		    										mno : mno
+		    								}
+		    								$.ajax({
+												url : "/uniform/mergeMember",
+												contentType : "application/json",
+												beforeSend : function(xhr){
+													xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+												},
+												data : JSON.stringify(sendData),
+												dataType : "json",
+												type : "put",
+												success : function(result){
+													console.log(result);
+												},
+												error : function(err){
+													console.log(err);
+												}
+											});	    				    								
+		    							}else{
+		    								var googleId = "<sec:authentication property = 'principal.member.googleId'/>";
+		    								var sendData = {
+		    										googleId : googleId,
+		    										mno : mno
+		    								}
+		    								console.log(sendData);
+		    								 $.ajax({
+												url : "/uniform/mergeMember",
+												contentType:"application/json",
+												dataType : "json",
+												beforeSend : function(xhr){
+													xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+												},
+												data : JSON.stringify(sendData),
+												type : "put",
+												success : function(result){
+													console.log(result);
+												},
+												error : function(err){
+													console.log(err);
+												}
+											});	    
+		    							} 
+		    						}
+		    					}
+		    				}
+		    			});
 	            }
-			
-			
 		 });
 	 
 	 
@@ -204,8 +225,7 @@
 </script>
 
 <section class="ftco-section contact-section ftco-no-pt">
-	<%-- <sec:authorize access="isAuthenticated()"> --%>
-	<%-- </sec:authorize> --%>
+	<sec:authentication property="principal" var="pinfo"/>
          <div class="container-fluid">
            
            <div class="row block-9 justify-content-end">
@@ -213,31 +233,14 @@
                  <div class="row">
                    <div class="col-md-10">
                 <div class="jumbotron" id="jumbotron">
-                   <i class="fas fa-sign-in-alt fa-4x"></i> <h1>회원가입</h1>
+                   <i class="fas fa-sign-in-alt fa-4x"></i> <h1>추가 정보 입력</h1>
                 </div>      
                      <form action="/uniform/join" class="bg-white p-5 contact-form" method="post" id ="joinform">
-                       <input type="hidden"
-			name="${_csrf.parameterName }" value="${_csrf.token }">
-                       
-                       <div class="form-group a">
-                              <div class="memberupdateid"><i class="fa fa-id-card fa-2x"></i></div>
-                         <input type="text" class="memberupdate" id="userid" name="userID" value="" placeholder="아이디">
-                         <p id="id_null" style="margin-left: 55px; height: 10px;">아이디를 입력해주세요</p>
-                         <p id="id_form" style="margin-left: 55px; height: 10px;">아이디가 중복되었습니다</p>
+                       <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+                       <input type="hidden" name="naverId" value="${pinfo.member.naverId }">
+                       <input type="hidden" name="googleId" value="${pinfo.member.googleId }">
+                       <input type="hidden" name="photo" value="${pinfo.member.photo }">
                          
-                       </div>
-                       <div class="form-group b">
-                              <div class="memberupdateid"><i class="fa fa-user-lock  fa-2x"></i></div>
-                         <input type="password" class="memberupdate" id="password" name="userPW" value=""  placeholder="비밀번호(영문 숫자 특수문자 2가지 이상 6~15자 이내)">
-                          <p id="pw_null" style="margin-left: 55px; height: 10px;" >비밀번호를 입력해주세요.</p>
-                           <p id="pw_form" style="margin-left: 55px; height: 10px;a" >영문, 숫자, 특수문자 1가지 이상 6~15자 이내로 입력해주세요.</p>
-                       </div>
-                       <div class="form-group c">
-                              <div class="memberupdateid"><i class="fa fa-user-check  fa-2x"></i></div>
-                         <input type="password" class="memberupdate" id="passwordcheck" name="userPW2" value=""  placeholder="비밀번호 확인">
-                         <p id="pw_check" style="margin-left: 55px; height: 10px;">비밀번호가 일치하지 않습니다</p>
-                         <p id="pw_null2" style="margin-left: 55px; height: 10px;">비밀번호를 입력해주세요</p>
-                       </div>
                        <div class="form-group">
                               <div class="memberupdateid"><i class="fa fa-user fa-2x"></i></div>
                          <input type="text" class="memberupdate" id="name" name="name" value=""  placeholder="이름">
@@ -248,6 +251,7 @@
                          <input type="text" class="memberupdate" id="phone" name="phone" value=""  placeholder="휴대폰 번호">
                       <p id="phone_null" class="under" style="margin-left: 55px; height: 10px;">핸드폰 번호를 입력해주세요</p>
                        <p id="phone_form" class="under" style="margin-left: 55px; height: 10px;">핸드폰 번호를 양식에 맞게 입력해주세요</p>
+                       <p id="exists" class="under" style="margin-left: 55px; height: 10px; color:red; display:none;">병합을 진행해주세요!.</p>
                        </div>
                        <div class="form-group">
                               <div class="memberupdateid"><i class="fa fa-envelope fa-2x"></i></div>
@@ -271,5 +275,12 @@
          
          
        </section>
+       <script>
+       		$("#name").val("${pinfo.member.name}");
+       		$("#email").val("${pinfo.member.email}");
+       		$("#insertbtn").on("click",function(e){
+       			$("#joinform").submit();
+       		});
+       </script>
 
-	<%@include file="../includes/footer.jsp"%>
+	<%@include file="includes/footer.jsp"%>

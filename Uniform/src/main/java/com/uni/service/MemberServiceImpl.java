@@ -87,6 +87,32 @@ public class MemberServiceImpl implements MemberService {
 		log.info("--------------- userid : " + mapper.checkID(userID));
 		return mapper.checkID(userID);
 	}
+	
+	@Transactional
+	@Override
+	public void insertInfoMember(uni_MemberVO member) {
+		// TODO Auto-generated method stub
+		mapper.insertInfoMember(member);
+		mapper.insert(member.getMno());
+	}
+
+	@Override
+	public uni_MemberVO confirm(String name, String phone) {
+		// TODO Auto-generated method stub
+		return mapper.confirm(name, phone);
+	}
+
+	@Override
+	public void mergeGoogle(uni_MemberVO vo) {
+		// TODO Auto-generated method stub
+		 mapper.mergeGoogle(vo);
+	}
+
+	@Override
+	public void mergeNaver(uni_MemberVO vo) {
+		// TODO Auto-generated method stub
+		mapper.mergeNaver(vo);
+	}
 
 	
 
