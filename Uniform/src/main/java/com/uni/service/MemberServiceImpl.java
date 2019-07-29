@@ -118,18 +118,6 @@ public class MemberServiceImpl implements MemberService {
 		mapper.mergeNaver(vo);
 	}
 
-	
-	@Override
-	public String CurrentDate() {
-		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
-		Date date = new Date();
-		String CurrentDate = sdf.format(date);
-
-		System.out.println(CurrentDate);
-
-		return CurrentDate;
-	}
-
 	@Override
 
 	public boolean updateMember(uni_MemberVO vo) {
@@ -137,15 +125,6 @@ public class MemberServiceImpl implements MemberService {
 		boolean resultUpdate = mapper.updateMember(vo)== 1;
 		
 		return resultUpdate;
-	}
-
-	public List<uni_hotTopicVO> list() {
-		return mapper.readHotTopic();
-	}
-
-	@Override
-	public List<uni_hotTopicVO> listImde() {
-		return	mapper.readHotTopicImde();
 	}
 
 }

@@ -39,11 +39,6 @@ public interface uni_MemberMapper {
 	public void mergeGoogle(uni_MemberVO vo);
 	
 	public void mergeNaver(uni_MemberVO vo);
-	//핫토픽 리스트 select(공유)	
-	public List<uni_hotTopicVO> readHotTopic();
-	
-	//핫토픽 리스트 select(임대)
-	public List<uni_hotTopicVO> readHotTopicImde();
 
 	
 	

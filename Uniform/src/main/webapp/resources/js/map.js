@@ -6,11 +6,56 @@ var count = 0;
 var result;
 
 $(function() {
+
+	$("#btnSearch").on("click", function(e) {
+		e.preventDefault();
+		if ($("#selectType").val() === "imde") {
+			if ($("input[id*='Date']").val() != "") {
+				alert("종류가 임대일 경우엔 날짜를 선택하실수없습니다.");
+				$("input[id*='Date']").val("");
+			} else {
+				$("#select_form").submit();
+			}
+		} else {
+			$("#select_form").submit();
+		}
+	})
+
+	var dateFormat = "yy-mm-dd";
+	var from = $("input[id*='firstDate']").datepicker({
+		minDate : 0,
+		dateFormat : dateFormat,
+		defaultDate : "+1w",
+		changeMonth : true,
+		numberOfMonths : 2
+	}).on("change", function() {
+		to.datepicker("option", "minDate", getDate(this));
+	}), to = $("input[id*='lastDate']").datepicker({
+		minDate : 0,
+		dateFormat : dateFormat,
+		defaultDate : "+1w",
+		changeMonth : true,
+		numberOfMonths : 2
+	}).on("change", function() {
+		from.datepicker("option", "maxDate", getDate(this));
+	});
+
+	function getDate(element) {
+		var date;
+		try {
+			date = $.datepicker.parseDate(dateFormat, element.value);
+		} catch (error) {
+			date = null;
+		}
+
+		return date;
+	}
+
 	result = $("div");
 
 	result.each(function(index, item) {
 		index = index + 1;
-		var list = $("#avg_star"+index).next().val();
+		var list = $("#avg_star" + index).next().val();
 		var num = $("input[id*='avg_star" + list + "']").val();
 		var width = num * 15;
 		$(".star-input" + list + ">.input").css("background-position",
@@ -20,7 +65,6 @@ $(function() {
 
 	$(window).scroll(function() {
 		var position = $(document).scrollTop();
-		console.log(position);
 		if (position >= 418) {
 			$(".mapWrap").removeClass("map-bottom");
 			$(".mapWrap").addClass("map-position");
@@ -38,7 +82,25 @@ $(function() {
 	var location = []; // 받아올 데이터를 저장할 배열 선언
 	var title = [];
 
-	$.getJSON("/uniform/map_list.json", function(data) {
+	var jsonLocation = $("input[id*='Location']").val();
+	var jsonType = $("input[id*='Type']").val();
+	var jsonFirst = $("input[id*='firstDate']").val();
+	var jsonLast = $("input[id*='lastDate']").val();
+	if (jsonFirst == null || jsonFirst == " ") {
+		jsonFirst = "fail";
+	}
+	if (jsonLast == null || jsonLast == " ") {
+		jsonLast = "fail";
+	}
+	console.log(jsonLocation + " : " + jsonType + " : " + jsonFirst + " : "
+			+ jsonLast);
+
+	$.getJSON("/uniform/map_list.json", {
+		location : jsonLocation,
+		type : jsonType,
+		SfirstDate : jsonFirst,
+		SlastDate : jsonLast
+	}, function(data) {
 		$.each(data, function(key, value) {
 			location.push(value.location);
 			title.push(value.title);
@@ -49,7 +111,7 @@ $(function() {
 });
 
 function map(location, title) {
-	var mapContainer = document.getElementById('listMap'), // 지도를 표시할 div
+	var mapContainer = document.getElementById('resultMap'), // 지도를 표시할 div
 	mapOption = {
 		center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
 		level : 7
@@ -97,4 +159,5 @@ function map(location, title) {
 							count++;
 						});
 	}
+
 }

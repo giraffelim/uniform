@@ -27,7 +27,7 @@
 	#people-section {
 		margin-left: 9em;
 	}
-	#listMap {
+	#resultMap {
 		display: none;
 	}
 }
@@ -68,15 +68,6 @@
 	#people-section {
 		margin-left: 9em;
 	}
-}
-
-.mapWrap {
-	height: 50em;
-}
-
-#listMap {
-	width: 100%;
-	height: 100%;
 }
 
 .map-position {
@@ -237,4 +228,23 @@ star-input>.input.focus {
 	font-size: 18px;
 	text-align: right;
 	vertical-align: middle;
+}
+
+.list_search input {
+	width: 11em;
+}
+
+.list_search label {
+	font-size: 1.2em;
+	margin: 0 1em;
+	font-size: 1.2em;
+}
+
+.list_search button {
+	margin-left: 1em;
+}
+
+#resultMap {
+	width: 100%;
+	height: 50em;
 }
