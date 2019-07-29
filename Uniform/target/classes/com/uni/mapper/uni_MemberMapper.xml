@@ -41,6 +41,10 @@
 		update uni_member set userPW = #{userPW} where userID
 		= #{userID} and email = #{email}
 	</update>
+	
+	<update id="updateMember">
+		update uni_member set userPW = #{userPW}, phone=#{phone}, photo=#{photo} where mno=#{mno} 
+	</update>
 
   	
   </mapper>

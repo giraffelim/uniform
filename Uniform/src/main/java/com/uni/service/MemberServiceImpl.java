@@ -27,4 +27,12 @@ public class MemberServiceImpl implements MemberService {
 	public boolean find_pw(String userPW, String userID, String email) {
 		return mapper.find_pw(userPW, userID, email);
 	}
+
+	@Override
+	public boolean updateMember(uni_MemberVO vo) {
+		
+		boolean resultUpdate = mapper.updateMember(vo)== 1;
+		
+		return resultUpdate;
+	}
 }
