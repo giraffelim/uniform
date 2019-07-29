@@ -1,5 +1,16 @@
 package com.uni.controller;
 
+/*
+ *  작성자 : 임태양
+ *  작업실 컨트롤러
+ *  
+ *  */
+
+import org.springframework.stereotype.Controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +31,17 @@ import lombok.extern.log4j.Log4j;
 
 @Controller
 @Log4j
-@AllArgsConstructor
 @RequestMapping("/uniform/*")
 public class WorkPlaceController {
 	
 	@Autowired
 	private WorkPlaceService service;
+	
+	@GetMapping("/leaseInsert")
+	public void leaseInsert() {
+		log.info("leaseInsert");
+	}
+	
 	
 	@Transactional
 	@RequestMapping(value = "workPlaceList", method = RequestMethod.GET)

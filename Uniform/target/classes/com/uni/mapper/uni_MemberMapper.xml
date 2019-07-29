@@ -30,6 +30,21 @@
 		where mem.userID = #{userID}
 	</select>
 
+	<select id="getByNaver" resultMap="memberMap">
+		select mem.mno ,userID, userPW, name, phone, email, photo, regDate, auth,
+		naverID
+		from
+		uni_member mem LEFT OUTER JOIN uni_member_auth auth on mem.mno = auth.mno
+		where mem.naverID = #{snsID}
+	</select>
+
+	<select id="getByGoogle" resultMap="memberMap">
+		select mem.mno ,userID, userPW, name, phone, email, photo, regDate, auth,
+		googleID
+		from
+		uni_member mem LEFT OUTER JOIN uni_member_auth auth on mem.mno = auth.mno
+		where mem.googleID = #{snsID}
+	</select>
 
 	<!-- ID 찾기 select -->
 	<select id="find_id" resultType="com.uni.domain.uni_MemberVO">
@@ -42,15 +57,15 @@
 		update uni_member set userPW = #{userPW} where userID
 		= #{userID} and email = #{email}
 	</update>
-	
+
 	<update id="updateMember">
-		update uni_member set userPW = #{userPW}, phone=#{phone}, photo=#{photo} where mno=#{mno} 
+		update uni_member set userPW = #{userPW},
+		phone=#{phone}, photo=#{photo} where mno=#{mno}
 	</update>
 
 
 	<!-- 회원가입 -->
 	<insert id="insertSelectKey">
-
 		<selectKey keyProperty="mno" order="BEFORE" resultType="int">
 			select seq_member.nextval from dual
 		</selectKey>
@@ -59,6 +74,21 @@
 		#{userID}, #{userPW}, #{name},#{phone},#{email})
 
 	</insert>
+
+	<insert id="insertInfoMember">
+
+		<selectKey keyProperty="mno" order="BEFORE" resultType="int">
+			select seq_member.nextval from dual
+		</selectKey>
+		insert into
+		uni_member(mno,userID,userPW,name,phone,email,naverId,googleId,photo)
+		values(#{mno},
+		#{userID}, #{userPW}, #{name},#{phone},#{email},
+		#{naverId}, #{googleId}, #{photo})
+
+	</insert>
+
+
 	<!-- 회원가입과 동시에 auth테이블에 데이터 넣어줌 -->
 	<insert id="insert">
 
@@ -66,6 +96,22 @@
 		values(#{mno},'ROLE_MEMBER')
 
 	</insert>
+
+	<select id="confirm" resultType="com.uni.domain.uni_MemberVO">
+		select * from uni_member where
+		name=#{name} and phone =#{phone}
+	</select>
+
+	<update id="mergeGoogle">
+		update uni_member set googleId = #{googleId} where
+		mno = #{mno}
+	</update>
+
+	<update id="mergeNaver">
+		update uni_member set naverId = #{naverId} where mno
+		= #{mno}
+	</update>
+
 
 	<!-- id중복체크 -->
 
@@ -91,10 +137,13 @@
 	<select id="readHotTopicImde"
 		resultType="com.uni.domain.uni_hotTopicVO">
 
-		select round(avg(r.star)) as star, m.name, m.photo, w.context, w.thumbnail
+		select round(avg(r.star)) as star, m.name, m.photo,
+		w.context, w.thumbnail
 		from
-		uni_workplace_i w, uni_review r, uni_member m where w.ino = r.ino and
-		m.mno = r.mno group by w.ino, w.readcount, m.name, m.photo,
+		uni_workplace_i w, uni_review r, uni_member
+		m where w.ino = r.ino and
+		m.mno = r.mno group by w.ino, w.readcount,
+		m.name, m.photo,
 		w.context,w.thumbnail order by w.readcount desc
 
 	</select>

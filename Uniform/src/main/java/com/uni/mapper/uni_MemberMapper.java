@@ -9,14 +9,19 @@ import com.uni.domain.uni_hotTopicVO;
 
 public interface uni_MemberMapper {
 	
-	// �쉶�썝�쓽 �젙蹂대�� select
+	//  select
 	public uni_MemberVO read(String userID);
+
+	public uni_MemberVO getByNaver(String snsID);
 	
-	// ID 李얘린 select
+	public uni_MemberVO getByGoogle(String snsID);
+	
 	public uni_MemberVO find_id(@Param("name") String name, @Param("email") String email);
 	
-	// PW 李얘린 update (�엫�떆 鍮꾨�踰덊샇 諛쒓툒�븯�뿬 update)
 	public boolean find_pw(@Param("userPW") String userPW, @Param("userID") String userID, @Param("email") String email);
+	
+	//추가 정보 입력
+	public void insertInfoMember(uni_MemberVO member);
 	
 
 	//회원의 정보를 update
@@ -29,6 +34,11 @@ public interface uni_MemberMapper {
 	//id중복체크
 	public uni_MemberVO checkID(String userID);
 	
+	public uni_MemberVO confirm(@Param("name") String name, @Param("phone") String phone);
+	
+	public void mergeGoogle(uni_MemberVO vo);
+	
+	public void mergeNaver(uni_MemberVO vo);
 	//핫토픽 리스트 select(공유)	
 	public List<uni_hotTopicVO> readHotTopic();
 	

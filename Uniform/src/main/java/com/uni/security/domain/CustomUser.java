@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.User;
 import com.uni.domain.uni_MemberVO;
 
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 public class CustomUser extends User {
@@ -25,10 +24,8 @@ public class CustomUser extends User {
 	}
 
 	public CustomUser(uni_MemberVO vo) {
-
 		super(vo.getUserID(), vo.getUserPW(), vo.getAuthList().stream()
 				.map(auth -> new SimpleGrantedAuthority(auth.getAuth())).collect(Collectors.toList()));
-
 		this.member = vo;
 	}
 }

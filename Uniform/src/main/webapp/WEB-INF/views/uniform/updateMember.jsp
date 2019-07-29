@@ -232,7 +232,7 @@
 </script>
 
 <div id="colorlib-main">
-
+	<sec:authentication property="principal" var="pinfo"/>
 	<section class="ftco-section ftco-bread ftco-extend-mb">
 		<div class="container-fluid px-3 px-md-0">
 			<div
@@ -274,8 +274,9 @@
                                         	</c:if> --%>
 
 										<c:choose>
-											<c:when test="${not empty principal.member.photo }">
-											
+											<c:when test="${not empty pinfo.member.photo }">
+												<img style="width: 150px; height: 150px;"
+													src="${pinfo.member.photo }">
 											</c:when>
 											<c:otherwise>
 												<img style="width: 150px; height: 150px;"

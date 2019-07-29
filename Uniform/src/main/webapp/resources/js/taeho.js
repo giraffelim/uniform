@@ -68,7 +68,7 @@ $(function() {
 
 	// 수정 버튼 클릭시 데이터를 회원정보 수정 뷰로 보내줌
 	$("button[data-oper='modify']").click(function(e) {
-		operForm.attr("action", "/uniform/MemberModify").submit();
+		operForm.attr("action", "/uniform/updateMember").submit();
 		console.log("수정버튼 클릭");
 
 	});
