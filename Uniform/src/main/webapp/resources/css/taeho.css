@@ -1,0 +1,1052 @@
+.star-wrap, .result-wrap {
+	width: 150px;
+	height: 37px !important;
+	position: relative;
+}
+
+.stardiv{
+	margin-top:1em; 
+	margin-bottom:-2em;"
+}
+.result-wrap {
+	top: -35px;
+	left: -1px;
+}
+
+span[class*='star-input']>.input, .result {
+	background: url('../images/star_img.png') no-repeat;
+}
+
+span[class*='star-input'] {
+	white-space: nowrap;
+	width: 160px;
+	height: 25px;
+}
+
+span[class*='star-input']>.input, .result {
+	display: inline-block;
+	width: 150px;
+	background-size: 150px;
+	height: 28px;
+	white-space: nowrap;
+	overflow: hidden;
+	position: relative;
+}
+
+.meta-wrap {
+	height: 5em !important;
+}
+
+.star-wrap, .result-wrap {
+	width: 150px;
+	height: 37px !important;
+	position: relative;
+}
+
+.result-wrap {
+	top: -35px;
+	left: -1px;
+}
+
+span[class*='star-input']>.input, .result {
+	background: url('../images/star_img.png') no-repeat;
+}
+
+span[class*='star-input'] {
+	white-space: nowrap;
+	width: 160px;
+	height: 25px;
+}
+
+span[class*='star-input']>.input, .result {
+	display: inline-block;
+	width: 150px;
+	background-size: 150px;
+	height: 28px;
+	white-space: nowrap;
+	overflow: hidden;
+	position: relative;
+}
+
+.meta-wrap {
+	height: 5em !important;
+}
+
+.profile-Row {
+	padding: 0 3em;
+}
+
+.profile-context {
+	margin-top: 0em;
+	margin-left: 2em;
+}
+
+.profile-btn-div {
+	margin-bottom: 1em;
+	margin-left: 22em;
+}
+
+.profile-btn-div2 {
+	margin-bottom: 1em;
+	margin-left: 20em;
+}
+
+.profile-icon {
+	border: 2px solid #aaa;
+	margin-top: 1em;
+}
+
+.profile-container {
+	background-color: #eee;
+	margin-left: 2em;
+	width: 30em;
+	border: 2px solid #aaa;
+	box-shadow: 1px 1px 1px;
+}
+
+.profile-title {
+	padding-left: 1em;
+	padding-top: 1em;
+}
+
+.profile-payment {
+	margin-top: 2.2em;
+	margin-bottom: 2.2em;
+}
+
+.btn-read {
+	margin-left: 1em;
+}
+
+#table-choice {
+	border: 1px solid #aaa !important;
+}
+
+#table-choice th {
+	text-align: center;
+	border: 1px solid #aaa !important;
+}
+
+#table-choice td {
+	text-align: center;
+	background-color: #eee;
+	border: 1px solid #aaa !important;
+}
+
+#more {
+	text-align: right;
+}
+
+.profile-table {
+	margin-top: 3em;
+}
+
+.moreInfoBtn {
+	cursor: pointer;
+}
+
+/* contact.html 부분 */
+.select-info {
+	margin-top: 2em;
+	margin-bottom: 2em;
+}
+
+#inputLocation {
+	margin-left: 3em;
+	margin-right: 2em;
+}
+
+#inputFirstDate {
+	margin-right: 1em;
+}
+
+#inputLastDate {
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
+#typeChoice {
+	margin-right: 2em;
+}
+
+#firstShareDiv #secondShareDiv #thirdShareDiv #firstImdeDiv #secondImdeDiv #thirdImdeDiv
+	{
+	width: 2em;
+}
+
+#firstShareImg {
+	width: 22em;
+	height: 15em;
+	overflow: hidden;
+	background-image: url(../images/image_1.jpg);
+}
+
+#secondShareImg {
+	width: 22em;
+	height: 15em;
+	overflow: hidden;
+	background-image: url("../images/image_2.jpg");
+}
+
+#thirdShareImg {
+	width: 22em;
+	height: 15em;
+	overflow: hidden;
+	background-image: url("../images/image_3.jpg");
+}
+
+.starChecked {
+	color: orange;
+}
+
+#firstBestShareContext {
+	width: 28em;
+	font-size: 0.8em;
+}
+
+#secondBestShareContext {
+	width: 28em;
+	font-size: 0.8em;
+}
+
+#thirdBestShareContext {
+	width: 28em;
+	font-size: 0.8em;
+}
+
+#firstBestShareProfile {
+	background-image: url(../images/person_1.jpg);
+	width: 3em;
+	height: 3em;
+	border: 1px solid white;
+	border-radius: 50%;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#firstbestShareWriter {
+	margin-left: 0.5em;
+}
+
+#secondBestShareProfile {
+	background-image: url(../images/person_4.jpg);
+	width: 3em;
+	height: 3em;
+	border: 1px solid white;
+	border-radius: 50%;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#secondbestShareWriter {
+	margin-left: 0.5em;
+}
+
+#thirdBestShareProfile {
+	background-image: url(../images/person_3.jpg);
+	width: 3em;
+	height: 3em;
+	border: 1px solid white;
+	border-radius: 50%;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#thirdbestShareWriter {
+	margin-left: 0.5em;
+}
+
+.imde {
+	margin-top: -4em;
+}
+
+#firstImdeImg {
+	width: 22em;
+	height: 15em;
+	overflow: hidden;
+	background-image: url(../images/image_4.jpg);
+}
+
+#secondImdeImg {
+	width: 22em;
+	height: 15em;
+	overflow: hidden;
+	background-image: url(../images/image_5.jpg);
+}
+
+#thirdImdeImg {
+	width: 22em;
+	height: 15em;
+	overflow: hidden;
+	background-image: url(../images/image_6.jpg);
+}
+
+#firstBestImdeContext {
+	width: 28em;
+	font-size: 0.8em;
+}
+
+#secondBestImdeContext {
+	width: 28em;
+	font-size: 0.8em;
+}
+
+#thirdBestImdeContext {
+	width: 28em;
+	font-size: 0.8em;
+}
+
+#firstBestImdeProfile {
+	background-image: url(../images/person_4.jpg);
+	width: 3em;
+	height: 3em;
+	border: 1px solid white;
+	border-radius: 50%;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#firstbestImdeWriter {
+	margin-left: 0.5em;
+}
+
+#secondBestImdeProfile {
+	background-image: url(../images/person_3.jpg);
+	width: 3em;
+	height: 3em;
+	border: 1px solid white;
+	border-radius: 50%;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#secondbestImdeWriter {
+	margin-left: 0.5em;
+}
+
+#thirdBestImdeProfile {
+	background-image: url(../images/person_1.jpg);
+	width: 3em;
+	height: 3em;
+	border: 1px solid white;
+	border-radius: 50%;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#thirdbestImdeWriter {
+	margin-left: 0.5em;
+}
+
+/*기업예약 확정페이지*/
+.Company-Reservation .form-control {
+	width: 10em;
+	border-radius: 5%;
+	height: 3em !important;
+}
+
+.Company-Reservation {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+.Company-textForm {
+	margin-right: 2.2em;
+}
+
+.Company-ReservationLong {
+	border-radius: 5%;
+	width: 35em !important;
+}
+
+#Company-RPrice {
+	width: 7em !important;
+}
+
+#Company-Price {
+	margin-right: 1em;
+}
+
+.price {
+	margin-right: 3.5em;
+	margin-left: 2em;
+}
+
+.title {
+	margin-top: 1em;
+	vertical-align: middle;
+}
+
+.address {
+	margin-top: 1em;
+}
+
+.btnDiv {
+	margin-top: 5em;
+	margin-left: 30em;
+}
+
+.CompanyCancelBtn {
+	margin-right: 2em;
+}
+
+.CompanyPicMain {
+	height: 30em;
+	margin-left: -4em;
+	background-image: url(../images/bg_2.jpg);
+}
+
+/*미디어쿼리*/
+@media ( max-width :1921px) {
+	.profile-table {
+		margin-right: 10em;
+	}
+}
+
+}
+@media ( max-width :1623px) {
+	.profile-table {
+		margin-right: 2em;
+	}
+	.profile-div {
+		padding-left: 8em;
+	}
+	#Company-Price, #Company-RName, #Company-RNumber, #Company-DName,
+		#Company-DNumber, #Company-RTime, #Company-DTime {
+		width: 10em;
+	}
+	.Company-ReservationLong {
+		width: 30em !important;
+	}
+	.title, .address {
+		margin-left: 1em;
+		margin-right: 1em;
+	}
+	.price {
+		margin-right: 3em;
+	}
+}
+
+@media ( max-width :1400px) {
+	#Company-Price, #Company-RName, #Company-RNumber, #Company-DName,
+		#Company-DNumber, #Company-RTime, #Company-DTime {
+		font-size: 15px;
+	}
+	.Company-ReservationLong {
+		font-size: 16px !important;
+	}
+	.title, .address {
+		margin-left: 1em;
+		margin-right: 1em;
+	}
+	.price {
+		margin-left: 1em;
+		margin-right: 3em;
+	}
+	.profile-container {
+		width: 28em;
+	}
+	.profile-context div {
+		font-size: 0.9em;
+	}
+}
+
+@media ( max-width :1300px) {
+	.Company-Reservation div {
+		font-size: 12px;
+	}
+	#Company-Price, #Company-RName, #Company-RNumber, #Company-DName,
+		#Company-DNumber, #Company-RTime, #Company-DTime, .Company-textForm {
+		font-size: 13px;
+	}
+	.Company-ReservationLong {
+		font-size: 13px !important;
+	}
+	.title, .address {
+		font-size: 12px;
+		margin-left: 1em;
+		margin-right: 1em;
+	}
+	.profile-container {
+		width: 26em;
+	}
+	.profile-context div {
+		font-size: 0.8em;
+	}
+	.btn-modify {
+		margin-left: -3em;
+	}
+	.profile-payment {
+		margin-top: 2em;
+		margin-bottom: 2.5em;
+		width: 15em;
+	}
+	#firstBestShareContext {
+		font-size: 0.7em;
+	}
+	#secondBestShareContext {
+		font-size: 0.7em;
+	}
+	#thirdBestShareContext {
+		font-size: 0.7em;
+	}
+	#firstBestImdeContext {
+		font-size: 0.7em;
+	}
+	#secondBestImdeContext {
+		font-size: 0.7em;
+	}
+	#thirdBestImdeContext {
+		font-size: 0.7em;
+	}
+}
+
+@media ( max-width :1200px) {
+	#Company-Price, #Company-RName, #Company-RNumber, #Company-DName,
+		#Company-DNumber, #Company-RTime, #Company-DTime, .Company-textForm {
+		font-size: 10px;
+	}
+	.Company-ReservationLong {
+		font-size: 11px !important;
+	}
+	.title, .address {
+		font-size: 10px;
+		margin-left: 1em;
+		margin-right: 1em;
+	}
+	.price {
+		margin-right: 4em;
+	}
+	.btnDiv {
+		margin-left: 20em;
+	}
+	.profile-container {
+		width: 24em;
+		height: 15em;
+	}
+	.profile-context div {
+		font-size: 0.7em;
+	}
+	.btn-modify {
+		margin-left: -5em;
+	}
+	.profile-payment {
+		margin-top: 2em;
+		margin-bottom: 4em;
+		width: 15em;
+	}
+	.profile-payment {
+		font-size: 0.8em;
+	}
+	.btn-read {
+		width: 3em;
+	}
+}
+
+@media ( max-width :1151px) {
+	#inputLocation {
+		width: 43em;
+		margin-bottom: 1em;
+	}
+	#inputFirstDate {
+		margin-left: 3em;
+		width: 12em;
+	}
+	#inputLastDate {
+		width: 12em;
+	}
+	#typeChoice {
+		margin-right: 1em;
+	}
+}
+
+@media ( max-width :1123px) {
+	#firstBestShareContext {
+		width: 25em;
+	}
+	#secondBestShareContext {
+		width: 25em;
+	}
+	#thirdBestShareContext {
+		width: 25em;
+	}
+	#firstBestImdeContext {
+		width: 25em;
+	}
+	#secondBestImdeContext {
+		width: 25em;
+	}
+	#thirdBestImdeContext {
+		width: 25em;
+	}
+}
+
+@media ( max-width :1089px) {
+	.profile-container {
+		width: 21em;
+		height: 15em;
+	}
+	.profile-context div {
+		font-size: 0.7em;
+	}
+	.btn-modify {
+		margin-left: -8em;
+	}
+	.profile-payment {
+		margin-top: 2em;
+		margin-bottom: 4em;
+		width: 15em;
+	}
+	.profile-payment {
+		font-size: 0.8em;
+	}
+	.btn-read {
+		width: 3em;
+	}
+	#inputLocation {
+		width: 43em;
+		margin-bottom: 1em;
+	}
+	#inputFirstDate {
+		margin-left: 3em;
+		width: 12em;
+	}
+	#inputLastDate {
+		width: 12em;
+	}
+	#typeChoice {
+		margin-right: 1em;
+	}
+	.btnDiv {
+		margin-left: 20em;
+	}
+}
+
+@media ( max-width :990px) {
+	.profile-container {
+		margin-bottom: 2em;
+		width: 23em;
+		height: 15em;
+	}
+	.profile-context div {
+		font-size: 0.7em;
+	}
+	.btn-modify {
+		margin-left: -10em;
+	}
+	.profile-payment {
+		margin-top: 2em;
+		margin-bottom: 4em;
+		width: 15em;
+	}
+	.profile-payment {
+		font-size: 0.8em;
+	}
+	.btn-read {
+		width: 3em;
+	}
+	#firstBestShareContext {
+		width: 20em;
+	}
+	#secondBestShareContext {
+		width: 20em;
+	}
+	#thirdBestShareContext {
+		width: 20em;
+	}
+	#firstBestImdeContext {
+		width: 20em;
+	}
+	#secondBestImdeContext {
+		width: 20em;
+	}
+	#thirdBestImdeContext {
+		width: 20em;
+	}
+}
+
+@media ( max-width :966px) {
+	#inputLocation {
+		width: 36em;
+		margin-bottom: 1em;
+	}
+	#inputFirstDate {
+		margin-left: 3em;
+		width: 12em;
+	}
+	#inputLastDate {
+		width: 12em;
+	}
+	#typeChoice {
+		margin-right: 1em;
+	}
+}
+
+@media ( max-width :900px) {
+	.btnDiv {
+		margin-left: 10em;
+	}
+	.profile-container {
+		width: 30em;
+		height: 15em;
+	}
+	.profile-context div {
+		font-size: 0.8em;
+	}
+	.btn-modify {
+		margin-left: -5em;
+	}
+	.profile-payment {
+		font-size: 0.9em;
+		margin-top: 2em;
+		margin-bottom: 4em;
+		width: 17em;
+	}
+	.profile-payment {
+		font-size: 0.8em;
+	}
+	.btn-read {
+		width: 3em;
+	}
+}
+
+@media ( max-width :830px) {
+	#firstBestShareContext {
+		width: 17em;
+	}
+	#secondBestShareContext {
+		width: 17em;
+	}
+	#thirdBestShareContext {
+		width: 17em;
+	}
+	#firstBestImdeContext {
+		width: 17em;
+	}
+	#secondBestImdeContext {
+		width: 17em;
+	}
+	#thirdBestImdeContext {
+		width: 17em;
+	}
+}
+
+@media ( max-width :809px) {
+	#inputLocation {
+		width: 35em;
+		margin-bottom: 1em;
+	}
+	#inputFirstDate {
+		margin-left: 3em;
+		width: 11em;
+	}
+	#inputLastDate {
+		width: 11em;
+	}
+	#typeChoice {
+		margin-right: 1em;
+	}
+}
+
+@media ( max-width :768px) {
+	#shareBtn, #imdeBtn {
+		margin-left: 37em;
+	}
+	.btnDiv {
+		margin-left: 15em;
+	}
+	.profile-container {
+		margin-left: 8em;
+		width: 30em;
+		height: 15em;
+	}
+	.profile-context div {
+		font-size: 0.8em;
+	}
+	.btn-modify {
+		margin-left: -5em;
+	}
+	.profile-payment {
+		font-size: 0.9em;
+		margin-top: 2em;
+		margin-bottom: 4em;
+		width: 17em;
+	}
+	.profile-payment {
+		font-size: 0.8em;
+	}
+	.btn-read {
+		width: 3em;
+	}
+	#inputLocation {
+		width: 33em;
+		margin-bottom: 1em;
+	}
+	#inputFirstDate {
+		margin-left: 3em;
+		width: 10em;
+	}
+	#inputLastDate {
+		width: 10em;
+	}
+	#typeChoice {
+		margin-right: 1em;
+	}
+}
+
+@media ( max-width :730px) {
+	#shareBtn, #imdeBtn {
+		margin-left: 36em;
+	}
+}
+
+@media ( max-width :708px) {
+	#shareBtn, #imdeBtn {
+		margin-left: 32em;
+	}
+}
+
+@media ( max-width :650px) {
+	#shareBtn, #imdeBtn {
+		margin-left: 30em;
+	}
+	.btnDiv {
+		margin-left: 10em;
+	}
+	.profile-container {
+		margin-left: 4em;
+		width: 30em;
+		height: 15em;
+	}
+	.profile-context div {
+		font-size: 0.8em;
+	}
+	.btn-modify {
+		margin-left: -5em;
+	}
+	.profile-payment {
+		font-size: 0.9em;
+		margin-top: 2em;
+		margin-bottom: 4em;
+		width: 17em;
+	}
+	.profile-payment {
+		font-size: 0.8em;
+	}
+	.btn-read {
+		width: 3em;
+	}
+	#inputLocation {
+		width: 33em;
+	}
+	#typeChoice {
+		margin-right: 0.5em;
+	}
+}
+
+@media ( max-width :642px) {
+	#inputLocation {
+		width: 32em;
+	}
+	#typeChoice {
+		margin-right: 0.5em;
+	}
+	#inputLastDate {
+		margin-right: 0.5em;
+	}
+}
+
+@media ( max-width :634px) {
+	#inputLocation {
+		width: 30em;
+	}
+	#typeChoice {
+		margin-right: 0.5em;
+	}
+	#inputFirstDate {
+		width: 8em;
+	}
+	#inputLastDate {
+		width: 8em;
+		margin-right: 3em;
+	}
+}
+
+@media ( max-width :610px) {
+	#shareBtn, #imdeBtn {
+		margin-left: 28em;
+	}
+	.profile-container {
+		width: 27em;
+		height: 15em;
+	}
+	.profile-context div {
+		font-size: 0.8em;
+	}
+	.btn-modify {
+		margin-left: -5em;
+	}
+	.profile-payment {
+		font-size: 0.9em;
+		margin-top: 2em;
+		margin-bottom: 4em;
+		width: 17em;
+	}
+	.profile-payment {
+		font-size: 0.8em;
+	}
+	.btn-read {
+		width: 3em;
+	}
+	#inputLocation {
+		width: 29em;
+	}
+	#typeChoice {
+		margin-right: 0.5em;
+	}
+	#inputFirstDate {
+		width: 8em;
+	}
+	#inputLastDate {
+		width: 8em;
+		margin-right: 2em;
+	}
+	#firstBestShareContext {
+		width: 13em;
+	}
+	#secondBestShareContext {
+		width: 13em;
+	}
+	#thirdBestShareContext {
+		width: 13em;
+	}
+	#firstBestImdeContext {
+		width: 13em;
+	}
+	#secondBestImdeContext {
+		width: 13em;
+	}
+	#thirdBestImdeContext {
+		width: 13em;
+	}
+}
+
+@media ( max-width :592px) {
+	#inputLocation {
+		width: 23em;
+		margin-bottom: 1em;
+	}
+	#inputFirstDate {
+		width: 10em;
+		margin-left: 3em;
+		margin-bottom: 1em;
+	}
+	#inputLastDate {
+		width: 10em;
+	}
+	#typeChoice {
+		margin-right: 1em;
+		margin-left: 18em;
+	}
+}
+
+@media ( max-width : 577px) {
+	#shareBtn, #imdeBtn {
+		margin-left: 26em;
+	}
+	#inputFirstDate {
+		margin-left: 3em;
+		margin-right: 1em;
+		margin-bottom: 1em;
+	}
+	#inputLastDate {
+		margin-left: 1em;
+		margin-right: 0;
+	}
+	#inputLocation {
+		width: 23em;
+		margin-bottom: 1em;
+	}
+	#typeChoice {
+		margin-left: 18em;
+		margin-right: 1em;
+	}
+	#firstBestShareContext {
+		width: 32em;
+	}
+	#secondBestShareContext {
+		width: 32em;
+	}
+	#thirdBestShareContext {
+		width: 32em;
+	}
+	#firstBestImdeContext {
+		width: 32em;
+	}
+	#secondBestImdeContext {
+		width: 32em;
+	}
+	#thirdBestImdeContext {
+		width: 32em;
+	}
+}
+
+@media ( max-width : 556px) {
+	#shareBtn, #imdeBtn {
+		margin-left: 19em;
+	}
+	.profile-container {
+		width: 23em;
+		height: 17em;
+	}
+	.profile-context div {
+		font-size: 0.8em;
+	}
+	.btn-modify {
+		margin-left: -5em;
+	}
+	.profile-payment {
+		font-size: 0.9em;
+		margin-top: 2em;
+		margin-bottom: 4em;
+		width: 17em;
+	}
+	.profile-payment {
+		font-size: 0.8em;
+	}
+	.btn-read {
+		width: 3em;
+	}
+	#inputLocation {
+		width: 23em
+	}
+	#inputFirstDate {
+		width: 10em;
+		margin-right: 1em;
+	}
+	#inputLastDate {
+		width: 10em;
+		margin-left: 1em;
+	}
+	#typeChoice {
+		margin-left: 18em;
+	}
+}
+
+@media ( max-width :501px) {
+	#typeChoice {
+		margin-left: 17.5em;
+	}
+	.CompanyPicMain {
+		margin-left: 1em;
+	}
+	.titleDiv {
+		width: 10em;
+	}
+}

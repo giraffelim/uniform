@@ -1,8 +1,11 @@
 package com.uni.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.uni.domain.uni_MemberVO;
+import com.uni.domain.uni_hotTopicVO;
 
 public interface uni_MemberMapper {
 	
@@ -21,5 +24,12 @@ public interface uni_MemberMapper {
 	public void insert(int mno);
 	//id중복체크
 	public uni_MemberVO checkID(String userID);
+	
+	//핫토픽 리스트 select(공유)	
+	public List<uni_hotTopicVO> readHotTopic();
+	
+	//핫토픽 리스트 select(임대)
+	public List<uni_hotTopicVO> readHotTopicImde();
+	
 	
 }

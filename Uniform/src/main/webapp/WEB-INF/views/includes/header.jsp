@@ -25,12 +25,14 @@
 <link rel="stylesheet" href="/resources/css/owl.carousel.min.css">
 <link rel="stylesheet" href="/resources/css/owl.theme.default.min.css">
 <link rel="stylesheet" href="/resources/css/magnific-popup.css">
+<link rel="stylesheet" href="/resources/css/taeho.css">
 
 <link rel="stylesheet" href="/resources/css/aos.css">
 
 <link rel="stylesheet" href="/resources/css/ionicons.min.css">
 
-
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/css/bootstrap-datepicker.css">
 <link rel="stylesheet" href="/resources/css/jquery.timepicker.css">
 
@@ -53,7 +55,7 @@
 			<nav id="colorlib-main-menu" role="navigation">
 				<ul>
 					<li class="colorlib-active"><a href="/">Home</a></li>
-					<li><a href="list">작업실 Share</a>
+					<li><a href="/uniform/hotTopicList">작업실 Share</a>
 						<ul class="side_ul">
 							<li><a href="about.html">임대</a></li>
 							<li><a href="services.html">공유</a></li>
@@ -69,51 +71,44 @@
 				</ul>
 				<p class="social">
 					<sec:authorize access="isAnonymous()">
-					<span><a href="login">로그인</a></span>
+						<span><a href="login">로그인</a></span>
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
-					<span><a href="#" id="logout">로그아웃</a>					
-					</span>
-					<script>
-						$(function(){
-							$("#logout").click(function(e){
-								e.preventDefault();
-								var frm = document.createElement("form");
-								frm.method = "post";
-								frm.action = "/logout";
-								
-								var i = document.createElement("input");
-								i.type = "hidden";
-								i.name = "${_csrf.parameterName }";
-								i.value = "${_csrf.token }";
-								frm.appendChild(i);
-								document.body.appendChild(frm);
-								frm.submit();
+						<span><a href="#" id="logout">로그아웃</a> </span>
+						<script>
+							$(function() {
+								$("#logout").click(function(e) {
+									e.preventDefault();
+									var frm = document.createElement("form");
+									frm.method = "post";
+									frm.action = "/logout";
+
+									var i = document.createElement("input");
+									i.type = "hidden";
+									i.name = "${_csrf.parameterName }";
+									i.value = "${_csrf.token }";
+									frm.appendChild(i);
+									document.body.appendChild(frm);
+									frm.submit();
+								});
 							});
-						});
-					</script>
+						</script>
 
 					</sec:authorize>
-					 <span><a href="#">회원가입</a></span>
-					 <sec:authorize access="isAuthenticated()">
-					 	<span><a href="#">마이페이지</a></span>
-					 </sec:authorize>
+					<span><a href="/uniform/join">회원가입</a></span>
+					<sec:authorize access="isAuthenticated()">
+						<span id="myPageNav"><a href="/uniform/mypage">마이페이지</a></span>
+					</sec:authorize>
 				</p>
 			</nav>
 			<!--navigation-->
 
 
-<span><a href="/uniform/join">회원가입</a></span>
-<span><a href="#">마이페이지</a></span>
-</p>
-</nav>
-<!--navigation-->
->>>>>>> 1cf7f00469eec33a2ccb78e99a52537774cbef9c
 
-<div class="colorlib-footer">
-	<h1 id="colorlib-logo">
-		<a href="/">Uniform</a>
-	</h1>
-</div>
-</aside>
-<!-- END COLORLIB-ASIDE -->
+			<div class="colorlib-footer">
+				<h1 id="colorlib-logo">
+					<a href="/">Uniform</a>
+				</h1>
+			</div>
+		</aside>
+		<!-- END COLORLIB-ASIDE -->
