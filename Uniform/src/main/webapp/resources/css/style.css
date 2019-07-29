@@ -2399,7 +2399,7 @@ select.form-control-lg:not([size]):not([multiple]),
 }
 
 .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 .form-text {
@@ -11815,7 +11815,8 @@ textarea.form-control {
 }
 
 .contact-section .contact-form {
-    width: 100%;
+    width: 60%;
+    margin: auto;
 }
 
 .block-9 .form-control {

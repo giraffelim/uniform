@@ -6,8 +6,9 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	<bean id="bcryptPasswordEncoder"
 		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
-	 <bean id="customUserDetailsService"
-	class = "com.uni.security.CustomUserDetailService"></bean>
+	<bean id="customUserDetailsService"
+		class="com.uni.security.CustomUserDetailService">
+	</bean>
 	<security:http>
 		<security:intercept-url pattern="/list" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_MEMBER')"/>
 		<security:intercept-url pattern="/addInfo" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_MEMBER')"/>
@@ -15,10 +16,20 @@
 		<security:form-login login-page="/login"/>
 		<security:logout logout-url="/logout" invalidate-session="true"/>
 		<security:remember-me data-source-ref="dataSource" token-validity-seconds="604800"/>
+		<security:intercept-url pattern="/list"
+			access="hasRole('ROLE_ADMIN')" />
+		<security:form-login login-page="/login" />
+		<!-- <security:access-denied-handler error-page="/accessError"/> -->
+		<security:logout logout-url="/logout"
+			invalidate-session="true" />
+		<security:remember-me
+			data-source-ref="dataSource" token-validity-seconds="604800" />
 	</security:http>
 	<security:authentication-manager>
-		<security:authentication-provider user-service-ref="customUserDetailsService">
-			<security:password-encoder ref="bcryptPasswordEncoder"/>
+		<security:authentication-provider
+			user-service-ref="customUserDetailsService">
+			<security:password-encoder
+				ref="bcryptPasswordEncoder" />
 		</security:authentication-provider>
 	</security:authentication-manager>
 

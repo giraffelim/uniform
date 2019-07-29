@@ -1,0 +1,113 @@
+.form-control a{
+     display: inline;
+}
+.inoUpdateBtn1{
+    margin-right: 70px;
+    margin-left: 1em;
+}
+#pw_null{
+          display: none;
+      }
+    #pw_former{
+          display: none;
+      }
+    #pw_null_check{
+          display: none;
+      }
+    #pw_differ{
+          display: none;
+      }
+    #phone_null{
+          display: none;
+      }
+    #phone_former{
+          display: none;
+      }
+    #phoneIcon{
+          margin-left: 5px;
+      }
+    #inouserID, #inoname, #inoemail{
+          background-color: #eee !important;
+      }
+    .ino p{
+	    margin-left:55px; 
+        height: 10px;
+        color: red;
+    }
+
+.form-control {
+  height: 52px !important;
+  background: #fff !important;
+  color: #000000 !important;
+  font-size: 18px;
+  border-radius: 0px;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important; }
+  .form-control:focus, .form-control:active {
+    border-color: #000000; }
+
+.memberupdate{
+    height: 55px !important;
+    background: #fff !important;
+    color: #000000 !important;
+    font-size: 18px;
+    border-radius: 0px;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    width: 80%;
+    margin: auto;
+}
+ .memberupdate:focus, .memberupdate:active {
+    border-color: #000000; 
+}
+
+ .memberupdateid{
+    display: inline-block;
+    width: 50px;
+}
+      #profileBox{
+          background-color: white;
+          width: 50%;
+          margin: auto;
+          height: 180px;
+      }
+      
+      #profileBox div{
+          float: none; 
+          margin:auto;
+      }
+      #profileBox input{
+          font-size: 15px;
+          margin-left: 50px;
+      }
+      
+    @media screen and (max-width: 1000px) {
+        #updateMemberForm input,p{
+            font-size: 13px;
+            }
+        .ino p{
+                margin-left:50px;  
+                height: 10px;
+                color: red;
+            }
+        }
+
+        @media screen and (max-width: 765px) {
+            #updateMemberForm input,p{
+            font-size: 10px;
+            }
+            .ino p{
+                margin-left: 55px; 
+                height: 10px;
+                color: red;
+            }
+        @media screen and (max-width: 640px) {
+            #updateMemberForm input,p{
+            font-size: 8px;
+            }
+            .ino p{
+                margin-left: 5px; 
+                height: 10px;
+                color: red;
+            }
+        }   

@@ -1,5 +1,8 @@
 package com.uni.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.mail.internet.MimeMessage;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.uni.domain.uni_MemberVO;
+import com.uni.domain.uni_hotTopicVO;
 import com.uni.mapper.uni_MemberMapper;
 
 import lombok.AllArgsConstructor;
@@ -115,5 +119,33 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	
+	@Override
+	public String CurrentDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+		Date date = new Date();
+		String CurrentDate = sdf.format(date);
+
+		System.out.println(CurrentDate);
+
+		return CurrentDate;
+	}
+
+	@Override
+
+	public boolean updateMember(uni_MemberVO vo) {
+		
+		boolean resultUpdate = mapper.updateMember(vo)== 1;
+		
+		return resultUpdate;
+	}
+
+	public List<uni_hotTopicVO> list() {
+		return mapper.readHotTopic();
+	}
+
+	@Override
+	public List<uni_hotTopicVO> listImde() {
+		return	mapper.readHotTopicImde();
+	}
 
 }

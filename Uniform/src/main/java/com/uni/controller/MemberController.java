@@ -2,12 +2,25 @@ package com.uni.controller;
 
 
 import javax.inject.Inject;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
+import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,16 +28,21 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.uni.domain.uni_MemberVO;
 import com.uni.mapper.uni_MemberMapper;
 import com.uni.service.CommonService;
+import com.uni.domain.uni_hotTopicVO;
 import com.uni.service.MemberService;
 
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
+import net.coobird.thumbnailator.Thumbnailator;
 
 @Controller
 @AllArgsConstructor
@@ -34,7 +52,7 @@ public class MemberController {
 
 	@Setter(onMethod_ = @Autowired)
 	private MemberService service;
-	
+
 	@Autowired
 	private PasswordEncoder pwencoder;
 	
@@ -55,12 +73,12 @@ public class MemberController {
 		model.addAttribute("find_pw", service.find_pw(userPW, userID, email));
 		return "login";
 	}
-	
+
 	@GetMapping("/join")
 	public void join() {
 		log.info("join");
 	}
-	
+
 	@PostMapping("/join")
 	public String join(uni_MemberVO member) {
 		log.info("join");
@@ -76,25 +94,80 @@ public class MemberController {
 			 member.setUserPW(pwencoder.encode(member.getUserPW()));
 			service.insertSelectKey(member);
 		}
-		
+		log.info("==========================이것은인코딩후패스워드:" + member.getUserPW());
 		return "redirect:/uniform/index";
 	}
-	
+
 	@GetMapping("/uniform/index")
 	public void index() {
+
+	}
+
+	// end user가 로그인화면에서 input id에 아이디를 입력했을 경우
+	// 아이디의 존재 유무를 확인해주는 컨트롤러
+	@GetMapping(value = "/idcheck/{id}", produces = "text/plain; charset=utf-8")
+	@ResponseBody
+	public String confirmID(@PathVariable("id") String id) {
+		uni_MemberVO vo = service.checkID(id);
+		log.info("uni_Membr: " + vo);
+		return vo == null ? "okay" : "";
+
+	}
+
+	// index에서 마이페이지 클릭시 이동
+	@GetMapping("/mypage")
+	public void mypage() {
+		log.info("=======================mypage 컨트롤러==============================");
+	}
+
+	// 마이페이지에서 profile 수정버튼 클릭시 회원정보 수정 페이지로 이동
+	/*
+	 * @GetMapping("/MemberModify") public void memberModify() {
+	 * log.info("=======================memberModify컨트롤러=========================");
+	 * }
+	 */
+
+	// index에서 작업실 share클릭시 핫토핏 리스트로 이동
+	@GetMapping("/hotTopicList")
+	public void hotTopicList(Model model) {
+		log.info("=======================hotTopicList컨트롤러============================");
+		String CurrentDate = service.CurrentDate();
+		model.addAttribute("currentDate", CurrentDate);
+		log.info("=======================" + CurrentDate);
+
+		List<uni_hotTopicVO> hotTopicListImde = service.listImde();
+		List<uni_hotTopicVO> hotTopicList = service.list();
+		for (int i = 0; i < hotTopicList.size(); i++) {
+			log.info(i + "번째 인덱스 값" + hotTopicList.get(i));
+
+		}
+		model.addAttribute("hotTopicList", hotTopicList);
+		model.addAttribute("hotTopicListImde", hotTopicListImde);
+
+	}
+
+	@GetMapping("/login")
+	public String login() {
+		return "login";
+	}
+
+	//회원정보수정으로 이동
+	@GetMapping("/uniform/updateMember")
+	public void memberUpdate() {
+		log.info("==get!!!! updateMember 호출됨=========================");
+	}
+	//회원정보수정
+	
+	@PostMapping("/uniform/updateMember")
+	public String memberUpdate(RedirectAttributes rttr, uni_MemberVO vo) {
+		log.info("==post!!!! updateMember 호출됨=========================" + vo);
 		
+		vo.setUserPW(pwencoder.encode(vo.getUserPW()));
+		service.updateMember(vo);
+
+		return "redirect:/";
 	}
 	
-	// end user가 로그인화면에서 input id에 아이디를 입력했을 경우
-    // 아이디의 존재 유무를 확인해주는 컨트롤러
-    @GetMapping(value = "/idcheck/{id}", produces = "text/plain; charset=utf-8")
-    @ResponseBody
-    public String confirmID(@PathVariable("id") String id){
-        uni_MemberVO vo = service.checkID(id);
-        log.info("uni_Membr: "+ vo);
-        return vo == null ? "okay" : "";
-        
-    }
     
  // end user가 로그인화면에서 input id에 아이디를 입력했을 경우
     // 아이디의 존재 유무를 확인해주는 컨트롤러
@@ -125,7 +198,169 @@ public class MemberController {
 		}
 		
 		return returnVO;
+    }
 		
+	
+	//프로필사진 업로드
+	@PostMapping(value = "/uploadProfile")
+	public ResponseEntity<String> uploadProfile(MultipartFile[] uploadFile) {
+		log.info("===============uploadPhoto 호출됨 =======================");
+		String all = "";
+		String uploadFolder = "C:\\upload";
+		String uploadFolderPath = getFolder();
+		//저장 폴더 경로 설정하기 (저장 경로,날짜 세퍼레이터)
+		File uploadPath = new File(uploadFolder, getFolder());
+		log.info("uploadPath : " + uploadPath);
+		
+		//현재 파일경로가 존재한다면 true 파일경로가 존재하지 않으면 false
+		//mkdirs를 생성한다. yyyy/MM/dd
+		if(uploadPath.exists() == false) {
+			uploadPath.mkdirs();
+			}
+		
+		//foreach문으로 배열처리
+		for(MultipartFile multipartFile : uploadFile) {
+			log.info("------------------------------");
+			log.info("upload File name"+ multipartFile.getOriginalFilename());
+			log.info("upload File size"+ multipartFile.getSize());
+			
+			//크롬은 파일명만 들어감
+			String uploadFileName = multipartFile.getOriginalFilename();
+			
+			//IE는 경로로 들어가기 때문에 substring(읽을 문자열 인덱스);
+			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\")+1);
+			
+			log.info("업로드된 파일 실제 이름 : "+uploadFileName);
+			
+			UUID uuid = UUID.randomUUID();
+			
+			uploadFileName = uuid.toString() +"_"+ uploadFileName;
+			
+			try {
+				//날짜별폴더에 파일 생성
+				File saveFile = new File(uploadPath,uploadFileName);
+				
+				//실제 업로드
+				multipartFile.transferTo(saveFile);
+				all = all+ uploadFolderPath;
+				//mime 타입 이미지 검증
+				if(checkImageType(saveFile)) {
+					
+					//썸네일 객체 생성
+					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_"+ uploadFileName));
+					
+					//썸네일레이터 사용하여 실제 적용
+					Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 100, 100); 
+					
+					all = all+"\\s_"+uploadFileName;
+					log.info("all==========================================="+all);
+					thumbnail.close();
+					
+				}else {
+					return new ResponseEntity<String>("fail" , HttpStatus.OK);
+				}
+				
+			} catch (Exception e) {
+				log.error(e.getMessage());
+			}//catch
+		}//for
+	
+		return new ResponseEntity<String>(all , HttpStatus.OK);
+	}
+	
+	 @GetMapping("/display")
+	 @ResponseBody 
+	 public ResponseEntity<byte[]> getFile(String fileName){ 
+		 //String rootDirectory = "c:\\upload\";
+		 log.info("display================================="+fileName);
+		 File file = new File("c:\\upload\\"+fileName);
+		 log.info("display==================="+file);
+		 
+		 ResponseEntity<byte[]> result = null;
+		 
+		 try {
+			HttpHeaders header = new HttpHeaders();
+			String contentType = new Tika().detect(file.toPath());
+			header.add("Content-Type", contentType );
+			result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		 
+		 return result;
+	 }
+	 
+	 @PostMapping("/deleteFile")
+	 @ResponseBody
+	 public ResponseEntity<String> deleteFile(String fileName){
+		 log.info("deleteFile : " + fileName);
+		 File file;
+		 
+		 try {
+			//썸네일 파일 삭제. file 디코드 상태로 만들기
+			file = new File("c:\\upload\\" + URLDecoder.decode(fileName, "UTF-8"));
+			file.delete();
+			//원본파일 삭제하기 위한 replace
+			String largeFileName = file.getAbsolutePath().replace("s_", "");
+			log.info("largeFileName" + largeFileName);
+			
+			//원본파일 삭제하기. 
+			file = new File(largeFileName);
+			file.delete();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+		}
+		 return new ResponseEntity<String>("delete", HttpStatus.OK);
+	 }
+	 
+	
+	//프로필 업로드 관련 메서드
+	private String getFolder() {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Date date = new Date();
+		
+		String str = sdf.format(date);
+		
+		return str.replace("-", File.separator);
+	}
+	private boolean checkImageType(File file) {
+		
+		try {
+			String contentType = new Tika().detect(file);
+			log.info(contentType);
+			return contentType.startsWith("image");
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+
+	// 핫토픽에서 검색 시 값(지역, 시작, 끝 날짜, 타입) 을 보내주는 컨트롤러
+	@GetMapping("/workplaceList")
+	public void workplaceList(@RequestParam("location") String location, @RequestParam("firstDate") String firstDate,
+			@RequestParam("lastDate") String lastDate, @RequestParam("selectChoice") String selectChoice, Model model) {
+		model.addAttribute("location", location);
+		model.addAttribute("firstDate", firstDate);
+		model.addAttribute("lastDate", lastDate);
+		model.addAttribute("selectChoice", selectChoice);
+
+	}
+
+	@GetMapping("/goShare")
+	public void goShare() {
+
+	}
+
+	@GetMapping("/goImde")
+	public void goImde() {
+
 	}
 
 }

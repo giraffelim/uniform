@@ -8,13 +8,21 @@
 }
 
 #pw_null2{
-	 display: none;
-	
+    display: none;
+   
 }
 
 #pw_check{
-	 display: none;
-	
+    display: none;
+   
+}
+
+
+
+#id_check{
+   
+   display:none;
+   
 }
 
 
@@ -66,7 +74,9 @@
       #jumbotron{
       background-color:#D2D2D2 !important;
       }
-    
+    .form-group{
+    margin-left:0px;
+    }
 
 .form-control {
   height: 52px !important;
@@ -92,6 +102,12 @@
 }
  .memberupdate:focus, .memberupdate:active {
     border-color: #000000; 
+}
+
+#kaip{
+   
+   margin-left:280px;
+   margin-top:30px;
 }
 
  .memberupdateid{
@@ -127,5 +143,9 @@
                 margin-left: 5px; 
                 height: 10px;
                 color: red;
+            }
+            
+            #kaip{
+            margin-left:100px;
             }
         }  

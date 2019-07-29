@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
+<%@taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,12 +25,14 @@
 <link rel="stylesheet" href="/resources/css/owl.carousel.min.css">
 <link rel="stylesheet" href="/resources/css/owl.theme.default.min.css">
 <link rel="stylesheet" href="/resources/css/magnific-popup.css">
+<link rel="stylesheet" href="/resources/css/taeho.css">
 
 <link rel="stylesheet" href="/resources/css/aos.css">
 
 <link rel="stylesheet" href="/resources/css/ionicons.min.css">
 
-
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/css/bootstrap-datepicker.css">
 <link rel="stylesheet" href="/resources/css/jquery.timepicker.css">
 
@@ -37,10 +40,9 @@
 <link rel="stylesheet" href="/resources/css/flaticon.css">
 <link rel="stylesheet" href="/resources/css/icomoon.css">
 <link rel="stylesheet" href="/resources/css/style.css">
-<script
-	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d"></script>
-
-<script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript"
+	src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&libraries=services"></script>
 
 </head>
 
@@ -53,7 +55,7 @@
 			<nav id="colorlib-main-menu" role="navigation">
 				<ul>
 					<li class="colorlib-active"><a href="/">Home</a></li>
-					<li><a href="list">작업실 Share</a>
+					<li><a href="/uniform/hotTopicList">작업실 Share</a>
 						<ul class="side_ul">
 							<li><a href="/uniform/leaseInsert">임대</a></li>
 							<li><a href="services.html">공유</a></li>
@@ -72,32 +74,39 @@
 					<span><a href="/login">로그인</a></span>
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
-					<span><a href="#" id="logout">로그아웃</a>					
-					</span>
-					<script>
-						$(function(){
-							$("#logout").click(function(e){
-								e.preventDefault();
-								var frm = document.createElement("form");
-								frm.method = "post";
-								frm.action = "/logout";
-								
-								var i = document.createElement("input");
-								i.type = "hidden";
-								i.name = "${_csrf.parameterName }";
-								i.value = "${_csrf.token }";
-								frm.appendChild(i);
-								document.body.appendChild(frm);
-								frm.submit();
+						<span><a href="#" id="logout">로그아웃</a> </span>
+						<script>
+							$(function() {
+								$("#logout").click(function(e) {
+									e.preventDefault();
+									var frm = document.createElement("form");
+									frm.method = "post";
+									frm.action = "/logout";
+
+									var i = document.createElement("input");
+									i.type = "hidden";
+									i.name = "${_csrf.parameterName }";
+									i.value = "${_csrf.token }";
+									frm.appendChild(i);
+									document.body.appendChild(frm);
+									frm.submit();
+								});
 							});
-						});
-					</script>
+						</script>
+
 					</sec:authorize>
-					 <span><a href="/uniform/join">회원가입</a></span>
-					<span><a href="#">마이페이지</a></span>
+					<span><a href="/uniform/join">회원가입</a></span>
+					<sec:authorize access="isAuthenticated()">
+						<span id="myPageNav"><a href="/uniform/mypage">마이페이지</a></span>
+					</sec:authorize>
+
+					
+
 				</p>
 			</nav>
 			<!--navigation-->
+
+
 
 			<div class="colorlib-footer">
 				<h1 id="colorlib-logo">

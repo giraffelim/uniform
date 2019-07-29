@@ -2,45 +2,49 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <mapper namespace="com.uni.mapper.uni_MemberMapper">
-  
-  	<resultMap type="com.uni.domain.uni_MemberVO" id="memberMap">
-  		<id property="mno" column="mno"/>
-  		<result property="userID" column="userID" />
-  		<result property="userPW" column="userPW"/>
-  		<result property="name" column="name"/>
-  		<result property="phone" column="phone"/>
-  		<result property="email" column="email"/>
-  		<result property="photo" column="photo"/>
-  		<result property="regDate" column="regDate"/>
-		<collection property="authList" resultMap="authMap">			
+<mapper namespace="com.uni.mapper.uni_MemberMapper">
+
+	<resultMap type="com.uni.domain.uni_MemberVO" id="memberMap">
+		<id property="mno" column="mno" />
+		<result property="userID" column="userID" />
+		<result property="userPW" column="userPW" />
+		<result property="name" column="name" />
+		<result property="phone" column="phone" />
+		<result property="email" column="email" />
+		<result property="photo" column="photo" />
+		<result property="regDate" column="regDate" />
+		<collection property="authList" resultMap="authMap">
 		</collection>
-  	</resultMap>
-  	
-  	<resultMap type="com.uni.domain.uni_member_authVO" id="authMap">
-  		<result property ="mno" column="mno"/>
-  		<result property="auth" column = "auth"/>
-  	</resultMap>
-  	
-  	<select id="read" resultMap="memberMap">
-  		select mem.mno ,userID, userPW, name, phone, email, photo, regDate, auth
-  		from
-  			uni_member mem LEFT OUTER JOIN uni_member_auth auth on mem.mno = auth.mno
-  		where mem.userID = #{userID}
-  	</select>
-  	
-  	<select id="getByNaver" resultMap="memberMap">
-  		select mem.mno ,userID, userPW, name, phone, email, photo, regDate, auth, naverID
-  		from
-  			uni_member mem LEFT OUTER JOIN uni_member_auth auth on mem.mno = auth.mno
-  		where mem.naverID = #{snsID}
-  	</select>
-  	<select id="getByGoogle" resultMap="memberMap">
-  		select mem.mno ,userID, userPW, name, phone, email, photo, regDate, auth, googleID
-  		from
-  			uni_member mem LEFT OUTER JOIN uni_member_auth auth on mem.mno = auth.mno
-  		where mem.googleID = #{snsID}
-  	</select>
+	</resultMap>
+
+	<resultMap type="com.uni.domain.uni_member_authVO"
+		id="authMap">
+		<result property="mno" column="mno" />
+		<result property="auth" column="auth" />
+	</resultMap>
+
+	<select id="read" resultMap="memberMap">
+		select mem.mno ,userID, userPW, name, phone, email, photo, regDate, auth
+		from
+		uni_member mem LEFT OUTER JOIN uni_member_auth auth on mem.mno = auth.mno
+		where mem.userID = #{userID}
+	</select>
+
+	<select id="getByNaver" resultMap="memberMap">
+		select mem.mno ,userID, userPW, name, phone, email, photo, regDate, auth,
+		naverID
+		from
+		uni_member mem LEFT OUTER JOIN uni_member_auth auth on mem.mno = auth.mno
+		where mem.naverID = #{snsID}
+	</select>
+
+	<select id="getByGoogle" resultMap="memberMap">
+		select mem.mno ,userID, userPW, name, phone, email, photo, regDate, auth,
+		googleID
+		from
+		uni_member mem LEFT OUTER JOIN uni_member_auth auth on mem.mno = auth.mno
+		where mem.googleID = #{snsID}
+	</select>
 
 	<!-- ID 찾기 select -->
 	<select id="find_id" resultType="com.uni.domain.uni_MemberVO">
@@ -53,55 +57,96 @@
 		update uni_member set userPW = #{userPW} where userID
 		= #{userID} and email = #{email}
 	</update>
-	
-	
+
+	<update id="updateMember">
+		update uni_member set userPW = #{userPW},
+		phone=#{phone}, photo=#{photo} where mno=#{mno}
+	</update>
+
+
 	<!-- 회원가입 -->
 	<insert id="insertSelectKey">
-
-<selectKey keyProperty="mno" order="BEFORE" resultType="int">
+		<selectKey keyProperty="mno" order="BEFORE" resultType="int">
 			select seq_member.nextval from dual
 		</selectKey>
 		insert into uni_member(mno,userID,userPW,name,phone,email)
 		values(#{mno},
 		#{userID}, #{userPW}, #{name},#{phone},#{email})
-		
-	</insert>
-	
-		<insert id="insertInfoMember">
 
-<selectKey keyProperty="mno" order="BEFORE" resultType="int">
+	</insert>
+
+	<insert id="insertInfoMember">
+
+		<selectKey keyProperty="mno" order="BEFORE" resultType="int">
 			select seq_member.nextval from dual
 		</selectKey>
-		insert into uni_member(mno,userID,userPW,name,phone,email,naverId,googleId,photo)
+		insert into
+		uni_member(mno,userID,userPW,name,phone,email,naverId,googleId,photo)
 		values(#{mno},
-		#{userID}, #{userPW}, #{name},#{phone},#{email}, #{naverId}, #{googleId}, #{photo})
-		
+		#{userID}, #{userPW}, #{name},#{phone},#{email},
+		#{naverId}, #{googleId}, #{photo})
+
 	</insert>
-	
-	
+
+
 	<!-- 회원가입과 동시에 auth테이블에 데이터 넣어줌 -->
 	<insert id="insert">
-	 
-	 insert into uni_member_auth(mno,auth)
-	 values(#{mno},'ROLE_MEMBER') 
-	 
+
+		insert into uni_member_auth(mno,auth)
+		values(#{mno},'ROLE_MEMBER')
+
 	</insert>
-	
+
 	<select id="confirm" resultType="com.uni.domain.uni_MemberVO">
-		select * from uni_member where name=#{name} and phone =#{phone}
+		select * from uni_member where
+		name=#{name} and phone =#{phone}
 	</select>
-	
-	<update id ="mergeGoogle">
-		update uni_member set googleId = #{googleId} where mno = #{mno}
+
+	<update id="mergeGoogle">
+		update uni_member set googleId = #{googleId} where
+		mno = #{mno}
 	</update>
-	
-	<update id ="mergeNaver">
-		update uni_member set naverId = #{naverId} where mno = #{mno}
+
+	<update id="mergeNaver">
+		update uni_member set naverId = #{naverId} where mno
+		= #{mno}
 	</update>
-	
+
+
 	<!-- id중복체크 -->
-	
-	<select id="checkID" parameterType="String" resultType="com.uni.domain.uni_MemberVO">
-	select userPW from uni_member where userID = #{userID}
+
+	<select id="checkID" parameterType="String"
+		resultType="com.uni.domain.uni_MemberVO">
+		select userPW from uni_member where userID = #{userID}
 	</select>
-  </mapper>
+
+	<!-- 공유 핫토픽 -->
+	<select id="readHotTopic"
+		resultType="com.uni.domain.uni_hotTopicVO">
+
+		select round(avg(r.star)) as star, m.name, m.photo,
+		w.context,w.thumbnail from
+		uni_workplace_s w,uni_review r, uni_member m
+		where w.sno = r.sno and
+		m.mno = r.mno group by w.sno, w.readcount,
+		m.name, m.photo, w.context,
+		w.thumbnail order by w.readcount desc
+
+	</select>
+	<!-- 임대 핫토픽 -->
+	<select id="readHotTopicImde"
+		resultType="com.uni.domain.uni_hotTopicVO">
+
+		select round(avg(r.star)) as star, m.name, m.photo,
+		w.context, w.thumbnail
+		from
+		uni_workplace_i w, uni_review r, uni_member
+		m where w.ino = r.ino and
+		m.mno = r.mno group by w.ino, w.readcount,
+		m.name, m.photo,
+		w.context,w.thumbnail order by w.readcount desc
+
+
+	</select>
+
+</mapper>
