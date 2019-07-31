@@ -30,27 +30,28 @@ import net.coobird.thumbnailator.Thumbnailator;
 @Controller
 @Log4j
 public class UploadController {
-	
+
 	// 파일을 년/월/일 단위의 폴더를 통해 관리
 	private String getFolder() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		SimpleDateFormat sdf = new SimpleDateFormat();
 		Date date = new Date();
 		String str = sdf.format(date);
 		return str.replace("-", File.separator);
 	}
-	
+
 	// 파일이 이미지 타입인지를 검증
 	private boolean checkImageType(File file) {
 		try {
 			String contentType = new Tika().detect(file.toPath());
 			return contentType.startsWith("image");
-		}catch(IOException e) {
+		} catch (IOException e) {
 			e.getMessage();
 		}
-		
+
 		return false;
 	}
-	
+
 	@PostMapping(value = "/uploadLeaseThumbnail", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ResponseEntity<List<uni_AttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile) {
@@ -111,50 +112,52 @@ public class UploadController {
 		
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
+
+	@PostMapping("/deleteFile")
+	@ResponseBody
+	public ResponseEntity<String> deleteFile(String fileName) {
+		log.info("deleteFile: " + fileName);
+		File file;
+
+		try {
+			log.warn("encode FileName: " + URLDecoder.decode(fileName, "utf-8"));
+			file = new File("/Users/admin/upload/" + URLDecoder.decode(fileName, "utf-8"));
+			file.delete();
+			String largeFileName = file.getAbsolutePath().replace("Is_", "");
+			log.info("largeFileName: " + largeFileName);
+			file = new File(largeFileName);
+			file.delete();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ResponseEntity<String>("deleted", HttpStatus.OK);
+	}
+
 	@GetMapping("/display")
 	@ResponseBody
-	public ResponseEntity<byte[]> getFile(String fileName){
+	public ResponseEntity<byte[]> getFile(String fileName) {
 		log.info("getFile");
-		log.info("fileName"+fileName);
+		log.info("fileName" + fileName);
 		// 파일 객체 생성
-		File file = new File("/Users/admin/upload/"+fileName);
-		log.info("file: "+file);
+		File file = new File("/Users/admin/upload/" + fileName);
+		log.info("file: " + file);
 		// 결과를 리턴할 ResponseEntity 객체 생성
 		ResponseEntity<byte[]> result = null;
-		
+
+		// UUID 적용
+		UUID uuid = UUID.randomUUID();
 		try {
-			//HttpHeader 객체 생성
+			// HttpHeader 객체 생성
 			HttpHeaders header = new HttpHeaders();
-			
+
 			header.add("Content-Type", new Tika().detect(file.toPath()));
 			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
-			
-		}catch(Exception e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return result;
 	}
-	
-	@PostMapping("/deleteFile")
-	@ResponseBody
-	public ResponseEntity<String> deleteFile (String fileName){
-		log.info("deleteFile: "+ fileName);
-		File file;
-		
-		try {
-			log.warn("encode FileName: "+URLDecoder.decode(fileName,"utf-8"));
-			file = new File("/Users/admin/upload/"+URLDecoder.decode(fileName,"utf-8"));
-			file.delete();
-			String largeFileName = file.getAbsolutePath().replace("Is_", "");
-			log.info("largeFileName: "+largeFileName);
-			file = new File(largeFileName);
-			file.delete();
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-		return new ResponseEntity<String>("deleted", HttpStatus.OK);
-	}
-	
+
 }

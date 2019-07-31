@@ -12,6 +12,7 @@ public interface uni_workplaceMapper {
 	
 	public List<StarAvgVO> avg_star();
 	
+	
 	// 임대 게시글 등록
 	public void insertWorkPlace_i(uni_workplace_iVO vo);
 	
@@ -26,4 +27,6 @@ public interface uni_workplaceMapper {
 
 	// photo delete
 	public void deletePhoto(int ino);
+
+
 }

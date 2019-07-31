@@ -13,11 +13,13 @@ import com.uni.mapper.uni_workplaceMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
 @Service
 @AllArgsConstructor
+@Log4j
 public class WorkPlaceServiceImpl implements WorkPlaceService {
-	
+
 	@Setter(onMethod_ = @Autowired)
 	private uni_workplaceMapper mapper;
 
@@ -30,7 +32,7 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 	public List<StarAvgVO> avg_star() {
 		return mapper.avg_star();
 	}
-	
+
 	@Transactional
 	@Override
 	public void insertWorkPlace_i(uni_workplace_iVO vo) {
@@ -38,7 +40,7 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 		// workplace_i에 insert
 		mapper.insertWorkPlace_i(vo);
 		// 첨부파일 insert
-		for(int i=0; i<vo.getAttachList().size(); i++) {
+		for (int i = 0; i < vo.getAttachList().size(); i++) {
 			uni_PhotoVO pVo = new uni_PhotoVO();
 			pVo.setIno(vo.getIno());
 			pVo.setFileName(vo.getAttachList().get(i).getFileName());
@@ -61,16 +63,16 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 		int result = 0;
 		// update uni_workPlace_i
 		result = mapper.updateWorkPlace_i(vo);
-		
+
 		// delete Photo
 		mapper.deletePhoto(vo.getIno());
-		
+
 		// update uni_PhotoVO
 		vo.getAttachList().forEach(photo -> {
 			photo.setIno(vo.getIno());
 			mapper.insertAttach(photo);
 		});
-		
+
 		return result;
 	}
 

@@ -20,5 +20,6 @@ public interface WorkPlaceService {
 	
 	// update
 	public int updateWorkPlace_i(uni_workplace_iVO vo);
+
 	
 }

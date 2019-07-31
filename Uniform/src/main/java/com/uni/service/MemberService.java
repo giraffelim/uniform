@@ -34,6 +34,8 @@ public interface MemberService {
 	public void mergeGoogle(uni_MemberVO vo);
 
 	public void mergeNaver(uni_MemberVO vo);
-
+	
 	public uni_MemberVO getMember(int mno);
+
+
 }

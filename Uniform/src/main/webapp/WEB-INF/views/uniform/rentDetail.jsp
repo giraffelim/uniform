@@ -767,3 +767,4 @@
 
    <script src="/resources/js/main.inho.js"></script>
    <%@ include file="../includes/footer.jsp"%>
+ No newline at end of file

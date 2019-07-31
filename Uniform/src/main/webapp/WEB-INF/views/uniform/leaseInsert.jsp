@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <link rel="stylesheet" href="/resources/css/workplaceI.css">
+
 <!-- 2019/7/25일
 		작성자 : 임태양
 		임대작업실 등록 화면  -->
@@ -23,12 +24,13 @@ if(oauth2LoginUser == 0){
                             <p class="breadcrumbs"><span class="mr-2"><a href="index.html"><sec:authentication property="principal.member.mno"/></a></span> <span>Collection</span></p>
                             <h1 class="bread">임대 작업실 등록</h1>
                             <div style="width: 100%; height: 1100px; margin-top: 50px;" id="totalDiv">
-                                <div class="row" id="divRows" style="height:1000px;">
+                               <div class="row" id="divRows" style="height:1000px;">
                                     <div class="col-sm-6" id="section1">
-                                    <form action="/workplaceI" method="post">
+                                     <form action="/uniform/workplaceI" method="post">
                                     <input type="hidden" name="${_csrf.parameterName }"
 						value="${_csrf.token }" />
 									<input type="hidden" name="mno" value="<sec:authentication property='principal.member.mno'/>">
+                                    
                                         <label for="leaseTitle">
                                             <b>제목</b>
                                             <div style="width: 100%; height: 1.5px; background-color: black; position: relative; top: -5px;"></div>
@@ -42,24 +44,27 @@ if(oauth2LoginUser == 0){
                                         <label><b>편의시설</b>
                                         <div style="width: 100%; height: 2px; background-color: black; position: relative; top: -5px;"></div>
                                         </label>
-                                        
-                                        <div style="width: 100%; height: 100px;" id="comforts">	
+                                        	   <div style="width: 100%; height: 100px;" id="comforts">	
                                             <input type="checkbox" value="wifi" id="wifi" name="comforts"><label for="wifi" class="labelMargin">WIFI</label>
                                             <input type="checkbox" value="amp" id="amp" name="comforts"><label for="amp" class="labelMargin">앰프</label>
                                             <input type="checkbox" value="mike" id="mike" name="comforts"><label for="mike" class="labelMargin">마이크</label>
                                             <input type="checkbox" value="restroom" id="restroom" name="comforts"><label for="restroom" class="labelMargin">화장실</label>
+                                        	
                                             <br>
-                                            <input type="checkbox" value="aircon" name="comforts" id="aircon"><label for="aircon" class="labelMargin">에어컨</label>
+                                             <input type="checkbox" value="aircon" name="comforts" id="aircon"><label for="aircon" class="labelMargin">에어컨</label>
                                             <input type="checkbox" value="refrigerator" name="comforts" id="refrigerator"><label for="refrigerator" class="labelMargin">냉장고</label>
                                             <input type="checkbox" value="fan" name="comforts" id="fan"><label for="fan" class="labelMargin">선풍기</label>
                                             <input type="checkbox" value="airclean" name="comforts" id="airclean"><label for="airclean" class="labelMargin">공기청정기</label>
+
                                         </div>
+
 <!--
                                         <label><b>예약가능 날짜</b>
                                             <div style="width: 100%; height: 2px; background-color: black; position: relative; top: -5px;"></div>
                                         </label>
                                         <input type="date" class="form-control form-group" name="leaseRes" style="display: inline; margin-left: 15px;">
 -->
+
                                         <label><b>가격</b>
                                             <div style="width: 100%; height: 2px; background-color: black; position: relative; top: -5px;"></div>
                                         </label>
@@ -67,7 +72,7 @@ if(oauth2LoginUser == 0){
                                          <label><b>상세설명</b>
                                             <div style="width: 100%; height: 2px; background-color: black; position: relative; top: -5px;"></div>
                                         </label>
-                                        <textarea name="context" id="" cols="50" rows="10" style="width: 100%; margin-left: 15px;" id="leaseContext"></textarea>
+                                         <textarea name="context" id="" cols="50" rows="10" style="width: 100%; margin-left: 15px;" id="leaseContext"></textarea>
                                         </form>
                                         	<div id="thumbnailDiv" style="margin-top:10px;">
                                         	<b>썸네일 이미지</b>
@@ -81,20 +86,25 @@ if(oauth2LoginUser == 0){
                                         	<ul>
                                         	</ul>
                                         	</div>
+                                        
                                     </div>
-                                    <div class="col-sm-6" style="margin-top: 20px; height:500px;" id="section2">
+                                                                        <div class="col-sm-6" style="margin-top: 20px; height:500px;" id="section2">
+                                    
                                         <div style="width: 100%; height: 300px;" id="imgRes">
-                                        		<img src="/resources/images/no_img.png" id="thumbnailImg">
+                                                                                		<img src="/resources/images/no_img.png" id="thumbnailImg">
+                                        
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
-                <input type="submit" class="btn btn-primary float-right" value="등록">
+ 				<input type="submit" class="btn btn-primary float-right" value="등록">
             </section>
             
+                       
             <script>
             function execPostCode() {
                 new daum.Postcode({
@@ -137,6 +147,7 @@ if(oauth2LoginUser == 0){
                 }).open();
             }
 
+
             	$(function(){
             		var section2 = $("#section2").clone();
             		var width = $(this).width();
@@ -144,12 +155,7 @@ if(oauth2LoginUser == 0){
             		if(width < 400){
             			$("#section2").remove();
             			$("#divRows").prepend(section2);
-            			$("#totalDiv").css("height","1500");
-            			$("#thumbnailImg").attr({
-            				width : "200px",
-            				height : "200px"
-            			});
-            			$("#leaseSection").css("margin-left","0px");
+            			$("#totalDiv").css("height","1100");
             		}else{
             			$("#section2").remove();
             			$("#divRows").append(section2);
@@ -159,6 +165,7 @@ if(oauth2LoginUser == 0){
             				height : "450px"
             			});
             			$("#leaseSection").css("margin-left","100px");
+
             		}
             		
             		$(window).on("resize",function(){
@@ -172,6 +179,7 @@ if(oauth2LoginUser == 0){
                 				height : "200px"
                 			});
                 			$("#leaseSection").css("margin-left","0px");
+
             			}else{
             				$("#section2").remove();
                 			$("#divRows").append(section2);
@@ -183,7 +191,6 @@ if(oauth2LoginUser == 0){
                 			$("#leaseSection").css("margin-left","100px");
             			}
             		});
-            		
             		// 파일의 확장자 검사
             		var regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
             		var maxSize = 5242880;
@@ -199,7 +206,6 @@ if(oauth2LoginUser == 0){
             			}
             			return true;
             		}
-            		
             		var uploadResult = $(".uploadResult ul");
             		
             		$("input[type='file']").on("change",function(){
@@ -218,7 +224,6 @@ if(oauth2LoginUser == 0){
 	            			
 	            			formData.append("uploadFile",files[i]);
             			}
-						
             			if(where == 'thumbnail'){
             				$.ajax({
                 				url : "/uploadLeaseThumbnail",
@@ -260,7 +265,6 @@ if(oauth2LoginUser == 0){
 	            			});
             			}
             		});
-            		
             		var formObj = $("form");
             		
             		$("input[type='submit']").on("click",function(e){
@@ -331,5 +335,6 @@ if(oauth2LoginUser == 0){
             		});
             	});
             </script>
+
 
 <%@include file="../includes/footer.jsp"%>

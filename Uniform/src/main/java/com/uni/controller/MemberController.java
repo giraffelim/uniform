@@ -371,4 +371,5 @@ public class MemberController {
 		return service.getMember(mno);
 	}
 
+
 }

@@ -147,11 +147,13 @@ public class MemberServiceImpl implements MemberService {
 	public List<uni_hotTopicVO> listImde() {
 		return	mapper.readHotTopicImde();
 	}
-
+	
 	@Override
 	public uni_MemberVO getMember(int mno) {
 		// TODO Auto-generated method stub
 		return mapper.readMember(mno);
 	}
+
+
 
 }
