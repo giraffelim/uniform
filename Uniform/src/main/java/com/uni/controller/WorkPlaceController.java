@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.uni.domain.StarAvgVO;
 import com.uni.domain.uni_hotTopicVO;
 import com.uni.domain.uni_workplace_iVO;
 import com.uni.service.WorkPlaceService;
@@ -109,5 +111,6 @@ public class WorkPlaceController {
 		model.addAttribute("SfirstDate", SfirstDate);
 		model.addAttribute("SlastDate", SlastDate);
 	}
+
 
 }

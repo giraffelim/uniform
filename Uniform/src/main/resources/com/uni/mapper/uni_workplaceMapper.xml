@@ -13,14 +13,14 @@
 		resultType="com.uni.domain.IWorkPlaceVO">
 		select * from uni_workplace_i
 		where location like
-		'%'||#{location}||'%'
+		'%'||#{location}||'%' order by ino
 	</select>
 
 	<select id="workPlaceList_s"
 		resultType="com.uni.domain.SWorkPlaceVO">
 		select * from uni_workplace_s
 		where location like
-		'%'||#{location}||'%'
+		'%'||#{location}||'%' order by sno
 	</select>
 
 	<select id="avg_star_i" resultType="com.uni.domain.StarAvgVO">
@@ -32,7 +32,7 @@
 		i.ino where i.location like
 		'%'||#{location}||'%'
 		group by r.ino,
-		i.location
+		i.location order by r.ino
 	</select>
 
 	<select id="avg_star_s" resultType="com.uni.domain.StarAvgVO">
@@ -42,7 +42,7 @@
 		uni_workplace_s s on r.sno
 		=
 		s.sno where s.location like '%'||#{location}||'%' group by r.sno,
-		s.location
+		s.location order by r.sno
 	</select>
 
 	<!-- 공유 핫토픽 -->
