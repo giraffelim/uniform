@@ -3,9 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <link rel="stylesheet" href="/resources/css/workplaceI.css">
-<!-- 2019/7/25일
+<!-- 2019/7/31일
 		작성자 : 임태양
-		임대작업실 등록 화면  -->
+		임대작업실 수정 화면  -->
 <%@include file="../includes/header.jsp"%>
 
 <script>
@@ -21,28 +21,28 @@ if(oauth2LoginUser == 0){
                     <div class="row no-gutters slider-text justify-content-end align-items-center">
                         <div class="col-md-10 ftco-animate">
                             <p class="breadcrumbs"><span class="mr-2"><a href="index.html"><sec:authentication property="principal.member.mno"/></a></span> <span>Collection</span></p>
-                            <h1 class="bread">임대 작업실 등록</h1>
+                            <h1 class="bread">임대 작업실 수정</h1>
                             <div style="width: 100%; height: 1100px; margin-top: 50px;" id="totalDiv">
                                 <div class="row" id="divRows" style="height:1000px;">
                                     <div class="col-sm-6" id="section1">
-                                    <form action="/workplaceI" method="post">
+                                    <form action="/uniform/updateWorkplace" method="post">
                                     <input type="hidden" name="${_csrf.parameterName }"
 						value="${_csrf.token }" />
-									<input type="hidden" name="mno" value="<sec:authentication property='principal.member.mno'/>">
+									<input type="hidden" name="ino" value="${workplaceVO.ino }">
                                         <label for="leaseTitle">
                                             <b>제목</b>
-                                            <div style="width: 100%; height: 1.5px; background-color: black; position: relative; top: -5px;"></div>
+                                            <div style="width: 100%; height: 1.5px; background-color: black; position: relative; top: -5px;" ></div>
                                         </label>
-                                        <input type="text" class="form-control form-group" id="leaseTitle" name="title" style="display: inline; margin-left: 15px;"><label for="leaseLocation">
+                                        <input type="text" class="form-control form-group" id="leaseTitle" name="title" style="display: inline; margin-left: 15px;" value="${workplaceVO.title }"><label for="leaseLocation">
                                         <b>위치</b>
                                         <div style="width: 100%; height: 2px; background-color: black; position: relative; top: -5px;"></div>
                                         </label>
     									<button type="button" class="btn btn-default" onclick="execPostCode();"><i class="fa fa-search"></i> 우편번호 찾기</button>                               
-                                        <input type="text" class="form-control form-group" name="location" id="leaseLocation" style="display: inline; margin-left: 15px;">
+                                        <input type="text" class="form-control form-group" name="location" id="leaseLocation" style="display: inline; margin-left: 15px;" value="${workplaceVO.location }">
                                         <label><b>편의시설</b>
                                         <div style="width: 100%; height: 2px; background-color: black; position: relative; top: -5px;"></div>
                                         </label>
-                                        
+                                        	
                                         <div style="width: 100%; height: 100px;" id="comforts">	
                                             <input type="checkbox" value="wifi" id="wifi" name="comforts"><label for="wifi" class="labelMargin">WIFI</label>
                                             <input type="checkbox" value="amp" id="amp" name="comforts"><label for="amp" class="labelMargin">앰프</label>
@@ -54,20 +54,15 @@ if(oauth2LoginUser == 0){
                                             <input type="checkbox" value="fan" name="comforts" id="fan"><label for="fan" class="labelMargin">선풍기</label>
                                             <input type="checkbox" value="airclean" name="comforts" id="airclean"><label for="airclean" class="labelMargin">공기청정기</label>
                                         </div>
-<!--
-                                        <label><b>예약가능 날짜</b>
-                                            <div style="width: 100%; height: 2px; background-color: black; position: relative; top: -5px;"></div>
-                                        </label>
-                                        <input type="date" class="form-control form-group" name="leaseRes" style="display: inline; margin-left: 15px;">
--->
+                                        
                                         <label><b>가격</b>
                                             <div style="width: 100%; height: 2px; background-color: black; position: relative; top: -5px;"></div>
                                         </label>
-                                        <input type="text" class="form-control form-group" name="price" style="display: inline; margin-left: 15px;" id="leasePrice">
+                                        <input type="text" class="form-control form-group" name="price" style="display: inline; margin-left: 15px;" id="leasePrice" value="${workplaceVO.price }">
                                          <label><b>상세설명</b>
                                             <div style="width: 100%; height: 2px; background-color: black; position: relative; top: -5px;"></div>
                                         </label>
-                                        <textarea name="context" id="" cols="50" rows="10" style="width: 100%; margin-left: 15px;" id="leaseContext"></textarea>
+                                        <textarea name="context" cols="50" rows="10" style="width: 100%; margin-left: 15px;" id="leaseContext">${workplaceVO.context }</textarea>
                                         </form>
                                         	<div id="thumbnailDiv" style="margin-top:10px;">
                                         	<b>썸네일 이미지</b>
@@ -79,6 +74,14 @@ if(oauth2LoginUser == 0){
                                         </div>
                                         	<div class="uploadResult">
                                         	<ul>
+                                        	<c:forEach items="${workplaceVO.attachList }" var="attach">
+                                        	<li data-path="${attach.path }" data-uuid="${attach.uuid }" data-filename="${attach.fileName }"><div>
+											<span style='color:white;'>${attach.fileName }</span>
+											<button type='button' data-file="${attach.path }/Is_${attach.uuid}_${attach.fileName}" class='btn btn-warning btn-circle'>&times;</button><br>
+											<img src="/display?fileName=${attach.path }/Is_${attach.uuid}_${attach.fileName}"  class="displayAttach">
+										</div>
+										</li>								                                        	
+                                        	</c:forEach>
                                         	</ul>
                                         	</div>
                                     </div>
@@ -92,7 +95,7 @@ if(oauth2LoginUser == 0){
                         </div>
                     </div>
                 </div>
-                <input type="submit" class="btn btn-primary float-right" value="등록">
+                <input type="submit" class="btn btn-primary float-right" value="수정">
             </section>
             
             <script>
@@ -264,7 +267,8 @@ if(oauth2LoginUser == 0){
             		var formObj = $("form");
             		
             		$("input[type='submit']").on("click",function(e){
-            			
+            			var csrfHeaderName = "${_csrf.headerName }";
+						var csrfTokenValue = "${_csrf.token }";
             			e.preventDefault();
             			if($("#leaseTitle").val().length == 0){
             				alert("제목은 필수 입력 사항입니다.");
@@ -303,31 +307,33 @@ if(oauth2LoginUser == 0){
             				str += "<input type = 'hidden' name='attachList["+i+"].uuid' value='"+jobj.data("uuid")+"'>";
             				str += "<input type = 'hidden' name='attachList["+i+"].path' value='"+jobj.data("path")+"'>";
             			});
+            			
             			formObj.append(str).submit();
+            			
+            			
+            			
             		});
+            		
+            		// checkbox
+            		var comforts = '${workplaceVO.comforts}';
+            		var checkList = comforts.split(",");
+            		$(checkList).each(function(i, o){
+            			$("#"+o+"").attr("checked","true");
+            		});
+            		
+            		// 썸네일 이미지 띄우기 [업데이트]
+            		var isThumbnail = '${workplaceVO.thumbnail}';
+            		if(isThumbnail != ""){
+            			var fileCallPath = encodeURIComponent(isThumbnail);
+            			$("#thumbnailImg").attr("src","/display?fileName="+fileCallPath);
+            		}
             		
             		// 삭제 이벤트 처리 
             		$(".uploadResult").on("click","button",function(e){
             			var targetLi = $(this).closest("li");
             			var csrfHeaderName = "${_csrf.headerName }";
 						var csrfTokenValue = "${_csrf.token }";
-            			var targetFile = $(this).data("file");
-            			console.log(targetFile);
-            			$.ajax({
-            				url : "/deleteFile",
-            				beforeSend : function(xhr){
-								xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
-							},
-            				data : {
-            					fileName : targetFile,
-            				},
-            				dataType : "text",
-            				type : "post",
-            				success : function(result){
-            					alert(result);
-            					targetLi.remove();
-            				}
-            			});
+            			targetLi.remove();
             		});
             	});
             </script>

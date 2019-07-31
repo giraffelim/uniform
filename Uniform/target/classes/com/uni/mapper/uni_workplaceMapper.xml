@@ -2,8 +2,33 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+  
 <mapper namespace="com.uni.mapper.uni_workplaceMapper">
+
+	<resultMap type="com.uni.domain.uni_workplace_iVO" id="leaseMap">
+		<id property="ino" column="ino" />
+		<result property="title" column="title" />
+		<result property="location" column="location" />
+		<result property="thumbnail" column="thumbnail" />
+		<result property="comforts" column="comforts" />
+		<result property="price" column="price" />
+		<result property="context" column="context" />
+		<result property="rDate" column="rDate" />
+		<result property="mno" column="mno" />
+		<result property="readCount" column="readCount" />
+		<collection property="attachList" resultMap="photoMap">
+		</collection>
+	</resultMap>
+	
+	<resultMap type="com.uni.domain.uni_PhotoVO" id="photoMap">
+		<result property="pno" column="pno" />
+		<result property="path" column="path" />
+		<result property="uuid" column="uuid" />
+		<result property="fileName" column="fileName" />
+		<result property="ino" column="ino" />
+		<result property="sno" column="sno" />
+	</resultMap>
+
 	<select id="workPlaceList"
 		resultType="com.uni.domain.uni_workplace_iVO">
 		select * from uni_workplace_i
@@ -15,4 +40,32 @@
 		i.ino group by
 		r.ino
 	</select>
+	
+	<insert id="insertWorkPlace_i">
+		<selectKey keyProperty="ino" order="BEFORE" resultType="int">
+				select uni_workplace_i_seq.nextval from dual
+		</selectKey>
+		insert into uni_workplace_i (ino, title, location, thumbnail, comforts, price, context, rDate, mno, readcount)
+		values(#{ino}, #{title}, #{location}, #{thumbnail}, #{comforts}, #{price}, #{context}, sysdate, #{mno}, 0)
+	</insert>
+	
+	<select id="read" resultMap="leaseMap">
+	 	select *
+		from uni_workplace_I i , uni_photo p 
+		where i.ino = p.ino and i.ino = #{ino}
+	</select>
+	
+	<insert id="insertAttach">
+		insert into uni_photo (pno, path, uuid, filename, ino)
+		values(uni_photo_seq.nextval, #{path}, #{uuid}, #{fileName}, #{ino})
+	</insert>
+	
+	<update id="updateWorkPlace_i">
+	update uni_workplace_i set title = #{title}, location = #{location}, thumbnail = #{thumbnail}, comforts = #{comforts}, price = #{price} where ino = #{ino}
+	</update>
+	
+	<delete id ="deletePhoto">
+	delete from uni_photo where ino =#{ino}
+	</delete>
+	
 </mapper>

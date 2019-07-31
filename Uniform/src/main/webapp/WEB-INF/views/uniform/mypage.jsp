@@ -55,6 +55,11 @@
 													이메일 : <span id="email"><sec:authentication
 															property="principal.member.email" /></span>
 												</div>
+												<div>
+													회원번호 : <span id="email"><sec:authentication
+															property="principal.member.mno" /></span>
+												</div>
+												
 
 											</div>
 										</div>

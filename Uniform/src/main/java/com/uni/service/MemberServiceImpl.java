@@ -148,4 +148,10 @@ public class MemberServiceImpl implements MemberService {
 		return	mapper.readHotTopicImde();
 	}
 
+	@Override
+	public uni_MemberVO getMember(int mno) {
+		// TODO Auto-generated method stub
+		return mapper.readMember(mno);
+	}
+
 }

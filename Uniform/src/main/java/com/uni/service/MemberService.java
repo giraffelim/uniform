@@ -35,4 +35,5 @@ public interface MemberService {
 
 	public void mergeNaver(uni_MemberVO vo);
 
+	public uni_MemberVO getMember(int mno);
 }

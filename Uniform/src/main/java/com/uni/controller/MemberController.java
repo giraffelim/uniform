@@ -362,5 +362,13 @@ public class MemberController {
 	public void goImde() {
 
 	}
+	
+	// member return by mno
+	@GetMapping(value = "/memberByMno", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public uni_MemberVO getMember(int mno) {
+		log.info("memberByMno: "+mno);
+		return service.getMember(mno);
+	}
 
 }

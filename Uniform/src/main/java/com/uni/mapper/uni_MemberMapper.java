@@ -45,6 +45,7 @@ public interface uni_MemberMapper {
 	//핫토픽 리스트 select(임대)
 	public List<uni_hotTopicVO> readHotTopicImde();
 
+	public uni_MemberVO readMember(int mno);
 	
 	
 }
