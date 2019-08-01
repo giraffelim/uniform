@@ -64,10 +64,81 @@
 		select * from uni_workplace_i
 	</select>
 
-	<select id="avg_star" resultType="com.uni.domain.StarAvgVO">
-		select avg(star) avg, r.ino
-		from uni_review r join uni_workplace_i i on r.ino =
-		i.ino group by
-		r.ino
+	<select id="workPlaceList_i"
+		resultType="com.uni.domain.IWorkPlaceVO">
+		select * from uni_workplace_i
+		where location like
+		'%'||#{location}||'%' order by ino
 	</select>
+
+	<select id="workPlaceList_s"
+		resultType="com.uni.domain.SWorkPlaceVO">
+		select * from uni_workplace_s
+		where location like
+		'%'||#{location}||'%' order by sno
+	</select>
+
+	<select id="avg_star_i" resultType="com.uni.domain.StarAvgVO">
+		select round(avg(star)) as
+		avg,
+		r.ino, i.location from uni_review r join
+		uni_workplace_i i on r.ino
+		=
+		i.ino where i.location like
+		'%'||#{location}||'%'
+		group by r.ino,
+		i.location order by r.ino
+	</select>
+
+	<select id="avg_star_s" resultType="com.uni.domain.StarAvgVO">
+		select round(avg(star)) as
+		avg,
+		r.sno, s.location from uni_review r join
+		uni_workplace_s s on r.sno
+		=
+		s.sno where s.location like '%'||#{location}||'%' group by r.sno,
+		s.location order by r.sno
+	</select>
+
+	<!-- 공유 핫토픽 -->
+	<select id="readHotTopic"
+		resultType="com.uni.domain.uni_hotTopicVO">
+
+		select round(avg(r.star)) as star, m.name, m.photo,
+		w.context,w.thumbnail from
+		uni_workplace_s w,uni_review r, uni_member m
+		where w.sno = r.sno and
+		m.mno = r.mno group by w.sno, w.readcount,
+		m.name, m.photo, w.context,
+		w.thumbnail order by w.readcount desc
+
+	</select>
+	<!-- 임대 핫토픽 -->
+	<select id="readHotTopicImde"
+		resultType="com.uni.domain.uni_hotTopicVO">
+
+		select round(avg(r.star)) as star, m.name, m.photo,
+		w.context, w.thumbnail
+		from
+		uni_workplace_i w, uni_review r, uni_member
+		m where w.ino = r.ino and
+		m.mno = r.mno group by w.ino, w.readcount,
+		m.name, m.photo,
+		w.context,w.thumbnail order by w.readcount desc
+
+	</select>
+	
+	<select id = "getOldFiles" resultType = "com.uni.domain.uni_PhotoVO">
+		select * from uni_photo where path = to_char(sysdate-1, 'yyyy/mm/dd')
+	</select>
+	
+	<select id ="getShinChung" resultType="com.uni.domain.uni_ShinChungVO">
+		select * from uni_sinchung where ino = #{ino}
+	</select>
+	
+	<insert id ="insertShinChung">
+		insert into uni_sinchung (rno, reservation, mno, ino, sDate)
+		values(UNI_SINCHUNG_SEQ.nextval,#{reservation}, #{mno}, #{ino}, sysdate)
+	</insert>
+
 </mapper>

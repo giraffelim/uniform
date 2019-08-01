@@ -1,7 +1,5 @@
 package com.uni.service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -118,18 +116,6 @@ public class MemberServiceImpl implements MemberService {
 		mapper.mergeNaver(vo);
 	}
 
-	
-	@Override
-	public String CurrentDate() {
-		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
-		Date date = new Date();
-		String CurrentDate = sdf.format(date);
-
-		System.out.println(CurrentDate);
-
-		return CurrentDate;
-	}
-
 	@Override
 
 	public boolean updateMember(uni_MemberVO vo) {
@@ -153,7 +139,5 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return mapper.readMember(mno);
 	}
-
-
 
 }

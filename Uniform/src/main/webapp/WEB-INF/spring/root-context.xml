@@ -19,7 +19,7 @@
 		<property name="driverClassName"
 			value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
 		<property name="jdbcUrl"
-			value="jdbc:log4jdbc:oracle:thin:@localhost:32769:xe"></property>
+			value="jdbc:log4jdbc:oracle:thin:@localhost:32769:XE"></property>
 		<property name="username" value="book_ex"></property>
 		<property name="password" value="book_ex"></property>
 	</bean>
@@ -40,19 +40,12 @@
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 
-	 <mybatis-spring:scan
-		base-package="com.uni.mapper" />
-		
+	<mybatis-spring:scan base-package="com.uni.mapper" />
+
 	<context:component-scan
 		base-package="com.uni.service"></context:component-scan>
-	
-	<!--
-	<tx:annotation-driven/>
-	
-	<task:annotation-driven/>
-	
-	<context:component-scan base-package="org.zerock.task"></context:component-scan> -->
-	
+
+
 	<!-- 메일을 보내기 위한 bean 설정 -->
 	<bean id="mailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
@@ -68,8 +61,9 @@
 		</property>
 	</bean>
 
-
-	<!-- <tx:annotation-driven/> <task:annotation-driven/> 
-	<context:component-scan base-package="org.zerock.task"></context:component-scan> -->
-
+	 <tx:annotation-driven/>
+	 
+	 <task:annotation-driven/> 
+	 
+	 <context:component-scan base-package="com.uni.task"></context:component-scan>
 </beans>

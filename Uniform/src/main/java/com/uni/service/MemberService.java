@@ -23,12 +23,6 @@ public interface MemberService {
 
 	public uni_MemberVO checkID(String userID);
 
-	public String CurrentDate();
-
-	public List<uni_hotTopicVO> list();
-
-	public List<uni_hotTopicVO> listImde();
-
 	public uni_MemberVO confirm(String name, String phone);
 
 	public void mergeGoogle(uni_MemberVO vo);
@@ -36,6 +30,8 @@ public interface MemberService {
 	public void mergeNaver(uni_MemberVO vo);
 	
 	public uni_MemberVO getMember(int mno);
+
+	public List<uni_hotTopicVO> listImde();
 
 
 }

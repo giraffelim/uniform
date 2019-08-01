@@ -4,8 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://www.springframework.org/security/tags"
 	prefix="sec"%>
-
-
 <%@include file="../includes/header.jsp"%>
 
 <div id="colorlib-main">
@@ -24,8 +22,8 @@
 						<div>
 							<input type="text" id="inputLocation" name="location"
 								placeholder="모든위치"> <input type="text"
-								id="inputFirstDate" name="firstDate" placeholder="년/월/일">
-							~ <input type="text" id="inputLastDate" name="lastDate"
+								id="inputFirstDate" name="SfirstDate" placeholder="년/월/일">
+							~ <input type="text" id="inputLastDate" name="SlastDate"
 								placeholder="년/월/일"> <select id="typeChoice"
 								name="selectChoice">
 								<option value="select">종류</option>
@@ -229,8 +227,8 @@
 
 								<input type="hidden" id="bestImdeStar1"
 									value='<c:forEach var = "hotTopicListImde" items="${hotTopicListImde }" begin="0" end="0" >${hotTopicListImde.star}</c:forEach>'>
-												
-							
+
+
 								<!-- 빨간 -->
 								<div class="star-wrap">
 									<span class="star-input"> <span class="input"> </span>
@@ -342,8 +340,5 @@
 	</section>
 	<!--작업실 임대 핫토픽 끝-->
 
-
-
-
-
+	<script src="/resources/js/taeho.js"></script>
 	<%@include file="../includes/footer.jsp"%>

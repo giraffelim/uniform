@@ -91,7 +91,7 @@ if(oauth2LoginUser == 0){
                                                                         <div class="col-sm-6" style="margin-top: 20px; height:500px;" id="section2">
                                     
                                         <div style="width: 100%; height: 300px;" id="imgRes">
-                                                                                		<img src="/resources/images/no_img.png" id="thumbnailImg">
+                                                                                		<img src="/resources/images/no-img.png" id="thumbnailImg">
                                         
                                         </div>
                                     </div>

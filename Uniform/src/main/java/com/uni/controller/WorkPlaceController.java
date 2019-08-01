@@ -1,5 +1,6 @@
 package com.uni.controller;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.uni.domain.StarAvgVO;
+import com.uni.domain.uni_ShinChungVO;
+import com.uni.domain.uni_hotTopicVO;
 import com.uni.domain.uni_workplace_iVO;
 import com.uni.service.WorkPlaceService;
 
@@ -32,30 +40,83 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @RequestMapping("/uniform/*")
 public class WorkPlaceController {
-	
+
 	@Autowired
 	private WorkPlaceService service;
-	
+
 	@GetMapping("/leaseInsert")
 	public void leaseInsert() {
 		log.info("leaseInsert");
 	}
-	
-	
-	@Transactional
-	@RequestMapping(value = "workPlaceList", method = RequestMethod.GET)
-	public void list(Model model) {
-		log.info("list : " + service.workPlaceList());
-		log.info("avg : " + service.avg_star());
-		model.addAttribute("workplace", service.workPlaceList());
-		model.addAttribute("avg_star", service.avg_star());
+
+	// index에서 작업실 share클릭시 핫토핏 리스트로 이동
+	@GetMapping("/hotTopicList")
+	public void hotTopicList(Model model) {
+		log.info("=======================hotTopicList컨트롤러============================");
+		String CurrentDate = service.CurrentDate();
+		model.addAttribute("currentDate", CurrentDate);
+		log.info("=======================" + CurrentDate);
+
+		List<uni_hotTopicVO> hotTopicListImde = service.listImde();
+		List<uni_hotTopicVO> hotTopicList = service.list();
+		for (int i = 0; i < hotTopicList.size(); i++) {
+			log.info(i + "번째 인덱스 값" + hotTopicList.get(i));
+
+		}
+		model.addAttribute("hotTopicList", hotTopicList);
+		model.addAttribute("hotTopicListImde", hotTopicListImde);
+
 	}
-	
-	@RequestMapping(value = "map_list", produces = { MediaType.APPLICATION_XML_VALUE,
-			MediaType.APPLICATION_JSON_UTF8_VALUE }, method = RequestMethod.GET)
-	public ResponseEntity<List<uni_workplace_iVO>> workPlaceList() {
-		log.info("workPlaceList");
-		return new ResponseEntity<>(service.workPlaceList(), HttpStatus.OK);
+
+	@Transactional
+	@RequestMapping(value = "workplaceList", method = RequestMethod.GET)
+	public void listG(@RequestParam("location") String location, @RequestParam("SfirstDate") String SfirstDate,
+			@RequestParam("SlastDate") String SlastDate, @RequestParam("selectChoice") String type, Model model) {
+		log.info("get : " + type + " : " + location + " : " + SfirstDate + " : " + SlastDate);
+		if (SfirstDate == null && SlastDate == null) {
+			SfirstDate = "fail";
+			SlastDate = "fail";
+		}
+		if (type.equals("imde")) {
+			log.info("get : " + type + " : " + location);
+			log.info("get list : " + service.workPlaceList_i(location, type));
+			model.addAttribute("workplace", service.workPlaceList_i(location, type));
+		} else {
+			log.info("get : " + type + " : " + location);
+			log.info("get list : " + service.workPlaceList_s(location, type, SfirstDate, SlastDate));
+			model.addAttribute("workplace", service.workPlaceList_s(location, type, SfirstDate, SlastDate));
+		}
+		log.info("get avg : " + service.avg_star(location, type));
+		model.addAttribute("avg_star", service.avg_star(location, type));
+		model.addAttribute("type", type);
+		model.addAttribute("location", location);
+		model.addAttribute("SfirstDate", SfirstDate);
+		model.addAttribute("SlastDate", SlastDate);
+	}
+
+	@Transactional
+	@RequestMapping(value = "workplaceList", method = RequestMethod.POST)
+	public void listP(String location, String SfirstDate, String SlastDate, String type, Model model) {
+		log.info("post : " + type + " : " + location + " : " + SfirstDate + " : " + SlastDate);
+		if (SfirstDate == null && SlastDate == null) {
+			SfirstDate = "fail";
+			SlastDate = "fail";
+		}
+		if (type.equals("imde")) {
+			log.info("post : " + type + " : " + location);
+			log.info(" post list : " + service.workPlaceList_i(location, type));
+			model.addAttribute("workplace", service.workPlaceList_i(location, type));
+		} else {
+			log.info("post : " + type + " : " + location + " : " + SfirstDate + " : " + SlastDate);
+			log.info("post list : " + service.workPlaceList_s(location, type, SfirstDate, SlastDate));
+			model.addAttribute("workplace", service.workPlaceList_s(location, type, SfirstDate, SlastDate));
+		}
+		log.info("post avg : " + service.avg_star(location, type));
+		model.addAttribute("avg_star", service.avg_star(location, type));
+		model.addAttribute("type", type);
+		model.addAttribute("location", location);
+		model.addAttribute("SfirstDate", SfirstDate);
+		model.addAttribute("SlastDate", SlastDate);
 	}
 	
 	// 임대 작업실 데이터베이스 Crud
@@ -93,6 +154,24 @@ public class WorkPlaceController {
 		}
 		
 		if(type.equals("imde")) {
+			
+			//TODO 서버에서 시간 받아오기
+			Calendar cal = Calendar.getInstance();
+			int hour = cal.get(Calendar.HOUR_OF_DAY);
+			log.warn("this hour: "+hour);
+			if(hour %2 != 0) {
+				hour += 1;
+			}
+			if(hour == 24) {
+				hour = 0;
+			}
+			
+			model.addAttribute("hour", hour);
+			
+			//TODO ino값으로 sinchung table에서 신청 내역이 있는지 체크
+			List<uni_ShinChungVO> shinChungList = service.getShinChung(no);
+			model.addAttribute("shinChungList", shinChungList);
+			
 			// TODO ino 값으로 workplace_i에서 필요한 정보 추출, 첨부파일 테이블에서 ino 값으로 정보 추출
 			uni_workplace_iVO vo = service.read(no);
 			String thumbnail = vo.getThumbnail();
@@ -102,6 +181,22 @@ public class WorkPlaceController {
 			model.addAttribute("workplaceVO",vo);
 		}
 		
+	}
+	
+	
+	@PostMapping("/insertShinChung")
+	public String insertShinChung(uni_ShinChungVO vo) {
+		//TODO 데이터 넘어오나 확인
+		log.info(vo);
+		// DB Insert 할 때 중복비교
+		String[] reservations = vo.getReservation().split(",");
+		String realR = "";
+		for (String string : reservations) {
+			realR += string;
+		}
+		vo.setReservation(realR);
+		service.insertShinChung(vo);
+		return "redirect:/uniform/mypage";
 	}
 
 

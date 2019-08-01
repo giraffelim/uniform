@@ -34,7 +34,7 @@ public class UploadController {
 	// 파일을 년/월/일 단위의 폴더를 통해 관리
 	private String getFolder() {
 
-		SimpleDateFormat sdf = new SimpleDateFormat();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
 		String str = sdf.format(date);
 		return str.replace("-", File.separator);

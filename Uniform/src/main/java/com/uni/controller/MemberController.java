@@ -127,25 +127,6 @@ public class MemberController {
 	 * }
 	 */
 
-	// index에서 작업실 share클릭시 핫토핏 리스트로 이동
-	@GetMapping("/hotTopicList")
-	public void hotTopicList(Model model) {
-		log.info("=======================hotTopicList컨트롤러============================");
-		String CurrentDate = service.CurrentDate();
-		model.addAttribute("currentDate", CurrentDate);
-		log.info("=======================" + CurrentDate);
-
-		List<uni_hotTopicVO> hotTopicListImde = service.listImde();
-		List<uni_hotTopicVO> hotTopicList = service.list();
-		for (int i = 0; i < hotTopicList.size(); i++) {
-			log.info(i + "번째 인덱스 값" + hotTopicList.get(i));
-
-		}
-		model.addAttribute("hotTopicList", hotTopicList);
-		model.addAttribute("hotTopicListImde", hotTopicListImde);
-
-	}
-
 	@GetMapping("/login")
 	public String login() {
 		return "login";
@@ -342,16 +323,6 @@ public class MemberController {
 		return false;
 	}
 
-	// 핫토픽에서 검색 시 값(지역, 시작, 끝 날짜, 타입) 을 보내주는 컨트롤러
-	@GetMapping("/workplaceList")
-	public void workplaceList(@RequestParam("location") String location, @RequestParam("firstDate") String firstDate,
-			@RequestParam("lastDate") String lastDate, @RequestParam("selectChoice") String selectChoice, Model model) {
-		model.addAttribute("location", location);
-		model.addAttribute("firstDate", firstDate);
-		model.addAttribute("lastDate", lastDate);
-		model.addAttribute("selectChoice", selectChoice);
-
-	}
 
 	@GetMapping("/goShare")
 	public void goShare() {

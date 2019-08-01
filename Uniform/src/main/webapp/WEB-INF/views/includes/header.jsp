@@ -42,7 +42,7 @@
 <link rel="stylesheet" href="/resources/css/style.css">
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript"
-	src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&libraries=services"></script>
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&libraries=services"></script>
 
 </head>
 
@@ -71,7 +71,7 @@
 				</ul>
 				<p class="social">
 					<sec:authorize access="isAnonymous()">
-					<span><a href="/login">로그인</a></span>
+						<span><a href="/login">로그인</a></span>
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
 						<span><a href="#" id="logout">로그아웃</a> </span>
@@ -100,7 +100,7 @@
 						<span id="myPageNav"><a href="/uniform/mypage">마이페이지</a></span>
 					</sec:authorize>
 
-					
+
 
 				</p>
 			</nav>
