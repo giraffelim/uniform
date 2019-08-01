@@ -5,30 +5,35 @@
 $(document)
 			.ready(
 					function() {
-						var oauth2LoginUser = '    <sec:authentication property="principal.member.mno"/>';
+						
+						var oauth2LoginUser = '<sec:authentication property="principal.member.mno"/>';
 						if (oauth2LoginUser == 0) {
 							location.href = "/";
 						}
-						//inoJS--------------------------------------------------------------------------------------------------------------
+						// inoJS--------------------------------------------------------------------------------------------------------------
 						var veriPW = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,15}$/;
 						var veriPhone = /^01([0|1|6|7|8|9]?)?([0-9]{3,4})?([0-9]{4})$/;
 						var submitBoolean1;
 						var submitBoolean2;
 						var submitBoolean3;
 
-						var a = '${principal.member.photo}';
-						console.log(a);
-						console.log("principal.member.photo ees");
+						
+						var encodephoto = $("#encodephoto").val();
+						console.log(encodephoto);
+						console.log("5");
 
 						var csrfHeaderName = $("#csrf").attr('name');
 						var csrfTokenValue = $("#csrf").val();
 
-						//ajax csrf 토큰 전송하기!!!!!!
+						// ajax csrf 토큰 전송하기!!!!!!
 						$(document).ajaxSend(
 								function(e, xhr, options) {
 									xhr.setRequestHeader(csrfHeaderName,
 											csrfTokenValue);
 								});
+                        
+                        
+                        
 
 						$('#userPW').on('focusout', function() {
 							if ($(this).val().length == 0) {
@@ -67,7 +72,8 @@ $(document)
 								console.log(submitBoolean2);
 							}
 						});
-
+						
+						submitBoolean3 = true;
 						$('#phone').on('focusout', function() {
 							if ($(this).val().length === 0) {
 								$('#phone_former').css('display', 'none');
@@ -95,7 +101,7 @@ $(document)
 
 						var cloneProfileInput = $("#profileInput").clone();
 
-						//업로드 파일 검증함수.
+						// 업로드 파일 검증함수.
 						function checkExtension(fileName, fileSize) {
 							if (fileSize >= maxSize) {
 								alert("파일 사이즈 초과");
@@ -108,33 +114,37 @@ $(document)
 							}
 							return true;
 						}
+                       
 
+                        var IDCheckLength = $("#inouserID").val();
+                        console.log(IDCheckLength.length+1);
 						$('#submitBtn').on('click',function(e) {
-
+											console.log("submitBtn 클릭됨");
 											e.preventDefault();
 
 											if (submitBoolean1 == true
 													&& submitBoolean2 == true
 													&& submitBoolean3 == true) {
 												var str = "";
-												if ($('#profilePhoto').data('file')) {
-													str += "<input type='hidden' name='photo' value='"+'c:\\upload\\'+ $('#profilePhoto').data('file')+ "'>"
-												} else {
-													str += "<input type='hidden' name='photo' value='/resources/images/profileDefault.jpg'>"
-												}
 												
-												
-												
+                                                if(IDCheckLength.length > 20){
+                                                   
+                                                }else{
+                                                    if ($('#profilePhoto').data('file')) {
+													str += "<input type='hidden' name='photo' value='"+ $('#profilePhoto').data('file')+ "'>"
+												    }
+                                                }
 												$('#updateMemberForm').append(str).submit();
 											}
 										});
 
 						$('#uploadFileBtn').on('click',function() {
 
-									//ajax 이용하는 첨부파일 처리는 FormData 객체 이용! form이 없기때문에
+									// ajax 이용하는 첨부파일 처리는 FormData 객체 이용! form이
+									// 없기때문에
 									var formData = new FormData();
 
-									//수많은 배열형태 input이 됨.
+									// 수많은 배열형태 input이 됨.
 									var inputFile = $("input[name='photo']");
 
 									var files = inputFile[0].files;
@@ -148,11 +158,11 @@ $(document)
 										return false;
 									}
 
-									//가상의 폼태그에 uploadFile한 것 추가.
+									// 가상의 폼태그에 uploadFile한 것 추가.
 									formData.append("uploadFile", files[0]);
 
 									$.ajax({
-										url : '/uploadProfile',
+										url : '/uniform/uploadProfile',
 										processData : false,
 										contentType : false,
 										type : 'POST',
@@ -162,7 +172,7 @@ $(document)
 
 											console.log(result);
 
-											//input태그 초기화
+											// input태그 초기화
 											$('#profileInput').html(
 													cloneProfileInput.html());
 
@@ -174,31 +184,60 @@ $(document)
 											showUploadedFile(result);
 
 										}
-									});//ajax
+									});// ajax
 								})
 
 						var uploadResult = $("#uploadResult");
+						
+						
+						// 111111111111111111111111111111111111111111111111111111
+						 // naver, google ID 일경우 id창과 프로필 업로드 버튼 안보이게 하고 기존
+							// 포토 띄우기
+						 // 아닐경우 서버에 저장되어있는 경로를 따라서
+						
+						
+                        if(IDCheckLength.length > 20){
+                        	console.log("IDCheckLength>20");
+                        	console.log("encode : " + encodephoto);
+                            $("#inouserID").hide();
+                            $('#uploadFileBtn').hide();
+                            $("#uploadResult").html("<img src='"+encodephoto+"'>");
+                        }else if(IDCheckLength.length < 20){
+                        	console.log("encodeasdf : " + encodephoto.length);
+                        	if (encodephoto !== "null") {
+                        		// var decordphoto =
+								// decodeURIComponent(encodephoto);
+                            	// console.log(decordphoto);
+                            	console.log("IDCheckLength<20");
+                            	$("#uploadResult").html("<img src='/uniform/display?fileName=" + encodephoto + "'>");
+                        	} else {
+                        		console.log("null null null");
+                        		$("#uploadResult").html('<img style="width: 100px; height: 100px;" src="/resources/images/profileDefault.jpg">');
+                        	}
+                        }
 
-						//썸네일 띄우기
+						// 썸네일 띄우기
 						function showUploadedFile(uploadResultArr) {
-							console.log("aaaaaa : " + uploadResultArr);
+							console.log("uploadResultArr : " + uploadResultArr);
 							var str = '';
 							var fileCallPath = encodeURIComponent(uploadResultArr)
-							console.log("bbbbbb : " + fileCallPath);
-							str += "<img src='/display?fileName="
-									+ fileCallPath + "'>";
+							console.log("encodeURIComponent  fileCallPath   : " + fileCallPath);
+                            
+                           
+                            str += "<img src='/uniform/display?fileName=" + fileCallPath + "'>";
 							str += "<div id='profilePhoto' style='cursor:pointer;' data-file='"+fileCallPath+"'><i class='far fa-times-circle'></i></div>"
-
+                            
 							uploadResult.html(str);
 						}
-
-						//delegate 동적 생성 => div클릭시 이벤트 발생시키기
+                        
+                        // 파일 삭제
+						// delegate 동적 생성 => div클릭시 이벤트 발생시키기
 						$("#uploadResult").on("click", "div", function(e) {
 							var targetFile = $(this).data("file");
 							console.log(targetFile);
 
 							$.ajax({
-								url : '/deleteFile',
+								url : '/uniform/deleteFile',
 								data : {
 									fileName : targetFile
 								},
@@ -212,7 +251,7 @@ $(document)
 
 							})
 						});
-						//복사끝
+						// 복사끝
 
 						// END.inoJS---------------------------------------------------
 					})

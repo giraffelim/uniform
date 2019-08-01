@@ -201,145 +201,27 @@ public class MemberController {
     }
 		
 	
-	//프로필사진 업로드
-	@PostMapping(value = "/uploadProfile")
+	// 프로필사진 업로드
+	@PostMapping(value = "/uploadProfile", produces = "text/plain; charset=utf-8")
 	public ResponseEntity<String> uploadProfile(MultipartFile[] uploadFile) {
 		log.info("===============uploadPhoto 호출됨 =======================");
-		String all = "";
-		String uploadFolder = "C:\\upload";
-		String uploadFolderPath = getFolder();
-		//저장 폴더 경로 설정하기 (저장 경로,날짜 세퍼레이터)
-		File uploadPath = new File(uploadFolder, getFolder());
-		log.info("uploadPath : " + uploadPath);
-		
-		//현재 파일경로가 존재한다면 true 파일경로가 존재하지 않으면 false
-		//mkdirs를 생성한다. yyyy/MM/dd
-		if(uploadPath.exists() == false) {
-			uploadPath.mkdirs();
-			}
-		
-		//foreach문으로 배열처리
-		for(MultipartFile multipartFile : uploadFile) {
-			log.info("------------------------------");
-			log.info("upload File name"+ multipartFile.getOriginalFilename());
-			log.info("upload File size"+ multipartFile.getSize());
-			
-			//크롬은 파일명만 들어감
-			String uploadFileName = multipartFile.getOriginalFilename();
-			
-			//IE는 경로로 들어가기 때문에 substring(읽을 문자열 인덱스);
-			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\")+1);
-			
-			log.info("업로드된 파일 실제 이름 : "+uploadFileName);
-			
-			UUID uuid = UUID.randomUUID();
-			
-			uploadFileName = uuid.toString() +"_"+ uploadFileName;
-			
-			try {
-				//날짜별폴더에 파일 생성
-				File saveFile = new File(uploadPath,uploadFileName);
-				
-				//실제 업로드
-				multipartFile.transferTo(saveFile);
-				all = all+ uploadFolderPath;
-				//mime 타입 이미지 검증
-				if(checkImageType(saveFile)) {
-					
-					//썸네일 객체 생성
-					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_"+ uploadFileName));
-					
-					//썸네일레이터 사용하여 실제 적용
-					Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 100, 100); 
-					
-					all = all+"\\s_"+uploadFileName;
-					log.info("all==========================================="+all);
-					thumbnail.close();
-					
-				}else {
-					return new ResponseEntity<String>("fail" , HttpStatus.OK);
-				}
-				
-			} catch (Exception e) {
-				log.error(e.getMessage());
-			}//catch
-		}//for
-	
-		return new ResponseEntity<String>(all , HttpStatus.OK);
+
+		return service.uploadProfile(uploadFile);
 	}
-	
-	 @GetMapping("/display")
-	 @ResponseBody 
-	 public ResponseEntity<byte[]> getFile(String fileName){ 
-		 //String rootDirectory = "c:\\upload\";
-		 log.info("display================================="+fileName);
-		 File file = new File("c:\\upload\\"+fileName);
-		 log.info("display==================="+file);
-		 
-		 ResponseEntity<byte[]> result = null;
-		 
-		 try {
-			HttpHeaders header = new HttpHeaders();
-			String contentType = new Tika().detect(file.toPath());
-			header.add("Content-Type", contentType );
-			result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		 
-		 return result;
-	 }
-	 
-	 @PostMapping("/deleteFile")
-	 @ResponseBody
-	 public ResponseEntity<String> deleteFile(String fileName){
-		 log.info("deleteFile : " + fileName);
-		 File file;
-		 
-		 try {
-			//썸네일 파일 삭제. file 디코드 상태로 만들기
-			file = new File("c:\\upload\\" + URLDecoder.decode(fileName, "UTF-8"));
-			file.delete();
-			//원본파일 삭제하기 위한 replace
-			String largeFileName = file.getAbsolutePath().replace("s_", "");
-			log.info("largeFileName" + largeFileName);
-			
-			//원본파일 삭제하기. 
-			file = new File(largeFileName);
-			file.delete();
-			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
-		}
-		 return new ResponseEntity<String>("delete", HttpStatus.OK);
-	 }
-	 
-	
-	//프로필 업로드 관련 메서드
-	private String getFolder() {
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		
-		Date date = new Date();
-		
-		String str = sdf.format(date);
-		
-		return str.replace("-", File.separator);
+
+	@GetMapping("/display")
+	@ResponseBody
+	public ResponseEntity<byte[]> getFile(String fileName) {
+		log.info("getFile 호출됨=============================" + fileName);
+		return service.getFile(fileName);
 	}
-	private boolean checkImageType(File file) {
-		
-		try {
-			String contentType = new Tika().detect(file);
-			log.info(contentType);
-			return contentType.startsWith("image");
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return false;
+
+	@PostMapping("/deleteFile")
+	@ResponseBody
+	public ResponseEntity<String> deleteFile(String fileName) {
+		log.info("deleteFile 호출됨=============================" + fileName);
+
+		return service.deleteFile(fileName);
 	}
 
 	// 핫토픽에서 검색 시 값(지역, 시작, 끝 날짜, 타입) 을 보내주는 컨트롤러
