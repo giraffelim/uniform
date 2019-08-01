@@ -5,8 +5,11 @@
 
 <%@include file="../includes/header.jsp"%>
 
+<script src="/resources/js/map.js"></script>
 <link rel="stylesheet" href="/resources/css/style_lan.css">
 <link rel="stylesheet" href="/resources/css/avg_star.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 
 <div id="colorlib-main">
 
@@ -25,88 +28,81 @@
 		</div>
 	</section>
 
-	<!-- <section class="ftco-search">
+	<section class="ftco-search">
 		<div class="container-fluid px-3 px-md-0">
 			<div class="row justify-content-end">
-				<div class="col-md-10">
-					<input type="text" id="keyword" name="keyword">
+				<div class="col-md-10 list_search">
+					<div class="row d-flex">
+						<div class="col-lg-7 list_search">
+							<form action="workplaceList" method="post" id="select_form">
+								<input type="hidden" id="type" value="${type }"> <input
+									type="hidden" id="location" value="${location }"> <input
+									type="hidden" name="${_csrf.parameterName }"
+									value="${_csrf.token }" /> <label> 장소 </label><input
+									type="text" id="keyword" name="location" value="${location }">
+								<c:if test="${type == 'imde' }">
+									<label> 날짜 </label>
+									<input type="text" id="IfirstDate" name="Date"
+										placeholder="년 - 월 - 일">
+									<b> ~ </b>
+									<input type="text" id="IlastDate" name="Date"
+										placeholder="년 - 월 - 일">
+								</c:if>
+								<c:if test="${type == 'share' }">
+									<label> 날짜 </label>
+									<c:if test="${SfirstDate == 'fail' }">
+										<input type="text" id="SfirstDate" name="SfirstDate"
+											placeholder="년 - 월 - 일">
+									</c:if>
+									<c:if test="${SfirstDate != 'fail' }">
+										<input type="text" id="SfirstDate" name="SfirstDate"
+											placeholder="년 - 월 - 일" value="${SfirstDate }">
+									</c:if>
+									<b> ~ </b>
+									<c:if test="${SlastDate == 'fail' }">
+										<input type="text" id="SlastDate" name="SlastDate"
+											placeholder="년 - 월 - 일">
+									</c:if>
+									<c:if test="${SlastDate != 'fail' }">
+										<input type="text" id="SlastDate" name="SlastDate"
+											placeholder="년 - 월 - 일" value="${SlastDate }">
+									</c:if>
+								</c:if>
+								<label>종류</label> <select id="selectType" name="type">
+									<c:if test="${type == null}">
+										<option value="imde" selected>임대</option>
+										<option value="share">공유</option>
+									</c:if>
+									<c:if test="${type == 'imde' }">
+										<option value="imde" selected>임대</option>
+										<option value="share">공유</option>
+									</c:if>
+									<c:if test="${type == 'share' }">
+										<option value="imde">임대</option>
+										<option value="share" selected>공유</option>
+									</c:if>
+								</select>
+								<button type="submit" class="btn btn-primary btn-md"
+									id="btnSearch">검색</button>
+							</form>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</section> -->
+	</section>
 
-	<section class="ftco-section ftco-no-pt">
+	<section class="ftco-no-pt">
 		<div class="container-fluid px-3 px-md-0">
 			<div class="row justify-content-end">
 				<div class="col-md-10">
 					<div class="row d-flex">
 						<div class="col-lg-6">
-							<div class="row">
-								<c:if test="${workplace != null }">
-									<c:forEach items="${workplace }" var="list">
-										<c:forEach items="${avg_star }" var="star">
-											<c:if test="${list.ino == star.ino }">
-												<input type="hidden" id="avg_star${star.ino }"
-													value="${star.avg }">
-												<input type="hidden" id="num_star${star.ino }"
-													value="${list.ino }">
-											</c:if>
-										</c:forEach>
-										<div class="col-md-12">
-											<div class="blog-entry ftco-animate">
-												<a href="single.html" class="img img-2"
-													style="background-image: url(/resources/images/image_1.jpg);"></a>
-												<div class="text pt-3">
-													<h2 class="mb-2">${list.title }</h2>
-
-													<div class="meta-wrap">
-														<span>등록일 : <fmt:formatDate value="${list.regDate}"
-																pattern="yyyy-MM-dd" /></span> <span>가격 : ${list.price }원
-														</span>
-														<div class="star-wrap">
-															<span class="star-input${list.ino }"> <span
-																class="input"> </span>
-															</span>
-														</div>
-														<div class="result-wrap">
-															<span class="star-input${list.ino }"> <span
-																class="result"> </span>
-															</span>
-														</div>
-
-													</div>
-													<p>
-														<a href="#" class="btn btn-primary">Read More <span
-															class="ion-ios-arrow-forward"></span></a>
-													</p>
-												</div>
-											</div>
-										</div>
-									</c:forEach>
-								</c:if>
-							</div>
+							<div class="row resultList"></div>
 							<!--end-->
-
-							<!--paging -------------- -->
-							<div class="row">
-								<div class="col">
-									<div class="block-27">
-										<ul>
-											<li><a href="#">&lt;</a></li>
-											<li class="active"><span>1</span></li>
-											<li><a href="#">2</a></li>
-											<li><a href="#">3</a></li>
-											<li><a href="#">4</a></li>
-											<li><a href="#">5</a></li>
-											<li><a href="#">&gt;</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<!--paging-->
 						</div>
 						<div class="col-md-6 mapWrap">
-							<div id="listMap" class="bg-light"></div>
+							<div id="resultMap" class="bg-light"></div>
 						</div>
 						<!-- END COL -->
 					</div>
@@ -115,5 +111,47 @@
 		</div>
 	</section>
 
-	<%@include file="../includes/footer.jsp"%>
-	<script src="/resources/js/map.js"></script>
+	<footer>
+		<button id="topBtn" class="btn btn-secondary">↑</button>
+		<button id="bottomBtn" class="btn btn-secondary">↓</button>
+	</footer>
+
+</div>
+<!-- END COLORLIB-MAIN -->
+
+
+<!-- loader -->
+<div id="ftco-loader" class="show fullscreen">
+	<svg class="circular" width="48px" height="48px">
+            <circle class="path-bg" cx="24" cy="24" r="22" fill="none"
+			stroke-width="4" stroke="#eeeeee" />
+            <circle class="path" cx="24" cy="24" r="22" fill="none"
+			stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg>
+</div>
+
+
+<script src="/resources/js/jquery.min.js"></script>
+<script src="/resources/js/jquery-migrate-3.0.1.min.js"></script>
+<script src="/resources/js/popper.min.js"></script>
+<script src="/resources/js/bootstrap.min.js"></script>
+<script src="/resources/js/jquery.easing.1.3.js"></script>
+<script src="/resources/js/jquery.waypoints.min.js"></script>
+<script src="/resources/js/jquery.stellar.min.js"></script>
+<script src="/resources/js/owl.carousel.min.js"></script>
+<script src="/resources/js/jquery.magnific-popup.min.js"></script>
+<script src="/resources/js/aos.js"></script>
+<script src="/resources/js/jquery.animateNumber.min.js"></script>
+<script src="/resources/js/jquery.mb.YTPlayer.min.js"></script>
+<script src="/resources/js/scrollax.min.js"></script>
+<!-- <script
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script> -->
+<!-- <script src="/resources/js/google-map.js"></script> -->
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&libraries=services"></script>
+<script src="/resources/js/main.js"></script>
+<!-- datepicker -->
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</body>
+</html>

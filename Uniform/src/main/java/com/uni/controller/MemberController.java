@@ -1,7 +1,6 @@
 package com.uni.controller;
 
 
-import javax.inject.Inject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,11 +10,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.inject.Inject;
+
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -28,16 +29,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.uni.domain.Sinchung_ListVO;
 import com.uni.domain.uni_MemberVO;
 import com.uni.mapper.uni_MemberMapper;
-import com.uni.service.CommonService;
-import com.uni.domain.uni_hotTopicVO;
 import com.uni.service.MemberService;
+import com.uni.service.WorkPlaceService;
 
 import lombok.AllArgsConstructor;
 import lombok.Setter;
@@ -52,6 +52,7 @@ public class MemberController {
 
 	@Setter(onMethod_ = @Autowired)
 	private MemberService service;
+	private WorkPlaceService service_work;
 
 	@Autowired
 	private PasswordEncoder pwencoder;
@@ -116,8 +117,32 @@ public class MemberController {
 
 	// index에서 마이페이지 클릭시 이동
 	@GetMapping("/myPage")
-	public void mypage() {
+	public void mypage(Model model, Long mno) {
+		log.info("마이페이지 컨트롤러 mno" + mno);
+		List<Sinchung_ListVO> unionSinchungList = service_work.sinchung_list(mno);
+		List<Sinchung_ListVO> IunionSinchungList = service_work.Isinchung_list(mno);
+		model.addAttribute("unionSinchungList", unionSinchungList);
+		model.addAttribute("IunionSinchungList", IunionSinchungList);
 		log.info("=======================mypage 컨트롤러==============================");
+
+	}
+
+	@RequestMapping(value = "moreInfo", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
+	public ResponseEntity<List<Sinchung_ListVO>> moreInfo(Long mno) {
+		service_work.sinchung_list_ajax(mno);
+
+		return new ResponseEntity<List<Sinchung_ListVO>>(service_work.sinchung_list_ajax(mno), HttpStatus.OK);
+
+	}
+
+	@RequestMapping(value = "moreInfoImde", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
+	public ResponseEntity<List<Sinchung_ListVO>> moreInfoImde(Long mno) {
+		service_work.Isinchung_list_ajax(mno);
+		
+
+		
+		return new ResponseEntity<List<Sinchung_ListVO>>(service_work.Isinchung_list_ajax(mno), HttpStatus.OK);
+
 	}
 
 	// 마이페이지에서 profile 수정버튼 클릭시 회원정보 수정 페이지로 이동
@@ -126,25 +151,6 @@ public class MemberController {
 	 * log.info("=======================memberModify컨트롤러=========================");
 	 * }
 	 */
-
-	// index에서 작업실 share클릭시 핫토핏 리스트로 이동
-	@GetMapping("/hotTopicList")
-	public void hotTopicList(Model model) {
-		log.info("=======================hotTopicList컨트롤러============================");
-		String CurrentDate = service.CurrentDate();
-		model.addAttribute("currentDate", CurrentDate);
-		log.info("=======================" + CurrentDate);
-
-		List<uni_hotTopicVO> hotTopicListImde = service.listImde();
-		List<uni_hotTopicVO> hotTopicList = service.list();
-		for (int i = 0; i < hotTopicList.size(); i++) {
-			log.info(i + "번째 인덱스 값" + hotTopicList.get(i));
-
-		}
-		model.addAttribute("hotTopicList", hotTopicList);
-		model.addAttribute("hotTopicListImde", hotTopicListImde);
-
-	}
 
 	@GetMapping("/login")
 	public String login() {
@@ -340,27 +346,6 @@ public class MemberController {
 		}
 		
 		return false;
-	}
-
-	// 핫토픽에서 검색 시 값(지역, 시작, 끝 날짜, 타입) 을 보내주는 컨트롤러
-	@GetMapping("/workplaceList")
-	public void workplaceList(@RequestParam("location") String location, @RequestParam("firstDate") String firstDate,
-			@RequestParam("lastDate") String lastDate, @RequestParam("selectChoice") String selectChoice, Model model) {
-		model.addAttribute("location", location);
-		model.addAttribute("firstDate", firstDate);
-		model.addAttribute("lastDate", lastDate);
-		model.addAttribute("selectChoice", selectChoice);
-
-	}
-
-	@GetMapping("/goShare")
-	public void goShare() {
-
-	}
-
-	@GetMapping("/goImde")
-	public void goImde() {
-
 	}
 
 }

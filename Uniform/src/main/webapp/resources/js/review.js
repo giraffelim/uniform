@@ -46,5 +46,37 @@ $(function() {
 	};
 
 	starRating();
+	$("#review button.close").on("click", function() {
+		$("#sinchung").modal("show");
+	});
 
-})
+	$(".reviewBtn").on("click", function() {
+		$("#sinchung").modal("hide");
+	});
+
+	var workplaceNo = 1;
+	var sinchungListstr = "";
+	var loginMno = $("#mno").val();
+	console.log(loginMno);
+
+	$(".sinchungBtn").on("click", function() {
+		$("#sinchung").modal("show");
+		var workplaceNo = $(this).data("ino");
+		console.log(workplaceNo);
+		$.getJSON("/uniform/sinchung.json", {
+			no : workplaceNo
+		}, function(result) {
+			$.each(result, function(index, item) {
+				$("#title").val(item.title);
+				$("#location").val(item.location);
+				$("#price").val(item.price);
+				$("#hname").val(item.hname);
+				$("#hphone").val(item.hphone);
+				if (loginMno == item.mno + "") {
+					$("#reservation").val(item.reservation);
+				}
+			});
+		});
+	});
+
+});
