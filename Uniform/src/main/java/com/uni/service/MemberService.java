@@ -1,9 +1,10 @@
 package com.uni.service;
 
-import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.uni.domain.uni_MemberVO;
 import com.uni.domain.uni_hotTopicVO;
@@ -28,5 +29,14 @@ public interface MemberService {
 	public void mergeGoogle(uni_MemberVO vo);
 
 	public void mergeNaver(uni_MemberVO vo);
+	
+	public uni_MemberVO getMember(int mno);
+	
+	public ResponseEntity<String> uploadProfile(MultipartFile[] uploadFile);
+	
+	public ResponseEntity<byte[]> getFile(String fileName);
+	
+	public ResponseEntity<String> deleteFile(String fileName);
+
 
 }

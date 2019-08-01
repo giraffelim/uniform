@@ -14,7 +14,11 @@ import com.uni.domain.SWorkPlaceVO;
 import com.uni.domain.SinchungVO;
 import com.uni.domain.Sinchung_ListVO;
 import com.uni.domain.StarAvgVO;
+
+import com.uni.domain.uni_PhotoVO;
+
 import com.uni.domain.uni_hotTopicVO;
+
 import com.uni.domain.uni_workplace_iVO;
 import com.uni.mapper.uni_workplaceMapper;
 import com.uni.service.WorkPlaceService;
@@ -183,5 +187,48 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
         System.out.println("service sinchung : " + mapper.sinchungList(no));
         return mapper.sinchungList(no);
     }
+
+	@Transactional
+	@Override
+	public void insertWorkPlace_i(uni_workplace_iVO vo) {
+		// TODO Auto-generated method stub
+		// workplace_i에 insert
+		mapper.insertWorkPlace_i(vo);
+		// 첨부파일 insert
+		for (int i = 0; i < vo.getAttachList().size(); i++) {
+			uni_PhotoVO pVo = new uni_PhotoVO();
+			pVo.setIno(vo.getIno());
+			pVo.setFileName(vo.getAttachList().get(i).getFileName());
+			pVo.setUuid(vo.getAttachList().get(i).getUuid());
+			pVo.setPath(vo.getAttachList().get(i).getPath());
+			mapper.insertAttach(pVo);
+		}
+	}
+
+	@Override
+	public uni_workplace_iVO read(int ino) {
+		// TODO Auto-generated method stub
+		return mapper.read(ino);
+	}
+
+	@Transactional
+	@Override
+	public int updateWorkPlace_i(uni_workplace_iVO vo) {
+		// TODO Auto-generated method stub
+		int result = 0;
+		// update uni_workPlace_i
+		result = mapper.updateWorkPlace_i(vo);
+
+		// delete Photo
+		mapper.deletePhoto(vo.getIno());
+
+		// update uni_PhotoVO
+		vo.getAttachList().forEach(photo -> {
+			photo.setIno(vo.getIno());
+			mapper.insertAttach(photo);
+		});
+
+		return result;
+	}
 
 }

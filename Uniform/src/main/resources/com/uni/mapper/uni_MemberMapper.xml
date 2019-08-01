@@ -147,5 +147,10 @@
 		w.context,w.thumbnail order by w.readcount desc
 
 	</select>
+	
+	<select id="readMember" resultType="com.uni.domain.uni_MemberVO">
+		select * from uni_member where mno = #{mno}
+	</select>
+	
 
 </mapper>

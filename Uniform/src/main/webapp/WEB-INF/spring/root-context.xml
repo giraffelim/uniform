@@ -20,8 +20,16 @@
 			value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
 		<property name="jdbcUrl"
 			value="jdbc:log4jdbc:oracle:thin:@localhost:1521:orcl"></property>
+<<<<<<< HEAD
 		<property name="username" value="ora_user"></property>
 		<property name="password" value="1234"></property>
+=======
+
+		<property name="username" value="system"></property>
+		<property name="password" value="1234"></property>
+
+
+>>>>>>> c5aea86d501044ed08cfa8d31e5ec10821e992be
 	</bean>
 
 	<!--HikariCP Configration -->

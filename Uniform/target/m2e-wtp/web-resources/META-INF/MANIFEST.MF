@@ -1,5 +1,10 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Built-By: taeho
 Build-Jdk: 1.8.0_211
+=======
+Built-By: 2class003
+Build-Jdk: 1.8.0_221
+>>>>>>> c5aea86d501044ed08cfa8d31e5ec10821e992be
 Created-By: Maven Integration for Eclipse
 
