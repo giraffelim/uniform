@@ -115,7 +115,7 @@ public class MemberController {
 	}
 
 	// index에서 마이페이지 클릭시 이동
-	@GetMapping("/mypage")
+	@GetMapping("/myPage")
 	public void mypage() {
 		log.info("=======================mypage 컨트롤러==============================");
 	}
