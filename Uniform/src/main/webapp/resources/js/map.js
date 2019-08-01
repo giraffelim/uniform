@@ -4,23 +4,231 @@
 var count = 0;
 // 15 30 45 60 75 90 105 120 135 150
 var result;
-
+var resultList = [];
+var str;
 $(function() {
-	result = $("div");
 
-	result.each(function(index, item) {
-		index = index + 1;
-		var list = $("#avg_star"+index).next().val();
-		var num = $("input[id*='avg_star" + list + "']").val();
-		var width = num * 15;
-		$(".star-input" + list + ">.input").css("background-position",
-				"0 bottom").css("width", width + "px").css("z-index", "100");
+	var firstCount = 0;
+	var lastCount = 5;
+
+	var jsonLocation = $("input[id*='location']").val();
+	var jsonType = $("input[id*='type']").val();
+	var jsonFirst = $("input[id*='firstDate']").val();
+	var jsonLast = $("input[id*='lastDate']").val();
+	if (jsonFirst == null || jsonFirst == " ") {
+		jsonFirst = "fail";
+	}
+	if (jsonLast == null || jsonLast == " ") {
+		jsonLast = "fail";
+	}
+	console.log(jsonLocation + " : " + jsonType + " : " + jsonFirst + " : "
+			+ jsonLast);
+
+	$.getJSON('/uniform/scroll_result.json', {
+		location : jsonLocation,
+		type : jsonType,
+		SfirstDate : jsonFirst,
+		SlastDate : jsonLast
+	}, function(data) {
+		$.getJSON("/uniform/getStar.json", {
+			location : jsonLocation,
+			type : jsonType
+		}, function(result) {
+			if (jsonType === 'share') {
+				$(".star-wrap").each(
+						function(i, obj) {
+							if (i < $(result).length) {
+								var snos = result[i].sno;
+								var objSno = $(this).data("sno");
+								if (snos == objSno) {
+									var num = result[i].avg;
+									var width = num * 15;
+									$(".star-input" + snos + ">.input").css(
+											"background-position", "0 bottom")
+											.css("width", width + "px").css(
+													"z-index", "100");
+								}
+							}
+						});
+			} else {
+				$(".star-wrap").each(
+						function(i, obj) {
+							if (i < $(result).length) {
+								var snos = result[i].ino;
+								var objSno = $(this).data("ino");
+								if (snos == objSno) {
+									var num = result[i].avg;
+									var width = num * 15;
+									$(".star-input" + snos + ">.input").css(
+											"background-position", "0 bottom")
+											.css("width", width + "px").css(
+													"z-index", "100");
+								}
+							}
+						});
+			}
+		})
+
+		$.each(data, function(i, item) {
+			resultList.push(item);
+		});
+
+		showList(resultList, firstCount, lastCount, jsonType);
 
 	});
 
+	// Each time the user scrolls
+	$(window).scroll(
+			function() {
+				if ($(document).height() - $(window).height() == $(window)
+						.scrollTop()) {
+
+					if (resultList.length > 5) {
+						firstCount += 5;
+						lastCount += 5;
+
+						showList(resultList, firstCount, lastCount, jsonType);
+					}
+
+				}
+			});
+
+	function showList(resultList, firstCount, lastCount, jsonType) {
+		console.log(jsonType);
+		if (jsonType === 'share') {
+
+			$
+					.each(
+							resultList,
+							function(index, item) {
+								var regDates = resultList[index].regDate
+										.substring(0, 10);
+								if (index >= firstCount && index < lastCount) {
+									console.log(resultList[index]);
+									str = '<div class="col-md-12"> <div class="blog-entry"> ';
+									str += '<a href="#" class="img img-2" style="background-image: url(/resources/images/image_1.jpg);"> </a> ';
+									str += '<div class="text pt-3"> <h2 class="mb-2">'
+											+ resultList[index].title
+											+ '</h2> ';
+									str += '<div class="meta-wrap"> <span>등록일 : '
+											+ regDates + '</span> ';
+									str += '<span>가격 : '
+											+ resultList[index].price
+											+ ' 원 </span> ';
+									str += '<div class="star-wrap" data-sno = "'
+											+ resultList[index].sno
+											+ '"> <span class="star-input'
+											+ resultList[index].sno
+											+ '"> <span class="input"> </span> </span> </div>';
+									str += '<div class="result-wrap"> <span class="star-input'
+											+ resultList[index].sno
+											+ '"> <span class="result"> </span> </span> </div> </div>';
+									str += '<p> <a href="/uniform/rentDetail?type='
+											+ jsonType
+											+ '&no='
+											+ resultList[index].sno
+											+ '" class="btn btn-primary">Read More <span class="ion-ios-arrow-forward"></span></a> </p>';
+									str += '</div> </div> </div>';
+									$(".resultList").append(str);
+								}
+							});
+		} else {
+			$
+					.each(
+							resultList,
+							function(index, item) {
+								var regDates = resultList[index].regDate
+										.substring(0, 10);
+								if (index >= firstCount && index < lastCount) {
+									console.log(resultList[index]);
+									str = '<div class="col-md-12"> <div class="blog-entry"> ';
+									str += '<a href="#" class="img img-2" style="background-image: url(/resources/images/image_1.jpg);"> </a> ';
+									str += '<div class="text pt-3"> <h2 class="mb-2">'
+											+ resultList[index].title
+											+ '</h2> ';
+									str += '<div class="meta-wrap"> <span>등록일 : '
+											+ regDates + '</span> ';
+									str += '<span>가격 : '
+											+ resultList[index].price
+											+ ' 원 </span> ';
+									str += '<div class="star-wrap" data-ino = "'
+											+ resultList[index].ino
+											+ '"> <span class="star-input'
+											+ resultList[index].ino
+											+ '"> <span class="input"> </span> </span> </div>';
+									str += '<div class="result-wrap"> <span class="star-input'
+											+ resultList[index].ino
+											+ '"> <span class="result"> </span> </span> </div> </div>';
+									str += '<p> <a href="/uniform/rentDetail?type='
+											+ jsonType
+											+ '&no='
+											+ resultList[index].ino
+											+ '" class="btn btn-primary">Read More <span class="ion-ios-arrow-forward"></span></a> </p>';
+									str += '</div> </div> </div>';
+									$(".resultList").append(str);
+								}
+							});
+		}
+	}
+
+	$("#topBtn").on("click", function() {
+		$("html, body").animate({
+			scrollTop : 0
+		}, 300);
+	});
+
+	$("#bottomBtn").on("click", function() {
+		$("html, body").animate({
+			scrollTop : $(document).height()
+		}, 300);
+	});
+
+	$("#btnSearch").on("click", function(e) {
+		e.preventDefault();
+		if ($("#selectType").val() === "imde") {
+			if ($("input[id*='Date']").val() != "") {
+				alert("종류가 임대일 경우엔 날짜를 선택하실수없습니다.");
+				$("input[id*='Date']").val("");
+			} else {
+				$("#select_form").submit();
+			}
+		} else {
+			$("#select_form").submit();
+		}
+	})
+
+	var dateFormat = "yy-mm-dd";
+	var from = $("input[id*='firstDate']").datepicker({
+		minDate : 0,
+		dateFormat : dateFormat,
+		defaultDate : "+1w",
+		changeMonth : true,
+		numberOfMonths : 2
+	}).on("change", function() {
+		to.datepicker("option", "minDate", getDate(this));
+	}), to = $("input[id*='lastDate']").datepicker({
+		minDate : 0,
+		dateFormat : dateFormat,
+		defaultDate : "+1w",
+		changeMonth : true,
+		numberOfMonths : 2
+	}).on("change", function() {
+		from.datepicker("option", "maxDate", getDate(this));
+	});
+
+	function getDate(element) {
+		var date;
+		try {
+			date = $.datepicker.parseDate(dateFormat, element.value);
+		} catch (error) {
+			date = null;
+		}
+
+		return date;
+	}
+
 	$(window).scroll(function() {
 		var position = $(document).scrollTop();
-		console.log(position);
 		if (position >= 418) {
 			$(".mapWrap").removeClass("map-bottom");
 			$(".mapWrap").addClass("map-position");
@@ -29,16 +237,17 @@ $(function() {
 			$(".mapWrap").removeClass("map-bottom");
 			$(".mapWrap").removeClass("map-position");
 		}
-		if (position >= 1720) {
-			$(".mapWrap").removeClass("map-position");
-			$(".mapWrap").addClass("map-bottom");
-		}
 	});
 
 	var location = []; // 받아올 데이터를 저장할 배열 선언
 	var title = [];
 
-	$.getJSON("/uniform/map_list.json", function(data) {
+	$.getJSON("/uniform/map_list.json", {
+		location : jsonLocation,
+		type : jsonType,
+		SfirstDate : jsonFirst,
+		SlastDate : jsonLast
+	}, function(data) {
 		$.each(data, function(key, value) {
 			location.push(value.location);
 			title.push(value.title);
@@ -49,10 +258,10 @@ $(function() {
 });
 
 function map(location, title) {
-	var mapContainer = document.getElementById('listMap'), // 지도를 표시할 div
+	var mapContainer = document.getElementById('resultMap'), // 지도를 표시할 div
 	mapOption = {
 		center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-		level : 7
+		level : 8
 	};
 
 	// 지도를 생성합니다
@@ -70,6 +279,7 @@ function map(location, title) {
 							if (count == count) {
 								i = count;
 							}
+
 							// 정상적으로 검색이 완료됐으면
 							if (status === kakao.maps.services.Status.OK) {
 
@@ -86,15 +296,16 @@ function map(location, title) {
 								var infowindow = new kakao.maps.InfoWindow(
 										{
 											content : '<div style="width:150px;text-align:center;padding:5px 0;">'
-													+ title[i] + '</div>'
+													+ title[count] + '</div>'
 										});
 								infowindow.open(map, marker);
 
 								// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
 								map.setCenter(coords);
 
+								count++;
 							}
-							count++;
 						});
 	}
+
 }
