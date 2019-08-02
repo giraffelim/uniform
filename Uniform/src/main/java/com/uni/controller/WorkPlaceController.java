@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
+
 /*
  *  작성자 : 임태양
  *  작업실 컨트롤러
@@ -17,12 +20,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.uni.domain.StarAvgVO;
+import com.uni.domain.SinchungVO;
 import com.uni.domain.uni_hotTopicVO;
 import com.uni.domain.uni_workplace_iVO;
 import com.uni.service.WorkPlaceService;
@@ -61,6 +65,7 @@ public class WorkPlaceController {
 
 	}
 
+	// hottopicList에서 검색했을때 가져온 값들을 검색해서 가져오는 get
 	@Transactional
 	@RequestMapping(value = "workplaceList", method = RequestMethod.GET)
 	public void listG(@RequestParam("location") String location, @RequestParam("SfirstDate") String SfirstDate,
@@ -87,6 +92,7 @@ public class WorkPlaceController {
 		model.addAttribute("SlastDate", SlastDate);
 	}
 
+	// workplaceList에서 검색했을 때 가져오는 post
 	@Transactional
 	@RequestMapping(value = "workplaceList", method = RequestMethod.POST)
 	public void listP(String location, String SfirstDate, String SlastDate, String type, Model model) {
@@ -111,6 +117,58 @@ public class WorkPlaceController {
 		model.addAttribute("SfirstDate", SfirstDate);
 		model.addAttribute("SlastDate", SlastDate);
 	}
+	
+	// 마이페이지 신청내역에서 제목을 누르면 신청 정보를 띄우기 위해 값을 가져오는 get
+	@RequestMapping(value = "sinchung", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
+	public ResponseEntity<List<SinchungVO>> sinchung(Long no) {
+		log.info("sinchung : " + service.sinchungList(no));
+		return new ResponseEntity<List<SinchungVO>>(service.sinchungList(no), HttpStatus.OK);
+	}
 
+	// 임대 작업실 데이터베이스 Crud
+	@PostMapping(value="/workplaceI")
+	public String insertWorkSpace(uni_workplace_iVO vo) {
+		log.info("workplaceI Insert"+vo);
+		service.insertWorkPlace_i(vo);
+		return null;
+	}
+	
+	// 임대 작업실 데이터베이스 crUd
+	@PostMapping(value="/updateWorkplace")
+	public String updateWorkSpace(uni_workplace_iVO vo) {
+		log.warn("workplaceI update"+vo);
+		service.updateWorkPlace_i(vo);
+		return null;
+	}
+	
+	// 작업실 수정 Form
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping(value = "/leaseUpdate")
+	public void getUpdate(@RequestParam("ino") int ino ,Model model) {
+		log.info("updateForm: "+ino);
+		log.warn("update previous: "+service.read(ino));
+		model.addAttribute("workplaceVO", service.read(ino));
+	}
+	
+	// rentDetail get
+	@GetMapping(value = "/rentDetail")
+	public void getRentDetail(@RequestParam("type") String type, @RequestParam("no") int no, Model model) {
+		log.warn("get Rent Detail");
+		
+		if(type.equals("share")) {
+			// TODO 아직 미완성
+		}
+		
+		if(type.equals("imde")) {
+			// TODO ino 값으로 workplace_i에서 필요한 정보 추출, 첨부파일 테이블에서 ino 값으로 정보 추출
+			uni_workplace_iVO vo = service.read(no);
+			String thumbnail = vo.getThumbnail();
+			thumbnail.replace("Is_", "");
+			log.info(thumbnail);
+			vo.setThumbnail(thumbnail);
+			model.addAttribute("workplaceVO",vo);
+		}
+		
+	}
 
 }

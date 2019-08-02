@@ -31,7 +31,7 @@
 								<option value="imde">임대</option>
 
 							</select>
-							<button type="submit" class="btn-warning" id="btnSelect">
+							<button type="submit" class="btn btn-warning" id="btnSelect">
 								검색</button>
 						</div>
 					</form>
@@ -53,7 +53,7 @@
 						<div class="col-md-10"></div>
 						<div class="col-md-2">
 							<sec:authorize access="isAuthenticated()">
-								<button type="button" class="btn-success" id="shareBtn">등록</button>
+								<button type="button" class="btn btn-primary" id="shareBtn">등록</button>
 							</sec:authorize>
 						</div>
 					</div>
@@ -201,7 +201,7 @@
 						<div class="col-md-10"></div>
 						<div class="col-md-2">
 							<sec:authorize access="isAuthenticated()">
-								<button type="button" class="btn-success" id="imdeBtn">등록</button>
+								<button type="button" class="btn btn-primary" id="imdeBtn">등록</button>
 							</sec:authorize>
 						</div>
 					</div>
@@ -280,7 +280,7 @@
 							<div id="secondBestImdeContext">
 								<c:forEach var="hotTopicListImde" items="${hotTopicListImde }"
 									begin="1" end="1">${hotTopicListImde.context}</c:forEach>
-								.
+								
 							</div>
 							<h1></h1>
 							<div class="BestImdeWriterDiv">

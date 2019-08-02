@@ -1,6 +1,7 @@
 package com.uni.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -13,8 +14,8 @@ public class uni_workplace_iVO {
 	private String comforts;
 	private int price;
 	private String context;
-	private Date regDate;
-
+	private Date rDate;
 	private int mno;
 	private int readCount;
+	private List<uni_PhotoVO> attachList;
 }

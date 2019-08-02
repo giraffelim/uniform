@@ -6,6 +6,7 @@ var result_star;
 
 $(function() {
 
+	/*후기 작성 시 마우스를 이동해서 별점을 설정하면 값을 가져가는 부분*/
 	var starRating = function() {
 		var $star = $(".star-input"), $result = $star.find("output>b");
 
@@ -46,5 +47,31 @@ $(function() {
 	};
 
 	starRating();
+	
+	/*마이페이지 신청 내역에서 제목을 클릭하면 상세페이지에 정보를 띄워줌*/
+	var workplaceNo = 1;
+	var sinchungListstr = "";
+	var loginMno = $("#mno").val();
+	console.log(loginMno);
 
-})
+	$(".sinchungBtn").on("click", function() {
+		$("#sinchung").modal("show");
+		var workplaceNo = $(this).data("ino");
+		console.log(workplaceNo);
+		$.getJSON("/uniform/sinchung.json", {
+			no : workplaceNo
+		}, function(result) {
+			$.each(result, function(index, item) {
+				$("#title").val(item.title);
+				$("#location").val(item.location);
+				$("#price").val(item.price);
+				$("#hname").val(item.hname);
+				$("#hphone").val(item.hphone);
+				if (loginMno == item.mno + "") {
+					$("#reservation").val(item.reservation);
+				}
+			});
+		});
+	});
+
+});

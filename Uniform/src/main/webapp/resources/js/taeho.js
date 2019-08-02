@@ -3,16 +3,145 @@
  */
 var num;
 var num2;
+var str;
+var moreFlag = 1;
+var myMno = $("#mno").val();
+var sinchung_tbody = $(".sinchung_tbody");
+var Isinchung_tbody = $(".Isinchung_tbody");
+var tableCount = 4;
+var sclickCount = 0;
+var iclickCount = 0;
+
 $(function() {
-	
-	$("#shareBtn").on("click",function(){
-		console.log("공유 등록 버튼 클릭!!");
-		location.href="/uniform/goShare"
+
+	$("#moreShare").on("click", function() {
+
+		if (moreFlag === 1) {
+
+			console.log("공유 더보기 클릭");
+
+			if (sclickCount <= 0) {
+				$.getJSON("/uniform/moreInfo", {
+					mno : myMno
+				}, function(data) {
+					console.log(data);
+
+					$.each(data, function(i, obj) {
+						if (i > 2) {
+							str = "<tr>";
+							str += "<td>" + tableCount++ + "</td>";
+							str += "<td>" + obj.title + "</td>";
+							str += "<td>" + obj.name + "</td>";
+							str += "<td>" + obj.phone + "</td>";
+							str += "<td>" + obj.reservation + "</td>";
+							str += "</tr>";
+							sinchung_tbody.append(str);
+
+						}
+					});
+
+				});
+				sclickCount++;
+			}
+		} else {
+			console.log("임대 더보기 클릭");
+			if (iclickCount <= 0) {
+				$.getJSON("/uniform/moreInfoImde", {
+					mno : myMno
+				}, function(data) {
+					console.log(data);
+
+					$.each(data, function(i, obj) {
+						console.log(obj.ino);
+						if (i > 2) {
+							str = "<tr>";
+							str += "<td>" + tableCount++ + "</td>";
+							str += "<td> <a class='sinchungBtn' data-ino='"+obj.ino+"'>" + obj.title + " </a> </td>";
+							str += "<td>" + obj.name + "</td>";
+							str += "<td>" + obj.phone + "</td>";
+							str += "<td>" + obj.reservation + "</td>";
+							str += "</tr>";
+
+							Isinchung_tbody.append(str);
+						}
+					});
+
+				});
+				iclickCount++;
+			}
+		}
 	});
-	
-	$("#imdeBtn").on("click",function(){
+
+	/* 마이페이지 신청 리스트 */
+
+	var sList_title = $("#sList_title").val();
+
+	console.log(sList_title);
+
+	/* 마이페이지 신청 리스트 끝 */
+	$(".sinchung_tab_2").css("color", "black").css("border-bottom",
+			"1px solid #ddd").css("background-color", "inherit");
+	$(".sinchung_tab_1").css("color", "white").css("border-bottom",
+			"1px solid #aaa").css("background-color", "#aaa");
+
+	$(".confirm_tab_2").css("color", "black").css("border-bottom",
+			"1px solid #ddd").css("background-color", "inherit");
+	$(".confirm_tab_1").css("color", "white").css("border-bottom",
+			"1px solid #aaa").css("background-color", "#aaa");
+
+	$(".sinchung_tab_1").on(
+			"click",
+			function() {
+				moreFlag = 1;
+				$("#sinchung_imde").css("display", "none");
+				$("#sinchung_share").css("display", "block");
+				$(".sinchung_tab_2").css("color", "black").css("border-bottom",
+						"1px solid #ddd").css("background-color", "inherit");
+				$(".sinchung_tab_1").css("color", "white").css("border-bottom",
+						"1px solid #aaa").css("background-color", "#aaa");
+			});
+	$(".sinchung_tab_2").on(
+			"click",
+			function() {
+				moreFlag = 2;
+				$("#sinchung_share").css("display", "none");
+				$("#sinchung_imde").css("display", "block");
+				$(".sinchung_tab_1").css("color", "black").css("border-bottom",
+						"1px solid #ddd").css("background-color", "inherit");
+				$(".sinchung_tab_2").css("color", "white").css("border-bottom",
+						"1px solid #aaa").css("background-color", "#aaa");
+			});
+
+	$(".confirm_tab_1").on(
+			"click",
+			function() {
+				$("#confirm_imde").css("display", "none");
+				$("#confirm_share").css("display", "block");
+				$(".confirm_tab_2").css("color", "black").css("border-bottom",
+						"1px solid #ddd").css("background-color", "inherit");
+				$(".confirm_tab_1").css("color", "white").css("border-bottom",
+						"1px solid #aaa").css("background-color", "#aaa");
+			});
+
+	$(".confirm_tab_2").on(
+			"click",
+			function() {
+				$("#confirm_share").css("display", "none");
+				$("#confirm_imde").css("display", "block");
+				$(".confirm_tab_1").css("color", "black").css("border-bottom",
+						"1px solid #ddd").css("background-color", "inherit");
+				$(".confirm_tab_2").css("color", "white").css("border-bottom",
+						"1px solid #aaa").css("background-color", "#aaa");
+			});
+
+	$("#shareBtn").on("click", function() {
+		console.log("공유 등록 버튼 클릭!!");
+		location.href = "/uniform/goShare"
+	});
+
+	$("#imdeBtn").on("click", function() {
 		console.log("임대 버튼 클릭 !!");
-		location.href="/uniform/goImde";
+		location.href = "/uniform/goImde";
 	});
 
 	/*
@@ -31,6 +160,7 @@ $(function() {
 
 		var num = $("#bestShareStar" + index).val();
 		var num2 = $("#bestImdeStar" + index).val();
+		
 
 		console.log("num:" + num);
 		console.log("num 2:" + num2);
