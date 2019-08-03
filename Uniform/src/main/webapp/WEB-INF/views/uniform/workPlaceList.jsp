@@ -28,6 +28,7 @@
 		</div>
 	</section>
 
+	<!-- 주소, 날짜, 임대 / 공유를 선택하여 검색하는 부분 -->
 	<section class="ftco-search">
 		<div class="container-fluid px-3 px-md-0">
 			<div class="row justify-content-end">
@@ -84,6 +85,7 @@
 								</select>
 								<button type="submit" class="btn btn-primary btn-md"
 									id="btnSearch">검색</button>
+									
 							</form>
 						</div>
 					</div>
@@ -91,7 +93,9 @@
 			</div>
 		</div>
 	</section>
+	<!-- 검색 끝 -------------------------  -->
 
+	<!-- 무한 스크롤로 구현한 작업실 정보를 띄워주고 반을 나눠서 지도도 같이 띄워주는 부분 -->
 	<section class="ftco-no-pt">
 		<div class="container-fluid px-3 px-md-0">
 			<div class="row justify-content-end">
@@ -110,24 +114,17 @@
 			</div>
 		</div>
 	</section>
+	<!-- 정보 끝 ---------------------------------------------------------- -->
 
+	<!-- 무한 스크롤로 밑으로 내려갔을 때 상단으로 올라가고, 상단일 때 하단으로 내려가는 버튼 -->
 	<footer>
 		<button id="topBtn" class="btn btn-secondary">↑</button>
 		<button id="bottomBtn" class="btn btn-secondary">↓</button>
 	</footer>
+	<!-- 버튼 끝 ---------------------------------------  -->
 
 </div>
 <!-- END COLORLIB-MAIN -->
-
-
-<!-- loader -->
-<div id="ftco-loader" class="show fullscreen">
-	<svg class="circular" width="48px" height="48px">
-            <circle class="path-bg" cx="24" cy="24" r="22" fill="none"
-			stroke-width="4" stroke="#eeeeee" />
-            <circle class="path" cx="24" cy="24" r="22" fill="none"
-			stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg>
-</div>
 
 
 <script src="/resources/js/jquery.min.js"></script>

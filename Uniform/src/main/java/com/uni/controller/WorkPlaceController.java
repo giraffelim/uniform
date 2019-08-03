@@ -26,17 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-
-<<<<<<< HEAD
 import com.uni.domain.SinchungVO;
-=======
-
-import com.uni.domain.StarAvgVO;
->>>>>>> c5aea86d501044ed08cfa8d31e5ec10821e992be
 import com.uni.domain.uni_hotTopicVO;
+import com.uni.domain.uni_workplace_iVO;
 import com.uni.service.WorkPlaceService;
 
 import lombok.extern.log4j.Log4j;
@@ -73,6 +65,7 @@ public class WorkPlaceController {
 
 	}
 
+	// hottopicList에서 검색했을때 가져온 값들을 검색해서 가져오는 get
 	@Transactional
 	@RequestMapping(value = "workplaceList", method = RequestMethod.GET)
 	public void listG(@RequestParam("location") String location, @RequestParam("SfirstDate") String SfirstDate,
@@ -99,6 +92,7 @@ public class WorkPlaceController {
 		model.addAttribute("SlastDate", SlastDate);
 	}
 
+	// workplaceList에서 검색했을 때 가져오는 post
 	@Transactional
 	@RequestMapping(value = "workplaceList", method = RequestMethod.POST)
 	public void listP(String location, String SfirstDate, String SlastDate, String type, Model model) {
@@ -124,13 +118,13 @@ public class WorkPlaceController {
 		model.addAttribute("SlastDate", SlastDate);
 	}
 	
-<<<<<<< HEAD
+	// 마이페이지 신청내역에서 제목을 누르면 신청 정보를 띄우기 위해 값을 가져오는 get
 	@RequestMapping(value = "sinchung", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
 	public ResponseEntity<List<SinchungVO>> sinchung(Long no) {
 		log.info("sinchung : " + service.sinchungList(no));
 		return new ResponseEntity<List<SinchungVO>>(service.sinchungList(no), HttpStatus.OK);
 	}
-=======
+
 	// 임대 작업실 데이터베이스 Crud
 	@PostMapping(value="/workplaceI")
 	public String insertWorkSpace(uni_workplace_iVO vo) {
@@ -176,8 +170,5 @@ public class WorkPlaceController {
 		}
 		
 	}
-
->>>>>>> c5aea86d501044ed08cfa8d31e5ec10821e992be
-
 
 }

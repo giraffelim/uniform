@@ -17,10 +17,13 @@ public interface WorkPlaceService {
 
 	public List<uni_workplace_iVO> workPlaceList();
 
+	// 임대 작업실 검색
 	public List<IWorkPlaceVO> workPlaceList_i(String location, String type);
 
+	// 공유 작업실 검색
 	public List<SWorkPlaceVO> workPlaceList_s(String location, String type, String SfirstDate, String SlastDate);
 	
+	// 작업실에 등록된 review의 평균 별점 검색
 	public List<StarAvgVO> avg_star(String loaction, String type);
 	
 
@@ -47,6 +50,7 @@ public interface WorkPlaceService {
 
 	public List<Sinchung_ListVO> Isinchung_list_ajax(Long mno);
 
+	// 로그인한 사람이 신청한 작업실에 대한 정보
 	public List<SinchungVO> sinchungList(Long mno);
 
 

@@ -56,12 +56,16 @@ public interface uni_workplaceMapper {
 	
 	public List<SinchungVO> sinchungList(Long no);
 
+	// 주소 키워드로 찾아오는 임대 테이블
 	public List<IWorkPlaceVO> workPlaceList_i(String location);
 
+	// 주소 키워드로 찾아오는 공유 테이블
 	public List<SWorkPlaceVO> workPlaceList_s(String location);
 
+	// 임대 작업실 review에 작성된 평균 별점
 	public List<StarAvgVO> avg_star_i(String location);
 
+	// 공유 작업실 review에 작성된 평균 별점
 	public List<StarAvgVO> avg_star_s(String location);
 
 }

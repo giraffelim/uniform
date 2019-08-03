@@ -48,11 +48,13 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	private JavaMailSenderImpl mailSender;
 
+	// 아이디 찾기 select
 	@Override
 	public uni_MemberVO find_id(String name, String email) {
 		return mapper.find_id(name, email);
 	}
 
+	// 비밀번호 찾기 update
 	@Override
 	public boolean find_pw(String userPW, String userID, String email) {
 		UUID uuid = UUID.randomUUID();
@@ -136,16 +138,6 @@ public class MemberServiceImpl implements MemberService {
 		boolean resultUpdate = mapper.updateMember(vo)== 1;
 		
 		return resultUpdate;
-	}
-
-
-	public List<uni_hotTopicVO> list() {
-		return mapper.readHotTopic();
-	}
-
-	@Override
-	public List<uni_hotTopicVO> listImde() {
-		return	mapper.readHotTopicImde();
 	}
 	
 	@Override

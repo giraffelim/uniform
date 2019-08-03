@@ -60,12 +60,14 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 		return CurrentDate;
 	}
 
+	// 주소 키워드를 사용한 임대 작업실 검색
 	@Override
 	public List<IWorkPlaceVO> workPlaceList_i(String location, String type) {
 		return mapper.workPlaceList_i(location);
 
 	}
 
+	// 주소와 날짜를 사용한 공유 작업실 검색
 	@Override
 	public List<SWorkPlaceVO> workPlaceList_s(String location, String type, String SfirstDate, String SlastDate) {
 		List<SWorkPlaceVO> list = mapper.workPlaceList_s(location);
@@ -114,6 +116,8 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 		return resultList;
 	}
 
+	
+	// 작업실에 등록된 review에 평균 별점 검색
 	@Override
 	public List<StarAvgVO> avg_star(String location, String type) {
 		if (type.equals("share")) {
@@ -122,7 +126,7 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 			return mapper.avg_star_i(location);
 		}
 	}
-
+	
 	@Transactional
 	@Override
 	public List<Sinchung_ListVO> sinchung_list(Long mno) {
@@ -182,6 +186,8 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 		return unionSinchungList;
 	}
 
+	
+	// 로그인 한 사람의 신청 정보를 검색
 	@Override
     public List<SinchungVO> sinchungList(Long no) {
         System.out.println("service sinchung : " + mapper.sinchungList(no));

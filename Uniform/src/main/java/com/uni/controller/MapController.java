@@ -28,6 +28,8 @@ public class MapController {
 	@Autowired
 	private WorkPlaceService service;
 
+	
+	// 검색한 작업실에 주소를 가져와서 지도에 띄워주는 메소드
 	@RequestMapping(value = "map_list", produces = { MediaType.APPLICATION_XML_VALUE,
 			MediaType.APPLICATION_JSON_UTF8_VALUE }, method = RequestMethod.GET)
 	public ResponseEntity<?> workPlaceList(String location, String type, String SfirstDate, String SlastDate) {
@@ -40,6 +42,7 @@ public class MapController {
 		}
 	}
 
+	// 무한 스크롤을 이용해서 페이징하기 위해 작업실 가져오는 메소드
 	@RequestMapping(value = "scroll_result", produces = { MediaType.APPLICATION_XML_VALUE,
 			MediaType.APPLICATION_JSON_UTF8_VALUE }, method = RequestMethod.GET)
 	public ResponseEntity<?> scroll(String location, String type, String SfirstDate, String SlastDate) {
@@ -57,6 +60,7 @@ public class MapController {
 
 	}
 
+	// 검색한 작업실에 대한 별점 가져오는 메소드
 	@RequestMapping(value = "/getStar", produces = { MediaType.APPLICATION_XML_VALUE,
 			MediaType.APPLICATION_JSON_UTF8_VALUE }, method = RequestMethod.GET)
 	public List<StarAvgVO> getStars(String location, String type) {

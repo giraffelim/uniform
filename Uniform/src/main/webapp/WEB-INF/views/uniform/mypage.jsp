@@ -254,7 +254,7 @@
 									</table>
 								</div>
 
-								<!-- Modal -->
+								<!-- 제목을 누르면 상세 정보를 띄워주는 Modal -->
 								<div class="modal fade sinchung_modal" id="sinchung"
 									role="dialog">
 									<div class="modal-dialog modal-lg">

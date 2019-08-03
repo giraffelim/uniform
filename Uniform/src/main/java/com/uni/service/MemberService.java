@@ -12,8 +12,10 @@ import com.uni.domain.uni_hotTopicVO;
 @Service
 public interface MemberService {
 
+	// 아이디 찾기 select
 	public uni_MemberVO find_id(String name, String email);
 
+	// 비밀번호 찾기 update
 	public boolean find_pw(String userPW, String userID, String email);
 
 	public boolean updateMember(uni_MemberVO vo);
