@@ -81,7 +81,7 @@
 	<select id="avg_star_i" resultType="com.uni.domain.StarAvgVO">
 		select round(avg(star)) as
 		avg,
-		r.ino, i.location from uni_review r join
+		r.ino, i.location from uni_review r full outer join
 		uni_workplace_i i on r.ino
 		=
 		i.ino where i.location like
@@ -93,7 +93,7 @@
 	<select id="avg_star_s" resultType="com.uni.domain.StarAvgVO">
 		select round(avg(star)) as
 		avg,
-		r.sno, s.location from uni_review r join
+		r.sno, s.location from uni_review r full outer join
 		uni_workplace_s s on r.sno
 		=
 		s.sno where s.location like '%'||#{location}||'%' group by r.sno,
@@ -104,27 +104,22 @@
 	<select id="readHotTopic"
 		resultType="com.uni.domain.uni_hotTopicVO">
 
-		select round(avg(r.star)) as star, m.name, m.photo,
-		w.context,w.thumbnail from
-		uni_workplace_s w,uni_review r, uni_member m
-		where w.sno = r.sno and
-		m.mno = r.mno group by w.sno, w.readcount,
-		m.name, m.photo, w.context,
-		w.thumbnail order by w.readcount desc
+		select round(avg(r.star)) as star, w.name, w.photo, w.sno, w.context, w.thumbnail, w.mno, w.readcount from
+        (select m.name, m.photo, w.sno,
+      w.context,w.thumbnail, m.mno, w.readcount from
+      uni_workplace_s w, uni_member m where w.mno = m.mno) w full outer join uni_review r on w.sno is not null group by w.name, w.photo, w.sno, w.context, w.thumbnail, 
+        w.mno, w.readcount order by w.readcount desc
 
 	</select>
 	<!-- 임대 핫토픽 -->
 	<select id="readHotTopicImde"
 		resultType="com.uni.domain.uni_hotTopicVO">
 
-		select round(avg(r.star)) as star, m.name, m.photo,
-		w.context, w.thumbnail
-		from
-		uni_workplace_i w, uni_review r, uni_member
-		m where w.ino = r.ino and
-		m.mno = r.mno group by w.ino, w.readcount,
-		m.name, m.photo,
-		w.context,w.thumbnail order by w.readcount desc
+		select round(avg(r.star)) as star, w.name, w.photo, w.ino, w.context, w.thumbnail, w.mno, w.readcount from
+        (select m.name, m.photo, w.ino,
+      w.context,w.thumbnail, m.mno, w.readcount from
+      uni_workplace_i w, uni_member m where w.mno = m.mno) w full outer join uni_review r on w.ino is not null group by w.name, w.photo, w.ino, w.context, w.thumbnail, 
+        w.mno, w.readcount order by w.readcount desc
 
 	</select>
 	
@@ -137,8 +132,138 @@
 	</select>
 	
 	<insert id ="insertShinChung">
-		insert into uni_sinchung (rno, reservation, mno, ino, sDate)
-		values(UNI_SINCHUNG_SEQ.nextval,#{reservation}, #{mno}, #{ino}, sysdate)
+		insert into uni_sinchung(rno, reservation, mno, ino, sDate) values (uni_sinchung_seq.nextval,#{reservation},#{mno},#{ino}, sysdate)
 	</insert>
+	
+	<select id="getShinChungLike" resultType="com.uni.domain.uni_ShinChungVO">
+		select * from uni_sinchung where ino = #{ino} and reservation like '%'||#{reservation}||'%' 
+	</select>
+	
+	
+	<select id="sinchung_list_s"
+		resultType="com.uni.domain.Sinchung_ListVO">
+	<![CDATA[
+		select aa.*, ss.reservation, ss.mno from (select w.title,
+		m.name, m.phone, s.sno
+		from uni_sinchung s, uni_member m,
+		uni_workplace_s w where w.sno
+		= s.sno
+		and m.mno = s.mno and flag='d'  order by s.sno asc)
+		aa,
+		(select s.reservation, s.sno, m.mno
+		from uni_sinchung s, uni_member
+		m, uni_workplace_s w where w.sno =
+		s.sno
+		and m.mno = s.mno and flag='s'
+		and m.mno = #{mno}  order by s.sno asc) ss
+		where aa.sno= ss.sno and rownum<4
+		]]>
+	</select>
+
+	<select id="sinchung_list_d"
+		resultType="com.uni.domain.Sinchung_ListVO">
+	<![CDATA[
+		select aa.*, ss.mno from (select w.title, m.name, m.phone,
+		s.sno,
+		s.reservation
+		from uni_sinchung s, uni_member m, uni_workplace_s
+		w
+		where w.sno = s.sno
+		and m.mno = s.mno and flag='d' and m.mno = #{mno}
+		order by s.sno asc)
+		aa,
+		(select
+		s.reservation, s.sno, m.mno
+		from
+		uni_sinchung s, uni_member
+		m,
+		uni_workplace_s w where w.sno = s.sno
+		and
+		m.mno = s.mno and flag='s' order by s.sno asc)
+		ss
+		where aa.sno = ss.sno
+		and rownum < 4
+]]>
+	</select>
+
+	<select id="Isinchung_list"
+		resultType="com.uni.domain.Sinchung_ListVO">
+		<![CDATA[
+					select w.title, w.name, w.phone, s.ino, s.reservation
+    				  from uni_sinchung s, uni_member m, (select * from uni_workplace_i i, uni_member m where i.mno = m.mno) w where w.ino = s.ino 
+     	  			 and m.mno = s.mno and m.mno = #{mno} and rownum<4 order by s.ino
+		]]>
+	</select>
+
+
+	<select id="sinchung_list_s_ajax"
+		resultType="com.uni.domain.Sinchung_ListVO">
+	<![CDATA[
+		select aa.*, ss.reservation, ss.mno from (select w.title,
+		m.name, m.phone, s.sno
+		from uni_sinchung s, uni_member m,
+		uni_workplace_s w where w.sno
+		= s.sno
+		and m.mno = s.mno and flag='d'  order by s.sno asc)
+		aa,
+		(select s.reservation, s.sno, m.mno
+		from uni_sinchung s, uni_member
+		m, uni_workplace_s w where w.sno =
+		s.sno
+		and m.mno = s.mno and flag='s'
+		and m.mno = #{mno}  order by s.sno asc) ss
+		where aa.sno= ss.sno
+		]]>
+	</select>
+
+
+	<select id="sinchung_list_d_ajax"
+		resultType="com.uni.domain.Sinchung_ListVO">
+	<![CDATA[
+		select aa.*, ss.mno from (select w.title, m.name, m.phone,
+		s.sno,
+		s.reservation
+		from uni_sinchung s, uni_member m, uni_workplace_s
+		w
+		where w.sno = s.sno
+		and m.mno = s.mno and flag='d' and m.mno = #{mno}
+		order by s.sno asc)
+		aa,
+		(select
+		s.reservation, s.sno, m.mno
+		from
+		uni_sinchung s, uni_member
+		m,
+		uni_workplace_s w where w.sno = s.sno
+		and
+		m.mno = s.mno and flag='s' order by s.sno asc)
+		ss
+		where aa.sno = ss.sno
+]]>
+	</select>
+	<select id="Isinchung_list_ajax"
+		resultType="com.uni.domain.Sinchung_ListVO">
+		select w.title, w.name, w.phone, s.ino, s.reservation
+		from
+		uni_sinchung s, uni_member m, (select * from uni_workplace_i i,
+		uni_member m where i.mno = m.mno) w where w.ino = s.ino
+		and m.mno =
+		s.mno and m.mno = #{mno} order by s.ino
+
+	</select>
+	
+	<select id="sinchungList"
+        resultType="com.uni.domain.SinchungVO">
+        select w.title, w.location, w.price, w.name as hname,
+        w.phone as hphone,
+        m.name as cname, m.phone as cphone, s.ino,
+        s.reservation, m.mno
+        from uni_sinchung s, uni_member m, (select * from
+        uni_workplace_i i,
+        uni_member m where i.mno = m.mno) w where w.ino =
+        s.ino
+        and m.mno = s.mno and s.ino = #{no} order by s.ino
+    </select>
+	
 
 </mapper>

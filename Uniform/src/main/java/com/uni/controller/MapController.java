@@ -45,9 +45,6 @@ public class MapController {
 	public ResponseEntity<?> scroll(String location, String type, String SfirstDate, String SlastDate) {
 		log.info("scroll workPlaceList : " + location + " : " + type + " : " + SfirstDate + " : " + SlastDate);
 
-		List<SWorkPlaceVO> list = service.workPlaceList_s(location, type, SfirstDate, SlastDate);
-		log.info("regDate: " + list.get(0).getRegDate());
-
 		if (type.equals("imde")) {
 			return new ResponseEntity<List<IWorkPlaceVO>>(service.workPlaceList_i(location, type), HttpStatus.OK);
 		} else {

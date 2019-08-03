@@ -96,8 +96,12 @@
 
 					</sec:authorize>
 					<span><a href="/uniform/join">회원가입</a></span>
-					<sec:authorize access="isAuthenticated()">
-						<span id="myPageNav"><a href="/uniform/mypage">마이페이지</a></span>
+
+				<sec:authorize access="isAuthenticated()">
+						<sec:authentication property="principal" var="pinfo" />
+						<span id="myPageNav"><a
+							href="/uniform/myPage?mno=${pinfo.member.mno }">마이페이지</a></span>
+
 					</sec:authorize>
 
 

@@ -254,17 +254,19 @@
 function clearSelect(){
 	$('select').prop('selectedIndex',0);
 	$("#timeSelect").find("input[name='reservation']").remove();
-	$("#timeSelect option").removeAttr("disabled");
-	   var hour = "${hour}";
-	   var hours = "${hour}"*1;
-	   if(hours < 10){
-	   	hour = "0"+"${hour}";
+	$(".res option").removeAttr("disabled");
+	   var hourback = "${hourback}";
+	   var hourbacks = "${hourback}"*1;
+	   var hourfront = "${hourfront}";
+	   var hourfronts = "${hourfront}"*1;
+	   if(hourbacks < 10 || hourfronts < 10){
+	   	hourback = "0"+"${hourback}";
+	   	hourfronts = "0"+"${hourfronts}";
 	   }
-	   hourDisable(hour);
+	   hourbackDisable(hourback, hourfront);
 }
 
-function hourDisable(hour){
-	disableOption();
+function hourbackDisable(hourback, hourfront){
 	   $(".res option").each(function(k, obj){
 			var objs = $(this).data("res");
 			objs += "";
@@ -273,34 +275,38 @@ function hourDisable(hour){
 			arrayObjs[1] = arrayObjs[1]+"";
 			arrayObjs[0] = arrayObjs[0].replace(":00","");
 			arrayObjs[1] = arrayObjs[1].replace(":00","");
-			if(arrayObjs[1] <= hour){
+			if(arrayObjs[1] <= hourback){
 				$(this).attr("disabled","true")
 			}
-			if(arrayObjs[0] <= hour){
+			if(arrayObjs[0] <= hourfront){
 				$(this).attr("disabled","true")
-			}
+			} 
 	   });	  
+	   sdisableOption();
 }
 
-function disableOption(val){
+function sdisableOption(){
 	   // shinChung List
 	   $("input[name='shinChung']").each(function(i, obj){
 		   var arrayObj = $(obj).val().split(",");
 		   for(var i=0; i<arrayObj.length; i++){
-			   $(".res option").each(function(k, obj){
-					if($(this).data("res") == val){
-						$(this).attr("disabled","true");
-					}
-					if($(this).data("res") == arrayObj[i]){
-					   $(this).attr("disabled","true");
-					   return;
-				   }
-			   });	  
+					$(".res option").each(function(j, obj){ 
+						if($(this).data("res") == arrayObj[i]){
+							$(this).attr("disabled","true")
+							return;
+						}
+					});
 		   }
-	   });   
+		   });   
 }
 
-   //지도 생성을 위한 javascript, jquery
+function cdisableOption(val){
+	$(".res option").each(function(i,obj){
+		if($(this).data("res") == val){
+			$(this).attr("disabled","true");
+		}
+	})
+}
 
    $(function() {
 	   $.ajax({
@@ -326,17 +332,25 @@ function disableOption(val){
 		   }
 	   });
 	   
-	   var hour = "${hour}";
-	   var hours = "${hour}"*1;
-	   if(hours < 10){
-	   	hour = "0"+"${hour}";
+	   $("input[type=submit]").click(function(e){
+		   e.preventDefault();
+		   $("#timeSelect").submit();
+	   });
+	   
+	   var hourback = "${hourback}";
+	   var hourbacks = "${hourback}"*1;
+	   var hourfront = "${hourfront}";
+	   var hourfronts = "${hourfront}"*1;
+	   if(hourbacks < 10 || hourfronts < 10){
+	   	hourback = "0"+"${hourback}";
+	   	hourfronts = "0"+"${hourfronts}";
 	   }
-	   hourDisable(hour);
+	   hourbackDisable(hourback, hourfront);
 	   
 
 	   $("select").on("change", function(e){
 		   $("#timeSelect").append("<input type='hidden' name='reservation' value='"+$(this).val()+"'>");
-		   disableOption($(this).val());
+		   cdisableOption($(this).val());
 	   });
 	   
 	   var imageLength = "${workplaceVO.attachList.size()}";
@@ -345,7 +359,8 @@ function disableOption(val){
 	   for(var i=0; i<imageLength; i++){
 		   // div img 동적 생성
 	   }
-		
+
+	 //지도 생성을 위한 javascript, jquery
         var mapContainer = document.getElementById('inoResultMap'), // 지도를 표시할 div
         mapOption = {
             center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
@@ -645,7 +660,13 @@ function disableOption(val){
                                             		<input type="hidden" name="ino" value="${workplaceVO.ino }">
                                             		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
                                             		<input type="hidden" name="mno" value="${pinfo.member.mno }">
-                                                <!-- selectBox-->
+    <!-- 1set-->
+                                        <div id="iBtn">
+                                            <input type="submit" class="btn btn-danger" value="예약하기">
+                                            <input type="button" class="btn btn-danger" value="찜 하 기" onclick="clearSelect();">
+                                        </div>
+                                            </form>
+                                            <!-- selectBox-->
                                                 <div id="inoClone">
                                                     <select  name="reservation"  class="browser-default custom-select selectBox res" id="select1">
                                                   		<option data-res="25" value="">사용시간 선택</option>
@@ -696,12 +717,6 @@ function disableOption(val){
                                                         <option data-res= "22:00~24:00"  value="22:00~24:00">22 : 00 ~ 24 : 00</option>
                                                     </select>
                                                 </div>
-    <!-- 1set-->
-                                        <div id="iBtn">
-                                            <input type="submit" class="btn btn-danger" value="예약하기">
-                                            <input type="button" class="btn btn-danger" value="찜 하 기" onclick="clearSelect();">
-                                        </div>
-                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -808,37 +823,62 @@ function disableOption(val){
                                 <!-- Modal body -->
                                 <div class="modal-body">
                                     <div>
-                                            <form action="/uniform/insertShinChung" method="post" id="timeSelect2">
-                                                <!-- selectBox-->
-                                                <div id="inoClone2">
-                                                    <select required name="reservation" form="timeselect2" class="browser-default custom-select selectBox2">
-                                                               <option selected>사용시간 선택</option>
-                                                        <option value="00 : 00 ~ 02 : 00">00 : 00 ~ 02 : 00</option>
-                                                        <option value="02 : 00 ~ 04 : 00">02 : 00 ~ 04 : 00</option>
-                                                        <option value="04 : 00 ~ 06 : 00">04 : 00 ~ 06 : 00</option>
-                                                        <option value="06 : 00 ~ 08 : 00">06 : 00 ~ 08 : 00</option>
-                                                        <option value="08 : 00 ~ 10 : 00">08 : 00 ~ 10 : 00</option>
-                                                        <option value="10 : 00 ~ 12 : 00">10 : 00 ~ 12 : 00</option>
-                                                        <option value="12 : 00 ~ 14 : 00">12 : 00 ~ 14 : 00</option>
-                                                        <option value="14 : 00 ~ 16 : 00">14 : 00 ~ 16 : 00</option>
-                                                        <option value="16 : 00 ~ 18 : 00">16 : 00 ~ 18 : 00</option>
-                                                        <option value="18 : 00 ~ 20 : 00">18 : 00 ~ 20 : 00</option>
-                                                        <option value="20 : 00 ~ 22 : 00">20 : 00 ~ 22 : 00</option>
-                                                        <option value="22 : 00 ~ 24 : 00">22 : 00 ~ 24 : 00</option>
+                                               <div id="inoClone">
+                                                    <select  name="reservation"  class="browser-default custom-select selectBox res" id="select1">
+                                                  		<option data-res="25" value="">사용시간 선택</option>
+                                                        <option data-res="00:00~02:00"  value="00:00~02:00">00 : 00 ~ 02 : 00</option>
+                                                        <option data-res= "02:00~04:00" value="02:00~04:00">02 : 00 ~ 04 : 00</option>
+                                                        <option data-res= "04:00~06:00" value="04:00~06:00">04 : 00 ~ 06 : 00</option>
+                                                        <option data-res= "06:00~08:00"  value="06:00~08:00">06 : 00 ~ 08 : 00</option>
+                                                        <option data-res= "08:00~10:00"  value="08:00~10:00">08 : 00 ~ 10 : 00</option>
+                                                        <option data-res= "10:00~12:00"  value="10:00~12:00">10 : 00 ~ 12 : 00</option>
+                                                        <option data-res= "12:00~14:00"  value="12:00~14:00">12 : 00 ~ 14 : 00</option>
+                                                        <option data-res= "14:00~16:00"  value="14:00~16:00">14 : 00 ~ 16 : 00</option>
+                                                        <option data-res= "16:00~18:00"  value="16:00~18:00">16 : 00 ~ 18 : 00</option>
+                                                        <option data-res= "18:00~20:00"  value="18:00~20:00">18 : 00 ~ 20 : 00</option>
+                                                        <option data-res= "20:00~22:00"  value="20:00~22:00">20 : 00 ~ 22 : 00</option>
+                                                        <option data-res= "22:00~24:00"  value="22:00~24:00">22 : 00 ~ 24 : 00</option>
                                                     </select>
                                                 </div>
                                                 <!-- //selectBox-->
-                                                <div id="addSelect2">
-
+                                                <div id="addSelect">
+       													<select name="reservation"  class="browser-default custom-select selectBox res"  id="select2">
+                                                  		<option data-res="25" value="">사용시간 선택</option>
+                                                        <option data-res="00:00~02:00"  value="00:00~02:00">00 : 00 ~ 02 : 00</option>
+                                                        <option data-res= "02:00~04:00" value="02:00~04:00">02 : 00 ~ 04 : 00</option>
+                                                        <option data-res= "04:00~06:00" value="04:00~06:00">04 : 00 ~ 06 : 00</option>
+                                                        <option data-res= "06:00~08:00"  value="06:00~08:00">06 : 00 ~ 08 : 00</option>
+                                                        <option data-res= "08:00~10:00"  value="08:00~10:00">08 : 00 ~ 10 : 00</option>
+                                                        <option data-res= "10:00~12:00"  value="10:00~12:00">10 : 00 ~ 12 : 00</option>
+                                                        <option data-res= "12:00~14:00"  value="12:00~14:00">12 : 00 ~ 14 : 00</option>
+                                                        <option data-res= "14:00~16:00"  value="14:00~16:00">14 : 00 ~ 16 : 00</option>
+                                                        <option data-res= "16:00~18:00"  value="16:00~18:00">16 : 00 ~ 18 : 00</option>
+                                                        <option data-res= "18:00~20:00"  value="18:00~20:00">18 : 00 ~ 20 : 00</option>
+                                                        <option data-res= "20:00~22:00"  value="20:00~22:00">20 : 00 ~ 22 : 00</option>
+                                                        <option data-res= "22:00~24:00"  value="22:00~24:00">22 : 00 ~ 24 : 00</option>
+                                                    </select>
+                                                    	<select  name="reservation"  class="browser-default custom-select selectBox res"  id="select3">
+                                                  		<option data-res="25" value="">사용시간 선택</option>
+                                                        <option data-res="00:00~02:00"  value="00:00~02:00">00 : 00 ~ 02 : 00</option>
+                                                        <option data-res= "02:00~04:00" value="02:00~04:00">02 : 00 ~ 04 : 00</option>
+                                                        <option data-res= "04:00~06:00" value="04:00~06:00">04 : 00 ~ 06 : 00</option>
+                                                        <option data-res= "06:00~08:00"  value="06:00~08:00">06 : 00 ~ 08 : 00</option>
+                                                        <option data-res= "08:00~10:00"  value="08:00~10:00">08 : 00 ~ 10 : 00</option>
+                                                        <option data-res= "10:00~12:00"  value="10:00~12:00">10 : 00 ~ 12 : 00</option>
+                                                        <option data-res= "12:00~14:00"  value="12:00~14:00">12 : 00 ~ 14 : 00</option>
+                                                        <option data-res= "14:00~16:00"  value="14:00~16:00">14 : 00 ~ 16 : 00</option>
+                                                        <option data-res= "16:00~18:00"  value="16:00~18:00">16 : 00 ~ 18 : 00</option>
+                                                        <option data-res= "18:00~20:00"  value="18:00~20:00">18 : 00 ~ 20 : 00</option>
+                                                        <option data-res= "20:00~22:00"  value="20:00~22:00">20 : 00 ~ 22 : 00</option>
+                                                        <option data-res= "22:00~24:00"  value="22:00~24:00">22 : 00 ~ 24 : 00</option>
+                                                    </select>
                                                 </div>
-
-                                            </form>
                                         </div>
                                 </div>
 
                                 <!-- Modal footer -->
                                 <div class="modal-footer">
-                                 <button type="button" class="btn btn-danger">예약하기</button>
+                                 <input type="submit" class="btn btn-danger" value="예약하기">
                                   <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                                 </div>
 

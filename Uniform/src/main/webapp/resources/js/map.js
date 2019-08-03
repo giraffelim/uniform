@@ -101,8 +101,7 @@ $(function() {
 					.each(
 							resultList,
 							function(index, item) {
-								var regDates = resultList[index].regDate
-										.substring(0, 10);
+								var regDates = '2019/07/13';
 								if (index >= firstCount && index < lastCount) {
 									console.log(resultList[index]);
 									str = '<div class="col-md-12"> <div class="blog-entry"> ';

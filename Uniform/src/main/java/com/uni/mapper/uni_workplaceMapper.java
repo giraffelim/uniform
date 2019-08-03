@@ -2,8 +2,12 @@ package com.uni.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.uni.domain.IWorkPlaceVO;
 import com.uni.domain.SWorkPlaceVO;
+import com.uni.domain.SinchungVO;
+import com.uni.domain.Sinchung_ListVO;
 import com.uni.domain.StarAvgVO;
 import com.uni.domain.uni_PhotoVO;
 import com.uni.domain.uni_ShinChungVO;
@@ -38,6 +42,20 @@ public interface uni_workplaceMapper {
 
 	// 핫토픽 리스트 select(임대)
 	public List<uni_hotTopicVO> readHotTopicImde();
+	
+	public List<Sinchung_ListVO> sinchung_list_s(Long mno);
+
+	public List<Sinchung_ListVO> sinchung_list_d(Long mno);
+
+	public List<Sinchung_ListVO> Isinchung_list(Long mno);
+
+	public List<Sinchung_ListVO> sinchung_list_s_ajax(Long mno);
+
+	public List<Sinchung_ListVO> sinchung_list_d_ajax(Long mno);
+
+	public List<Sinchung_ListVO> Isinchung_list_ajax(Long mno);
+	
+	public List<SinchungVO> sinchungList(Long no);
 
 	public List<IWorkPlaceVO> workPlaceList_i(String location);
 
@@ -53,6 +71,8 @@ public interface uni_workplaceMapper {
 	// shinchung List get
 	public List<uni_ShinChungVO> getShinChung(int ino);
 	
+	// like shinchung
+	public uni_ShinChungVO getShinChungLike(@Param("ino") int ino, @Param("reservation") String reservation);
+	
 	public void insertShinChung(uni_ShinChungVO vo);
-
 }

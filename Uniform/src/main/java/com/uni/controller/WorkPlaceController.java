@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.access.prepost.PreAuthorize;
+
 
 /*
  *  작성자 : 임태양
@@ -28,8 +30,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.uni.domain.SinchungVO;
 import com.uni.domain.StarAvgVO;
 import com.uni.domain.uni_ShinChungVO;
+
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.uni.domain.uni_hotTopicVO;
 import com.uni.domain.uni_workplace_iVO;
 import com.uni.service.WorkPlaceService;
@@ -119,6 +128,12 @@ public class WorkPlaceController {
 		model.addAttribute("SlastDate", SlastDate);
 	}
 	
+	@RequestMapping(value = "sinchung", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
+	public ResponseEntity<List<SinchungVO>> sinchung(Long no) {
+		log.info("sinchung : " + service.sinchungList(no));
+		return new ResponseEntity<List<SinchungVO>>(service.sinchungList(no), HttpStatus.OK);
+	}
+	
 	// 임대 작업실 데이터베이스 Crud
 	@PostMapping(value="/workplaceI")
 	public String insertWorkSpace(uni_workplace_iVO vo) {
@@ -157,16 +172,17 @@ public class WorkPlaceController {
 			
 			//TODO 서버에서 시간 받아오기
 			Calendar cal = Calendar.getInstance();
-			int hour = cal.get(Calendar.HOUR_OF_DAY);
-			log.warn("this hour: "+hour);
-			if(hour %2 != 0) {
-				hour += 1;
+			int hourback = cal.get(Calendar.HOUR_OF_DAY);
+			int hourfront = hourback;
+			log.warn("this hour: "+hourback);
+			if(hourback %2 != 0) {
+				hourback += 1;
 			}
-			if(hour == 24) {
-				hour = 0;
+			if(hourback == 24) {
+				hourback = 0;
 			}
-			
-			model.addAttribute("hour", hour);
+			model.addAttribute("hourback", hourback);
+			model.addAttribute("hourfront", hourfront);
 			
 			//TODO ino값으로 sinchung table에서 신청 내역이 있는지 체크
 			List<uni_ShinChungVO> shinChungList = service.getShinChung(no);
@@ -189,15 +205,10 @@ public class WorkPlaceController {
 		//TODO 데이터 넘어오나 확인
 		log.info(vo);
 		// DB Insert 할 때 중복비교
-		String[] reservations = vo.getReservation().split(",");
-		String realR = "";
-		for (String string : reservations) {
-			realR += string;
-		}
-		vo.setReservation(realR);
 		service.insertShinChung(vo);
-		return "redirect:/uniform/mypage";
+		return "redirect:/uniform/myPage?mno="+vo.getMno();
 	}
+
 
 
 }
