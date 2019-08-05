@@ -114,6 +114,8 @@ public class MemberController {
 		List<Sinchung_ListVO> IunionSinchungList = service_work.Isinchung_list(mno);
 		model.addAttribute("unionSinchungList", unionSinchungList);
 		model.addAttribute("IunionSinchungList", IunionSinchungList);
+		model.addAttribute("IconfirmList", service_work.IConfirmList(mno));
+		model.addAttribute("SconfirmList", service_work.SConfirmList(mno));
 		log.info("=======================mypage 컨트롤러==============================");
 
 	}

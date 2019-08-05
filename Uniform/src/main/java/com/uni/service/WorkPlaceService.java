@@ -9,6 +9,7 @@ import com.uni.domain.SWorkPlaceVO;
 import com.uni.domain.SinchungVO;
 import com.uni.domain.Sinchung_ListVO;
 import com.uni.domain.StarAvgVO;
+import com.uni.domain.uni_confirmVO;
 import com.uni.domain.uni_hotTopicVO;
 import com.uni.domain.uni_workplace_iVO;
 
@@ -22,26 +23,23 @@ public interface WorkPlaceService {
 
 	// 공유 작업실 검색
 	public List<SWorkPlaceVO> workPlaceList_s(String location, String type, String SfirstDate, String SlastDate);
-	
+
 	// 작업실에 등록된 review의 평균 별점 검색
 	public List<StarAvgVO> avg_star(String loaction, String type);
-	
 
 	public void insertWorkPlace_i(uni_workplace_iVO vo);
-	
+
 	public uni_workplace_iVO read(int ino);
-	
+
 	// update
 	public int updateWorkPlace_i(uni_workplace_iVO vo);
 
-
 	public String CurrentDate();
 
-	
 	public List<uni_hotTopicVO> list();
 
 	public List<uni_hotTopicVO> listImde();
-	
+
 	public List<Sinchung_ListVO> sinchung_list(Long mno);
 
 	public List<Sinchung_ListVO> Isinchung_list(Long mno);
@@ -53,5 +51,14 @@ public interface WorkPlaceService {
 	// 로그인한 사람이 신청한 작업실에 대한 정보
 	public List<SinchungVO> sinchungList(Long mno);
 
+	public List<uni_confirmVO> IConfirmList(Long mno);
+
+	public List<uni_confirmVO> SConfirmList(Long mno);
+
+	public List<uni_confirmVO> confirm(Long cno, Long mno, String flag);
+
+	public boolean review_insert(String content, int star, Long mno, Long ino, Long sno, Long cno, String flag);
+	
+	public int getWorkplaceCount();
 
 }

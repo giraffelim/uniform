@@ -16,7 +16,7 @@ public class IWorkPlaceVO {
 	private String comforts;
 	private int price;
 	private String context;
-	private String regDate;
+	private String rDate;
 
 	private int mno;
 	private int readCount;

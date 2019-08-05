@@ -8,8 +8,14 @@
 <%@include file="../includes/header.jsp"%>
 
 <link rel="stylesheet" href="/resources/css/style_lan.css">
+<link rel="stylesheet" href="/resources/css/avg_star.css">
 
 <div id="colorlib-main">
+<script>
+	var csrfHeaderName = "${_csrf.headerName }";
+	var csrfTokenValue = "${_csrf.token }";
+
+</script>
 
 
 	<sec:authentication property="principal" var="pinfo" />
@@ -65,7 +71,7 @@
 													회원번호 : <span id="email"><sec:authentication
 															property="principal.member.mno" /></span>
 												</div>
-												
+
 
 											</div>
 										</div>
@@ -83,8 +89,6 @@
 							</form>
 						</div>
 						<!--회원 정보 끝-->
-
-
 
 						<!-- 결제창-------------------------------------->
 						<div class="col-md-6 d-flex align-self-stretch ftco-animate">
@@ -281,12 +285,12 @@
 																	name="price" />
 															</div>
 															<div class="apply_content">
-																<label>등록자 이름</label><input type="text" id="hname"
-																	name="hname" />
+																<label>등록자 이름</label><input type="text" id="name"
+																	name="name" />
 															</div>
 															<div class="apply_content">
-																<label>등록자 번호</label><input type="text" id="hphone"
-																	name="hphone" />
+																<label>등록자 번호</label><input type="text" id="phone"
+																	name="phone" />
 															</div>
 															<div class="apply_content">
 																<label>사용할 시간</label><input type="text" id="reservation"
@@ -306,6 +310,7 @@
 						</div>
 					</div>
 					<!--시청내역 끝-->
+
 					<!--확정내역 시작------------------------------------------->
 					<br>
 					<hr>
@@ -320,11 +325,16 @@
 										<button class="confirm_tab_1">공유</button>
 										<button class="confirm_tab_2">임대</button>
 									</div>
+
 								</div>
 
 
 								<div class="col-sm-6 more" id="moreImde">
-									<a class="moreInfoBtn">더보기 ></a>
+									<a class="moreInfoBtn" id="moreConfirm">더보기 ></a> <br>
+									<div class="float-right">
+										<span class="carousel-control-prev-icon" id="confirm_prev"></span>
+										<span class="carousel-control-next-icon" id="confirm_next"></span>
+									</div>
 								</div>
 
 							</div>
@@ -339,68 +349,246 @@
 												<th>제목</th>
 												<th>작성자</th>
 												<th>연락처</th>
-
-												<th>시간</th>
+												<th>내가 사용할 시간</th>
 											</tr>
 										</thead>
-										<tbody>
-											<tr>
-												<td>1</td>
-												<td>공유</td>
-												<td>cavin</td>
-												<td>010-1111-5885</td>
-
-												<td>18:00~20:00</td>
-											</tr>
-
-											<tr>
-												<td>3</td>
-												<td>rest room</td>
-												<td>john</td>
-												<td>010-1111-5885</td>
-
-												<td>08:00~10:00</td>
-											</tr>
+										<tbody class="Sconfirm_body">
+											<c:forEach var="SconfirmList" items="${SconfirmList }"
+												varStatus="status" begin="0" end="2">
+												<tr>
+													<td>${status.count }</td>
+													<td><a class="SConfirmBtn" style="color: black"
+														data-cno="${SconfirmList.cno }">${SconfirmList.title }</a></td>
+													<td>${SconfirmList.name }</td>
+													<td>${SconfirmList.phone }</td>
+													<td>${SconfirmList.reservation }</td>
+												</tr>
+											</c:forEach>
 										</tbody>
+
 									</table>
+								</div>
+
+								<!-- Modal -->
+								<div class="modal fade sinchung_modal" id="SConfirm"
+									role="dialog">
+									<div class="modal-dialog modal-lg">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<h4 class="modal-title">확정 상세 페이지</h4>
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+											</div>
+											<div class="modal-body left-context">
+												<div class="row">
+													<div class="col-md-6">
+														<form class="apply_form confirm_form" action=""
+															method="post">
+															<input type="hidden" id="sno" name="sno">
+															<div class="apply_content">
+																<label>게시글 제목</label><input type="text" id="Stitle"
+																	name="title" />
+															</div>
+															<div class="apply_content">
+																<label>작업실 주소</label><input type="text" id="Slocation"
+																	name="location" />
+															</div>
+															<div class="apply_content">
+																<label>작업실 가격</label><input type="text" id="Sprice"
+																	name="price" />
+															</div>
+															<div class="apply_content">
+																<label>등록자 이름</label><input type="text" id="Sname"
+																	name="name" />
+															</div>
+															<div class="apply_content">
+																<label>등록자 번호</label><input type="text" id="Sphone"
+																	name="phone" />
+															</div>
+															<div class="apply_content">
+																<label>등록자 시간</label><input type="text" id="Shtime"
+																	name="mytime" />
+															</div>
+															<div class="apply_content">
+																<label>공유한 기간</label><input type="text" id="Shdate"
+																	name="mydate" />
+															</div>
+														</form>
+													</div>
+													<div class="col-md-6 img_div">
+														<div class="author-image"></div>
+													</div>
+
+													<div class="col-md-12 apply_info sconfirmStr"></div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-primary SreviewBtn"
+													data-toggle="modal" data-target="#review">후기 작성</button>
+											</div>
+										</div>
+									</div>
 								</div>
 
 
 								<div class="col-md-12" id="confirm_imde">
-									<table class="table table-bordered table-choice">
-
+									<table class="table table-bordered table-choice ">
 										<thead>
 											<tr>
 												<th>번호</th>
 												<th>제목</th>
 												<th>작성자</th>
 												<th>연락처</th>
-
-												<th>시간</th>
+												<th>내가 사용할 시간</th>
 											</tr>
 										</thead>
-										<tbody>
-											<tr>
-												<td>1</td>
-												<td>임대</td>
-												<td>cavin</td>
-												<td>010-1111-5885</td>
+										<tbody class="Iconfirm_body">
+											<c:forEach var="IconfirmList" items="${IconfirmList }"
+												varStatus="status" begin="0" end="2">
+												<tr>
+													<td>${status.count }</td>
+													<td><a class="IConfirmBtn" style="color: black"
+														data-cno="${IconfirmList.cno }">${IconfirmList.title }</a></td>
+													<td>${IconfirmList.name }</td>
+													<td>${IconfirmList.phone }</td>
+													<td>${IconfirmList.reservation }</td>
+												</tr>
 
-												<td>18:00~20:00</td>
-											</tr>
-
-											<tr>
-												<td>3</td>
-												<td>rest room</td>
-												<td>john</td>
-												<td>010-1111-5885</td>
-
-												<td>08:00~10:00</td>
-											</tr>
+											</c:forEach>
 										</tbody>
+
 									</table>
 								</div>
+
+								<!-- Modal -->
+								<div class="modal fade sinchung_modal" id="IConfirm"
+									role="dialog">
+									<div class="modal-dialog modal-lg">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<h4 class="modal-title">확정 상세 페이지</h4>
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+											</div>
+											<div class="modal-body left-context">
+												<div class="row">
+													<div class="col-md-6">
+														<form class="apply_form confirm_form" action=""
+															method="post">
+															<input type="hidden" id="ino" name="ino">
+															<div class="apply_content">
+																<label>게시글 제목</label><input type="text" id="Ititle"
+																	name="title" />
+															</div>
+															<div class="apply_Iontent">
+																<label>작업실 주소</label><input type="text" id="Ilocation"
+																	name="location" />
+															</div>
+															<div class="apply_Iontent">
+																<label>작업실 가격</label><input type="text" id="Iprice"
+																	name="price" />
+															</div>
+															<div class="apply_Iontent">
+																<label>등록자 이름</label><input type="text" id="Iname"
+																	name="name" />
+															</div>
+															<div class="apply_Iontent">
+																<label>등록자 번호</label><input type="text" id="Iphone"
+																	name="phone" />
+															</div>
+														</form>
+													</div>
+													<div class="col-md-6 img_div">
+														<div class="author-image"></div>
+													</div>
+													<div class="col-md-12 apply_info iconfirmStr"></div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-primary IreviewBtn"
+													data-toggle="modal" data-target="#review">후기 작성</button>
+											</div>
+
+										</div>
+									</div>
+								</div>
+
 							</div>
+							<!-- Modal -->
+							<div class="modal fade" id="review" role="dialog">
+								<div class="modal-dialog">
+
+									<!-- Modal content-->
+									<div class="modal-content">
+										<div class="modal-header">
+											<h4 class="modal-title">후기 작성</h4>
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
+										</div>
+										<div class="modal-body">
+											<div class="row review-body">
+												<div class="col-md-3">
+													<div class="profile-image"></div>
+												</div>
+												<div class="col-md-9">
+													<form action="new_review" method="post" id="review_form">
+														<input type="hidden" name="${_csrf.parameterName }"
+															value="${_csrf.token }" /> <input type="hidden" id="ino"
+															name="ino"> <input type="hidden" id="sno"
+															name="sno">
+															<input type="hidden" id="cno"
+															name="cno">
+														<div>
+															<sec:authorize access="isAuthenticated()">
+																<input type="hidden" id="mno" name="mno"
+																	value='<sec:authentication property="principal.member.mno"/>' />
+																<span>아이디 : <sec:authentication
+																		property="principal.username" /></span>
+
+															</sec:authorize>
+															<sec:authorize access="isAnonymous ()">
+																<span>회원정보없음</span>
+															</sec:authorize>
+															<span class="star-input"> <span class="input">
+																	<input type="radio" name="star-input" value="1" id="p1">
+																	<label for="p1">1</label> <input type="radio"
+																	name="star-input" value="2" id="p2"> <label
+																	for="p2">2</label> <input type="radio"
+																	name="star-input" value="3" id="p3"> <label
+																	for="p3">3</label> <input type="radio"
+																	name="star-input" value="4" id="p4"> <label
+																	for="p4">4</label> <input type="radio"
+																	name="star-input" value="5" id="p5"> <label
+																	for="p5">5</label> <input type="radio"
+																	name="star-input" value="1" id="p6"> <label
+																	for="p6">6</label> <input type="radio"
+																	name="star-input" value="2" id="p7"> <label
+																	for="p7">7</label> <input type="radio"
+																	name="star-input" value="3" id="p8"> <label
+																	for="p8">8</label> <input type="radio"
+																	name="star-input" value="4" id="p9"> <label
+																	for="p9">9</label> <input type="radio"
+																	name="star-input" value="5" id="p10"> <label
+																	for="p10">10</label>
+															</span>
+															</span> <input type="hidden" id="review_star" name="star"
+																value="" />
+														</div>
+														<div>
+															<textArea id="review-content" name="content"></textArea>
+														</div>
+													</form>
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-info" id="review_insert">등록</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
 						</div>
 					</div>
 					<!--확정내역 끝-->

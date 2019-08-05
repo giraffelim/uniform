@@ -10,6 +10,7 @@ public class StarAvgVO {
 	private int avg;
 	private Long ino;
 	private Long sno;
+	private String location;
 	
 }
 
