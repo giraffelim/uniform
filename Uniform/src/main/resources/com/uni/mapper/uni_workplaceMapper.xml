@@ -44,7 +44,8 @@
 
 	<select id="read" resultMap="leaseMap">
 		select *
-		from uni_workplace_I i , uni_photo p
+		from uni_workplace_I i ,
+		uni_photo p
 		where i.ino = p.ino and i.ino = #{ino}
 	</select>
 
@@ -56,8 +57,10 @@
 	</insert>
 
 	<update id="updateWorkPlace_i">
-		update uni_workplace_i set title = #{title}, location = #{location},
-		thumbnail = #{thumbnail}, comforts = #{comforts}, price = #{price}
+		update uni_workplace_i set title = #{title}, location
+		= #{location},
+		thumbnail = #{thumbnail}, comforts = #{comforts}, price
+		= #{price}
 		where ino = #{ino}
 	</update>
 
@@ -101,7 +104,7 @@
 		i.location order by r.ino
 	</select>
 
-<!-- 공유 작업실에 대한 평균 별점 -->
+	<!-- 공유 작업실에 대한 평균 별점 -->
 	<select id="avg_star_s" resultType="com.uni.domain.StarAvgVO">
 		select round(avg(star)) as
 		avg,
@@ -116,27 +119,29 @@
 	<select id="readHotTopic"
 		resultType="com.uni.domain.uni_hotTopicVO">
 
-		select round(avg(r.star)) as star, m.name, m.photo,
-		w.context,w.thumbnail from
-		uni_workplace_s w,uni_review r, uni_member m
-		where w.sno = r.sno and
-		m.mno = r.mno group by w.sno, w.readcount,
-		m.name, m.photo, w.context,
-		w.thumbnail order by w.readcount desc
+		select round(avg(r.star)) as star, w.name, w.photo, w.sno,
+		w.context, w.thumbnail, w.mno, w.readcount from
+		(select m.name,
+		m.photo, w.sno,
+		w.context,w.thumbnail, m.mno, w.readcount from
+		uni_workplace_s w, uni_member m where w.mno = m.mno) w full outer join
+		uni_review r on w.sno is not null group by w.name, w.photo, w.sno,
+		w.context, w.thumbnail,
+		w.mno, w.readcount order by w.readcount desc
 
 	</select>
 	<!-- 임대 핫토픽 -->
 	<select id="readHotTopicImde"
 		resultType="com.uni.domain.uni_hotTopicVO">
 
-		select round(avg(r.star)) as star, m.name, m.photo,
-		w.context, w.thumbnail
-		from
-		uni_workplace_i w, uni_review r, uni_member
-		m where w.ino = r.ino and
-		m.mno = r.mno group by w.ino, w.readcount,
-		m.name, m.photo,
-		w.context,w.thumbnail order by w.readcount desc
+		select round(avg(r.star)) as star, w.name, w.photo, w.ino,
+		w.context, w.thumbnail, w.mno, w.readcount from
+		(select m.name, m.photo, w.ino,
+		w.context,w.thumbnail, m.mno, w.readcount from
+		uni_workplace_i w, uni_member m where w.mno = m.mno) w full outer join
+		uni_review r on w.ino is not null group by w.name, w.photo, w.ino,
+		w.context, w.thumbnail,
+		w.mno, w.readcount order by w.readcount desc
 
 	</select>
 
@@ -254,13 +259,17 @@
 
 	<!-- 로그인한 사람에 대한 작업실 신청 점보 검색 -->
 	<select id="sinchungList" resultType="com.uni.domain.SinchungVO">
-		select w.title, w.location, w.price, w.name as hname,
+		select w.title, w.location,
+		w.price, w.name as hname,
 		w.phone as hphone,
-		m.name as cname, m.phone as cphone, s.ino,
+		m.name as cname, m.phone as
+		cphone, s.ino,
 		s.reservation, m.mno
-		from uni_sinchung s, uni_member m, (select * from
+		from uni_sinchung s, uni_member m,
+		(select * from
 		uni_workplace_i i,
-		uni_member m where i.mno = m.mno) w where w.ino =
+		uni_member m where i.mno = m.mno) w
+		where w.ino =
 		s.ino
 		and m.mno = s.mno and s.ino = #{no} order by s.ino
 	</select>
