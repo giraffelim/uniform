@@ -296,6 +296,14 @@
 																<label>사용할 시간</label><input type="text" id="reservation"
 																	name="reservation" />
 															</div>
+															<div class="apply_content" style="display:none;">
+																<label>사용할 시간</label><input type="text" id="reservation1"
+																	name="reservation" />
+															</div>
+															<div class="apply_content" style="display:none;">
+																<label>사용할 시간</label><input type="text" id="reservation2"
+																	name="reservation" />
+															</div>
 														</form>
 													</div>
 													<div class="col-md-6 img_div">

@@ -107,6 +107,7 @@ public class MemberController {
 	}
 
 	// index에서 마이페이지 클릭시 이동
+
 	@GetMapping("/myPage")
 	public void mypage(Model model, Long mno) {
 		log.info("마이페이지 컨트롤러 mno" + mno);

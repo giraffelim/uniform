@@ -97,6 +97,7 @@
 
 					</sec:authorize>
 					<span><a href="/uniform/join">회원가입</a></span>
+
 				<sec:authorize access="isAuthenticated()">
 						<sec:authentication property="principal" var="pinfo" />
 						<span id="myPageNav"><a

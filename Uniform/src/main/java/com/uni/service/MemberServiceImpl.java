@@ -38,10 +38,10 @@ import net.coobird.thumbnailator.Thumbnailator;
 @AllArgsConstructor
 @Log4j
 public class MemberServiceImpl implements MemberService {
-	
+
 	@Setter(onMethod_ = @Autowired)
 	private uni_MemberMapper mapper;
-	
+
 	@Autowired
 	private PasswordEncoder pwencoder;
 
@@ -60,7 +60,7 @@ public class MemberServiceImpl implements MemberService {
 		UUID uuid = UUID.randomUUID();
 		String str = Long.toString(uuid.getLeastSignificantBits(), 16);
 		userPW = str.substring(9);
-		
+
 		String encoding_userPW = pwencoder.encode(userPW);
 
 		if (mapper.find_pw(encoding_userPW, userID, email)) {
@@ -84,7 +84,7 @@ public class MemberServiceImpl implements MemberService {
 			};
 			mailSender.send(preparator);
 		}
-		
+
 		return mapper.find_pw(encoding_userPW, userID, email) == true ? true : false;
 	}
 
@@ -93,9 +93,7 @@ public class MemberServiceImpl implements MemberService {
 	public void insertSelectKey(uni_MemberVO member) {
 		mapper.insertSelectKey(member);
 		mapper.insert(member.getMno());
-		
-		
-		
+
 	}
 
 	@Override
@@ -104,7 +102,7 @@ public class MemberServiceImpl implements MemberService {
 		log.info("--------------- userid : " + mapper.checkID(userID));
 		return mapper.checkID(userID);
 	}
-	
+
 	@Transactional
 	@Override
 	public void insertInfoMember(uni_MemberVO member) {
@@ -122,7 +120,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void mergeGoogle(uni_MemberVO vo) {
 		// TODO Auto-generated method stub
-		 mapper.mergeGoogle(vo);
+		mapper.mergeGoogle(vo);
 	}
 
 	@Override
@@ -134,16 +132,14 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 
 	public boolean updateMember(uni_MemberVO vo) {
-		
-		boolean resultUpdate = mapper.updateMember(vo)== 1;
-		
+
+		boolean resultUpdate = mapper.updateMember(vo) == 1;
+
 		return resultUpdate;
 	}
-	
-	@Override
-	public uni_MemberVO getMember(int mno) {
-		// TODO Auto-generated method stub
-		return mapper.readMember(mno);
+
+	public List<uni_hotTopicVO> list() {
+		return mapper.readHotTopic();
 	}
 
 	@Override
@@ -151,144 +147,147 @@ public class MemberServiceImpl implements MemberService {
 		String all = "";
 		String uploadFolder = "C:\\upload";
 		String uploadFolderPath = getFolder();
-		//저장 폴더 경로 설정하기 (저장 경로,날짜 세퍼레이터)
+		// 저장 폴더 경로 설정하기 (저장 경로,날짜 세퍼레이터)
 		File uploadPath = new File(uploadFolder, getFolder());
 		log.info("uploadPath : " + uploadPath);
-		
-		//현재 파일경로가 존재한다면 true 파일경로가 존재하지 않으면 false
-		//mkdirs를 생성한다. yyyy/MM/dd
-		if(uploadPath.exists() == false) {
+
+		// 현재 파일경로가 존재한다면 true 파일경로가 존재하지 않으면 false
+		// mkdirs를 생성한다. yyyy/MM/dd
+		if (uploadPath.exists() == false) {
 			uploadPath.mkdirs();
-			}
-		
-		//foreach문으로 배열처리
-		for(MultipartFile multipartFile : uploadFile) {
+		}
+
+		// foreach문으로 배열처리
+		for (MultipartFile multipartFile : uploadFile) {
 			log.info("------------------------------");
-			log.info("upload File name"+ multipartFile.getOriginalFilename());
-			log.info("upload File size"+ multipartFile.getSize());
-			
-			//크롬은 파일명만 들어감
+			log.info("upload File name" + multipartFile.getOriginalFilename());
+			log.info("upload File size" + multipartFile.getSize());
+
+			// 크롬은 파일명만 들어감
 			String uploadFileName = multipartFile.getOriginalFilename();
-			
-			//IE는 경로로 들어가기 때문에 substring(읽을 문자열 인덱스);
-			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\")+1);
-			
-			log.info("업로드된 파일 실제 이름 : "+uploadFileName);
-			
+
+			// IE는 경로로 들어가기 때문에 substring(읽을 문자열 인덱스);
+			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
+
+			log.info("업로드된 파일 실제 이름 : " + uploadFileName);
+
 			UUID uuid = UUID.randomUUID();
-			
-			uploadFileName = uuid.toString() +"_"+ uploadFileName;
-			
+
+			uploadFileName = uuid.toString() + "_" + uploadFileName;
+
 			try {
-				//날짜별폴더에 파일 생성
-				File saveFile = new File(uploadPath,uploadFileName);
-				
-				//실제 업로드
+				// 날짜별폴더에 파일 생성
+				File saveFile = new File(uploadPath, uploadFileName);
+
+				// 실제 업로드
 				multipartFile.transferTo(saveFile);
-				all = all+ uploadFolderPath;
-				//mime 타입 이미지 검증
-				if(checkImageType(saveFile)) {
-					
-					//썸네일 객체 생성
-					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_"+ uploadFileName));
-					
-					//썸네일레이터 사용하여 실제 적용
-					Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 100, 100); 
-					
-					all = all+"\\s_"+uploadFileName;
-					log.info("all==========================================="+all);
+				all = all + uploadFolderPath;
+				// mime 타입 이미지 검증
+				if (checkImageType(saveFile)) {
+
+					// 썸네일 객체 생성
+					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_" + uploadFileName));
+
+					// 썸네일레이터 사용하여 실제 적용
+					Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 100, 100);
+
+					all = all + "\\s_" + uploadFileName;
+					log.info("all===========================================" + all);
 					thumbnail.close();
-					
-				}else {
-					return new ResponseEntity<String>("fail" , HttpStatus.OK);
+
+				} else {
+					return new ResponseEntity<String>("fail", HttpStatus.OK);
 				}
-				
+
 			} catch (Exception e) {
 				log.error(e.getMessage());
-			}//catch
-		}//for
-	
-		return new ResponseEntity<String>(all , HttpStatus.OK);
+			} // catch
+		} // for
+
+		return new ResponseEntity<String>(all, HttpStatus.OK);
 	}
-	
 
 	@Override
 	public ResponseEntity<byte[]> getFile(String fileName) {
-		//String rootDirectory = "c:\\upload\";
-		 log.info("display fileName============================="+fileName);
-		 File file = new File("c:\\upload\\"+fileName);
-		 log.info("display file================"+file);
-		 
-		 ResponseEntity<byte[]> result = null;
-		 
-		 try {
-			//File file = new File("c:\\upload\\"+URLDecoder.decode(fileName, "UTF-8"));
-			//log.info("display file================"+file);
+		// String rootDirectory = "c:\\upload\";
+		log.info("display fileName=============================" + fileName);
+		File file = new File("c:\\upload\\" + fileName);
+		log.info("display file================" + file);
+
+		ResponseEntity<byte[]> result = null;
+
+		try {
+			// File file = new File("c:\\upload\\"+URLDecoder.decode(fileName, "UTF-8"));
+			// log.info("display file================"+file);
 			HttpHeaders header = new HttpHeaders();
 			String contentType = new Tika().detect(file.toPath());
-			header.add("Content-Type", contentType );
+			header.add("Content-Type", contentType);
 			result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		 
-		 return result;
+
+		return result;
 	}
 
 	@Override
 	public ResponseEntity<String> deleteFile(String fileName) {
 		log.info("deleteFile : " + fileName);
-		 File file;
-		 
-		 try {
-			//썸네일 파일 삭제. file 디코드 상태로 만들기
-			//file = new File("c:\\upload\\" + URLDecoder.decode(fileName, "UTF-8"));
-			
+		File file;
+
+		try {
+			// 썸네일 파일 삭제. file 디코드 상태로 만들기
+			// file = new File("c:\\upload\\" + URLDecoder.decode(fileName, "UTF-8"));
+
 			file = new File("c:\\upload\\" + URLDecoder.decode(fileName, "UTF-8"));
-			
-			
+
 			file.delete();
-			//원본파일 삭제하기 위한 replace
+			// 원본파일 삭제하기 위한 replace
 			String largeFileName = file.getAbsolutePath().replace("s_", "");
 			log.info("largeFileName" + largeFileName);
-			
-			//원본파일 삭제하기. 
+
+			// 원본파일 삭제하기.
 			file = new File(largeFileName);
 			file.delete();
-			
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}
-		 return new ResponseEntity<String>("delete", HttpStatus.OK);
+		return new ResponseEntity<String>("delete", HttpStatus.OK);
 	}
-	
-	//프로필 업로드 관련 메서드
-		private String getFolder() {
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			
-			Date date = new Date();
-			
-			String str = sdf.format(date);
-			
-			return str.replace("-", File.separator);
-		}
-		private boolean checkImageType(File file) {
-			
-			try {
-				String contentType = new Tika().detect(file);
-				log.info(contentType);
-				return contentType.startsWith("image");
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-			return false;
+
+	// 프로필 업로드 관련 메서드
+	private String getFolder() {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		Date date = new Date();
+
+		String str = sdf.format(date);
+
+		return str.replace("-", File.separator);
+	}
+
+	private boolean checkImageType(File file) {
+
+		try {
+			String contentType = new Tika().detect(file);
+			log.info(contentType);
+			return contentType.startsWith("image");
+
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
+		return false;
+	}
 
+	/* 누가 했는진 모르겠지만 하던거 마저 수정하세요 */
+	@Override
+	public uni_MemberVO getMember(int mno) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

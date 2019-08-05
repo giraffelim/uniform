@@ -11,8 +11,8 @@ import com.uni.domain.Sinchung_ListVO;
 import com.uni.domain.StarAvgVO;
 import com.uni.domain.uni_PhotoVO;
 import com.uni.domain.uni_confirmVO;
+import com.uni.domain.uni_ShinChungVO;
 import com.uni.domain.uni_hotTopicVO;
-
 import com.uni.domain.uni_workplace_iVO;
 
 public interface uni_workplaceMapper {
@@ -83,6 +83,15 @@ public interface uni_workplaceMapper {
 			@Param("sno") Long sno, @Param("cno") Long cno);
 	
 	public int getWorkplaceCount();
-
-
+	
+	// 배치 프로그램 쿼리
+	public List<uni_PhotoVO> getOldFiles();
+	
+	// shinchung List get
+	public List<uni_ShinChungVO> getShinChung(int ino);
+	
+	// like shinchung
+	public uni_ShinChungVO getShinChungLike(@Param("ino") int ino, @Param("reservation") String reservation);
+	
+	public void insertShinChung(uni_ShinChungVO vo);
 }

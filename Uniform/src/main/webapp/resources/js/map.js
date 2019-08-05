@@ -101,6 +101,7 @@ $(function() {
 							resultList,
 							function(index, item) {
 								var regDates = resultList[index].rdate.substring(0, 10);
+
 								if (index >= firstCount && index < lastCount) {
 									str = '<div class="col-md-12"> <div class="blog-entry"> ';
 									str += '<a href="#" class="img img-2" style="background-image: url(/resources/images/image_1.jpg);"> </a> ';

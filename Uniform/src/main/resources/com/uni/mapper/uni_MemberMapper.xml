@@ -120,34 +120,6 @@
 		select userPW from uni_member where userID = #{userID}
 	</select>
 
-	<!-- 공유 핫토픽 -->
-	<select id="readHotTopic"
-		resultType="com.uni.domain.uni_hotTopicVO">
-
-		select round(avg(r.star)) as star, m.name, m.photo,
-		w.context,w.thumbnail from
-		uni_workplace_s w,uni_review r, uni_member m
-		where w.sno = r.sno and
-		m.mno = r.mno group by w.sno, w.readcount,
-		m.name, m.photo, w.context,
-		w.thumbnail order by w.readcount desc
-
-	</select>
-	<!-- 임대 핫토픽 -->
-	<select id="readHotTopicImde"
-		resultType="com.uni.domain.uni_hotTopicVO">
-
-		select round(avg(r.star)) as star, m.name, m.photo,
-		w.context, w.thumbnail
-		from
-		uni_workplace_i w, uni_review r, uni_member
-		m where w.ino = r.ino and
-		m.mno = r.mno group by w.ino, w.readcount,
-		m.name, m.photo,
-		w.context,w.thumbnail order by w.readcount desc
-
-	</select>
-	
 	<select id="readMember" resultType="com.uni.domain.uni_MemberVO">
 		select * from uni_member where mno = #{mno}
 	</select>

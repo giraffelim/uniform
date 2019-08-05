@@ -144,8 +144,27 @@ $(function() {
 				$("#price").val(item.price);
 				$("#name").val(item.name);
 				$("#phone").val(item.phone);
+				
+				var reservations = item.reservation.split(",");
+
 				if (loginMno == item.mno + "") {
-					$("#reservation").val(item.reservation);
+					switch(reservations.length){
+					case 1:
+						$("#reservation").val(reservations[0]);
+						break;
+					case 2:
+						$("#reservation").val(reservations[0]);
+						$("#reservation1").val(reservations[1]);
+						$(".apply_content").eq(6).css("display","block");
+						break;
+					case 3:
+						$("#reservation").val(reservations[0]);
+						$("#reservation1").val(reservations[1]);
+						$("#reservation2").val(reservations[2]);
+						$(".apply_content").eq(6).css("display","block");
+						$(".apply_content").eq(7).css("display","block");
+						break;
+					}
 				}
 			});
 		});

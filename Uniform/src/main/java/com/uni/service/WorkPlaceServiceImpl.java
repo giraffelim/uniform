@@ -14,11 +14,11 @@ import com.uni.domain.SWorkPlaceVO;
 import com.uni.domain.SinchungVO;
 import com.uni.domain.Sinchung_ListVO;
 import com.uni.domain.StarAvgVO;
-
+import com.uni.domain.uni_MemberVO;
 import com.uni.domain.uni_PhotoVO;
 import com.uni.domain.uni_confirmVO;
+import com.uni.domain.uni_ShinChungVO;
 import com.uni.domain.uni_hotTopicVO;
-
 import com.uni.domain.uni_workplace_iVO;
 import com.uni.mapper.uni_workplaceMapper;
 import com.uni.service.WorkPlaceService;
@@ -129,7 +129,6 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 			return mapper.avg_star_i(location);
 		}
 	}
-
 	@Transactional
 	@Override
 	public List<Sinchung_ListVO> sinchung_list(Long mno) {
@@ -363,6 +362,26 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 	@Override
 	public int getWorkplaceCount() {
 		return mapper.getWorkplaceCount();
+	}
+	
+	public List<uni_ShinChungVO> getShinChung(int ino) {
+		// TODO Auto-generated method stub
+		return mapper.getShinChung(ino);
+	}
+	
+	@Transactional
+	@Override
+	public void insertShinChung(uni_ShinChungVO vo) {
+		//TODO split 배열로 하나씩 넣어서 검증
+		String[] validate = vo.getReservation().split(",");
+		for(int i=0; i<validate.length; i++) {
+			uni_ShinChungVO confirmVO = mapper.getShinChungLike(vo.getIno(), validate[i]);
+			if(confirmVO != null) {
+				return;
+			}
+		}
+		
+		mapper.insertShinChung(vo);
 	}
 
 }

@@ -32,13 +32,12 @@ public interface MemberService {
 
 	public void mergeNaver(uni_MemberVO vo);
 	
-	public uni_MemberVO getMember(int mno);
-	
 	public ResponseEntity<String> uploadProfile(MultipartFile[] uploadFile);
 	
 	public ResponseEntity<byte[]> getFile(String fileName);
 	
 	public ResponseEntity<String> deleteFile(String fileName);
 
-
+	public uni_MemberVO getMember(int mno);
+	
 }

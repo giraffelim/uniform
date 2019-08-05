@@ -10,6 +10,7 @@ import com.uni.domain.SinchungVO;
 import com.uni.domain.Sinchung_ListVO;
 import com.uni.domain.StarAvgVO;
 import com.uni.domain.uni_confirmVO;
+import com.uni.domain.uni_ShinChungVO;
 import com.uni.domain.uni_hotTopicVO;
 import com.uni.domain.uni_workplace_iVO;
 
@@ -39,7 +40,11 @@ public interface WorkPlaceService {
 	public List<uni_hotTopicVO> list();
 
 	public List<uni_hotTopicVO> listImde();
-
+	
+	public List<uni_ShinChungVO> getShinChung(int ino);
+	
+	public void insertShinChung(uni_ShinChungVO vo);
+	
 	public List<Sinchung_ListVO> sinchung_list(Long mno);
 
 	public List<Sinchung_ListVO> Isinchung_list(Long mno);
