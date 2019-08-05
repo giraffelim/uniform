@@ -22,8 +22,6 @@ $(function() {
 	if (jsonLast == null || jsonLast == " ") {
 		jsonLast = "fail";
 	}
-	console.log(jsonLocation + " : " + jsonType + " : " + jsonFirst + " : "
-			+ jsonLast);
 
 	$.getJSON('/uniform/scroll_result.json', {
 		location : jsonLocation,
@@ -96,17 +94,15 @@ $(function() {
 
 	/*작업실 정보를 검색한 만큼 append해주는 함수*/
 	function showList(resultList, firstCount, lastCount, jsonType) {
-		console.log(jsonType);
 		if (jsonType === 'share') {
 
 			$
 					.each(
 							resultList,
 							function(index, item) {
-								var regDates = resultList[index].regDate
-										.substring(0, 10);
+								var regDates = resultList[index].rdate.substring(0, 10);
+
 								if (index >= firstCount && index < lastCount) {
-									console.log(resultList[index]);
 									str = '<div class="col-md-12"> <div class="blog-entry"> ';
 									str += '<a href="#" class="img img-2" style="background-image: url(/resources/images/image_1.jpg);"> </a> ';
 									str += '<div class="text pt-3"> <h2 class="mb-2">'
@@ -142,7 +138,6 @@ $(function() {
 								var regDates = resultList[index].regDate
 										.substring(0, 10);
 								if (index >= firstCount && index < lastCount) {
-									console.log(resultList[index]);
 									str = '<div class="col-md-12"> <div class="blog-entry"> ';
 									str += '<a href="#" class="img img-2" style="background-image: url(/resources/images/image_1.jpg);"> </a> ';
 									str += '<div class="text pt-3"> <h2 class="mb-2">'

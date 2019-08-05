@@ -119,7 +119,7 @@
 		resultType="com.uni.domain.uni_MemberVO">
 		select userPW from uni_member where userID = #{userID}
 	</select>
-	
+
 	<select id="readMember" resultType="com.uni.domain.uni_MemberVO">
 		select * from uni_member where mno = #{mno}
 	</select>

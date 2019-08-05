@@ -23,6 +23,7 @@
 		<property name="username" value="ora_user"></property>
 		<property name="password" value="1234"></property>
 
+
 	</bean>
 
 	<!--HikariCP Configration -->
@@ -46,8 +47,6 @@
 	<context:component-scan
 		base-package="com.uni.service"></context:component-scan>
 
-	<!-- <tx:annotation-driven/> <task:annotation-driven/> <context:component-scan 
-		base-package="org.zerock.task"></context:component-scan> -->
 
 	<!-- 메일을 보내기 위한 bean 설정 -->
 	<bean id="mailSender"
@@ -64,8 +63,11 @@
 		</property>
 	</bean>
 
-	<tx:annotation-driven />
+	 <tx:annotation-driven/>
+	 
+	 <task:annotation-driven/> 
+	 
+	 <context:component-scan base-package="com.uni.task"></context:component-scan>
 
-	<!-- <task:annotation-driven/> <context:component-scan base-package="org.zerock.task"></context:component-scan> -->
 
 </beans>

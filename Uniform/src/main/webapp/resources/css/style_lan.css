@@ -47,7 +47,7 @@
 }
 
 .modal-body {
-	padding-left: 7em;
+	padding-left: 5em;
 }
 
 #name-label {
@@ -274,7 +274,6 @@ star-input>.input.focus {
 	background: #0a0a0a;
 }
 
-
 .apply {
 	margin-bottom: 3em;
 }
@@ -349,4 +348,50 @@ star-input>.input.focus {
 .applyInfo label {
 	margin: 0.8em;
 	width: 3em;
+}
+
+#review-content {
+	margin-top: 1em;
+	width: 18em;
+	height: 10em;
+}
+
+.review-body {
+	margin-left: -4em;
+}
+
+.apply_info {
+	margin: 0 2.2em;
+}
+
+.apply_info label {
+	width: 2em;
+	margin: 1em 0.5em;
+}
+
+.apply_info input {
+	width: 12em;
+	margin-bottom: 1em;
+}
+
+#confirm_prev {
+	position: absolute;
+	right: 3em;
+	bottom: 0.5em;
+	margin-right: 1em;
+	z-index: 100;
+	display: none;
+}
+
+#confirm_next {
+	position: absolute;
+	right: 0;
+	bottom: 0.5em;
+	margin-right: 1em;
+	z-index: 100;
+	display: none;
+}
+
+#SConfirm, #IConfirm {
+	top: 10%;
 }

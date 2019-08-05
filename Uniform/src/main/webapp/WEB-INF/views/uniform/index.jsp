@@ -37,7 +37,7 @@
 							class="col-md d-flex justify-content-center counter-wrap ftco-animate">
 							<div class="block-18">
 								<div class="text">
-									<strong class="number" data-number="18">0</strong> <span>개의 작업실이 준비되어있어요!</span>
+									<strong class="number" data-number="${workplaceCount }">0</strong> <span>개의 작업실이 준비되어있어요!</span>
 								</div>
 							</div>
 						</div>
