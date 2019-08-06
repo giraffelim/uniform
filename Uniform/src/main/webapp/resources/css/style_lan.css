@@ -395,3 +395,18 @@ star-input>.input.focus {
 #SConfirm, #IConfirm {
 	top: 10%;
 }
+
+.thumbnail img {
+	width: 100%;
+	height: 100%;
+}
+
+#IThumbnail img {
+	width: 100%;
+	height: 100%;
+}
+
+#SThumbnail img {
+	width: 100%;
+	height: 100%;
+}

@@ -11,11 +11,10 @@
 <link rel="stylesheet" href="/resources/css/avg_star.css">
 
 <div id="colorlib-main">
-<script>
-	var csrfHeaderName = "${_csrf.headerName }";
-	var csrfTokenValue = "${_csrf.token }";
-
-</script>
+	<script>
+		var csrfHeaderName = "${_csrf.headerName }";
+		var csrfTokenValue = "${_csrf.token }";
+	</script>
 
 
 	<sec:authentication property="principal" var="pinfo" />
@@ -51,7 +50,8 @@
 										<div class="row profile-Row">
 											<div
 												class="col-sm-4 icon d-flex justify-content-center align-items-center profile-icon">
-												<span class="flaticon-idea"></span>
+												<span><img
+													src="/uniform/display?fileName=${pinfo.member.photo }"></span>
 											</div>
 											<div class="col-sm-8 media-body p-2 mt-3 profile-context">
 
@@ -296,13 +296,13 @@
 																<label>사용할 시간</label><input type="text" id="reservation"
 																	name="reservation" />
 															</div>
-															<div class="apply_content" style="display:none;">
-																<label>사용할 시간</label><input type="text" id="reservation1"
-																	name="reservation" />
+															<div class="apply_content" style="display: none;">
+																<label>사용할 시간</label><input type="text"
+																	id="reservation1" name="reservation" />
 															</div>
-															<div class="apply_content" style="display:none;">
-																<label>사용할 시간</label><input type="text" id="reservation2"
-																	name="reservation" />
+															<div class="apply_content" style="display: none;">
+																<label>사용할 시간</label><input type="text"
+																	id="reservation2" name="reservation" />
 															</div>
 														</form>
 													</div>
@@ -425,7 +425,7 @@
 														</form>
 													</div>
 													<div class="col-md-6 img_div">
-														<div class="author-image"></div>
+														<div class="author-image" id="SThumbnail"></div>
 													</div>
 
 													<div class="col-md-12 apply_info sconfirmStr"></div>
@@ -509,7 +509,7 @@
 														</form>
 													</div>
 													<div class="col-md-6 img_div">
-														<div class="author-image"></div>
+														<div class="author-image" id="IThumbnail"></div>
 													</div>
 													<div class="col-md-12 apply_info iconfirmStr"></div>
 												</div>
@@ -544,8 +544,7 @@
 														<input type="hidden" name="${_csrf.parameterName }"
 															value="${_csrf.token }" /> <input type="hidden" id="ino"
 															name="ino"> <input type="hidden" id="sno"
-															name="sno">
-															<input type="hidden" id="cno"
+															name="sno"> <input type="hidden" id="cno"
 															name="cno">
 														<div>
 															<sec:authorize access="isAuthenticated()">
@@ -599,7 +598,7 @@
 
 						</div>
 					</div>
-					<!--확정내역 끝--> 
+					<!--확정내역 끝-->
 				</div>
 			</div>
 		</div>

@@ -57,7 +57,7 @@ public class UploadController {
 	public ResponseEntity<List<uni_AttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile) {
 		List<uni_AttachFileDTO> list = new ArrayList<uni_AttachFileDTO>();
 		// 업로드 될 경로
-		String uploadFolder = "/Users/admin/upload";
+		String uploadFolder = "c:/upload/temp/";
 		
 		String uploadFolderPath = getFolder();
 		// make Folder
@@ -121,7 +121,7 @@ public class UploadController {
 
 		try {
 			log.warn("encode FileName: " + URLDecoder.decode(fileName, "utf-8"));
-			file = new File("/Users/admin/upload/" + URLDecoder.decode(fileName, "utf-8"));
+			file = new File("c:/upload/temp/" + URLDecoder.decode(fileName, "utf-8"));
 			file.delete();
 			String largeFileName = file.getAbsolutePath().replace("Is_", "");
 			log.info("largeFileName: " + largeFileName);
@@ -140,7 +140,7 @@ public class UploadController {
 		log.info("getFile");
 		log.info("fileName" + fileName);
 		// 파일 객체 생성
-		File file = new File("/Users/admin/upload/" + fileName);
+		File file = new File("c:/upload/temp/" + fileName);
 		log.info("file: " + file);
 		// 결과를 리턴할 ResponseEntity 객체 생성
 		ResponseEntity<byte[]> result = null;

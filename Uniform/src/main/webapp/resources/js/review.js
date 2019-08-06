@@ -29,6 +29,9 @@ var reviewFlag;
 
 var cNo;
 
+var iconfirmThumbnail;
+var sconfirmThumbnail;
+
 $(function() {
 
 	/* 후기 작성 시 마우스를 이동해서 별점을 설정하면 값을 가져가는 부분 */
@@ -368,10 +371,13 @@ $(function() {
 				$("#Sphone").val(item.phone);
 				$("#Shtime").val(item.myTime);
 				$("#Shdate").val(item.myDate);
+				var thumbnailEncode = encodeURIComponent(item.thumbnail);
+				sconfirmThumbnail = '<img src="/display?fileName='+thumbnailEncode+'">';
 				sconfirmStr += '<label>이름</label><input type="text" id="Scname'+item.cno+'" name="cname" value="'+item.cname+'"/>';
 				sconfirmStr += '<label>번호</label><input type="text" id="Scphone'+item.cno+'" name="cphone"  value="'+item.cphone+'"/>';
 				sconfirmStr += '<label>시간</label><input type="text" id="Sreservation'+item.cno+'" name="reservation"  value="'+item.reservation+'"/> <br>';
 			});
+			$("#SThumbnail").html(scnofirmThumbnail);
 			$(".sconfirmStr").html(sconfirmStr);
 		});
 
@@ -393,10 +399,14 @@ $(function() {
 				$("#Iprice").val(item.price);
 				$("#Iname").val(item.name);
 				$("#Iphone").val(item.phone);
+				var thumbnailEncode = encodeURIComponent(item.thumbnail);
+				console.log(item.thumbnail + " : " + thumbnailEncode);
+				iconfirmThumbnail = '<img src="/display?fileName='+thumbnailEncode+'">';
 				iconfirmStr += '<label>이름</label><input type="text" id="Scname'+item.cno+'" name="cname" value="'+item.cname+'"/>';
 				iconfirmStr += '<label>번호</label><input type="text" id="Scphone'+item.cno+'" name="cphone"  value="'+item.cphone+'"/>';
 				iconfirmStr += '<label>시간</label><input type="text" id="Sreservation'+item.cno+'" name="reservation"  value="'+item.reservation+'"/> <br>';
 			});
+			$("#IThumbnail").html(iconfirmThumbnail);
 			$(".iconfirmStr").html(iconfirmStr);
 		});
 

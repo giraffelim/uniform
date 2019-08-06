@@ -33,7 +33,7 @@
 
 	<insert id="insertWorkPlace_i">
 		<selectKey keyProperty="ino" order="BEFORE" resultType="int">
-			select uni_workplace_i_seq.nextval from dual
+			select uni_workplace_i_seq.nextval+10 from dual
 		</selectKey>
 		insert into uni_workplace_i (ino, title, location, thumbnail,
 		comforts, price, context, rDate, mno, readcount)
