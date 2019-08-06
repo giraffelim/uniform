@@ -111,44 +111,53 @@
 
         }
 
-       #inoPhotoNum1 {
-            background-image: url(/img/1.jpg);
+               #inoPhotoNum1{
+            position: relative;
+        }
+       .num1{
+            /*background-image: url(/img/.jpg);
             background-repeat: no-repeat;
             background-size: cover;
-            background-position: center;
-            overflow: hidden;
+            background-position: center;*/
+            /*overflow: hidden;*/
+           width: 100%; 
+           height: 100%;
+           display: block;           
+           position:absolute;
+           top:0;
+           left:0;
 
         }
 
         #inoPhotoNum2 {
-            background-image: url(/img/2.jpg);
+            /*background-image: url(/img/2.jpg);
             background-repeat: no-repeat;
             background-size: cover;
-            background-position: center;
+            background-position: center;*/
             overflow: hidden;
         }
 
         #inoPhotoNum3 {
-            background-image: url(/img/3.jpg);
+            /*background-image: url(/img/3.jpg);
             background-repeat: no-repeat;
             background-size: cover;
-            background-position: center;
+            background-position: center;*/
             overflow: hidden;
         }
 
         #inoPhotoNum4 {
-            background-image: url(/img/4.jpg);
+            /*background-image: url(/img/4.jpg);
             background-repeat: no-repeat;
             background-size: cover;
-            background-position: center;
+            background-position: center;*/
             overflow: hidden;
         }
 
         #inoPhotoNum5 {
-            background-image: url(/img/5.jpg);
+            /*background-image: url(/img/5.jpg);
             background-repeat: no-repeat;
             background-size: cover;
-            background-position: center;
+            background-position: center;*/
             overflow: hidden;
         }
 
@@ -246,121 +255,160 @@
     </style>
 
 <link rel="stylesheet" href="/resources/css/style_ino.css">
-<sec:authentication property="principal" var="pinfo"/>
+ <sec:authorize access="isAuthenticated()">
+ 	<sec:authentication property="principal" var="pinfo"/>
+ </sec:authorize>
 
     <script type="text/javascript"
     src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&libraries=services"></script>
 <script>
 function clearSelect(){
-	$('select').prop('selectedIndex',0);
-	$("#timeSelect").find("input[name='reservation']").remove();
-	$(".res option").removeAttr("disabled");
-	   var hourback = "${hourback}";
-	   var hourbacks = "${hourback}"*1;
-	   var hourfront = "${hourfront}";
-	   var hourfronts = "${hourfront}"*1;
-	   if(hourbacks < 10 || hourfronts < 10){
-	   	hourback = "0"+"${hourback}";
-	   	hourfronts = "0"+"${hourfronts}";
-	   }
-	   hourbackDisable(hourback, hourfront);
+   $('select').prop('selectedIndex',0);
+   $("#timeSelect").find("input[name='reservation']").remove();
+   $(".res option").removeAttr("disabled");
+      var hourback = "${hourback}";
+      var hourbacks = "${hourback}"*1;
+      var hourfront = "${hourfront}";
+      var hourfronts = "${hourfront}"*1;
+      if(hourbacks < 10 || hourfronts < 10){
+         hourback = "0"+"${hourback}";
+         hourfronts = "0"+"${hourfronts}";
+      }
+      hourbackDisable(hourback, hourfront);
 }
 
 function hourbackDisable(hourback, hourfront){
-	   $(".res option").each(function(k, obj){
-			var objs = $(this).data("res");
-			objs += "";
-			var arrayObjs = objs.split("~");
-			arrayObjs[0] = arrayObjs[0]+"";
-			arrayObjs[1] = arrayObjs[1]+"";
-			arrayObjs[0] = arrayObjs[0].replace(":00","");
-			arrayObjs[1] = arrayObjs[1].replace(":00","");
-			if(arrayObjs[1] <= hourback){
-				$(this).attr("disabled","true")
-			}
-			if(arrayObjs[0] <= hourfront){
-				$(this).attr("disabled","true")
-			} 
-	   });	  
-	   sdisableOption();
+      $(".res option").each(function(k, obj){
+         var objs = $(this).data("res");
+         objs += "";
+         var arrayObjs = objs.split("~");
+         arrayObjs[0] = arrayObjs[0]+"";
+         arrayObjs[1] = arrayObjs[1]+"";
+         arrayObjs[0] = arrayObjs[0].replace(":00","");
+         arrayObjs[1] = arrayObjs[1].replace(":00","");
+         if(arrayObjs[1] <= hourback){
+            $(this).attr("disabled","true")
+         }
+         if(arrayObjs[0] <= hourfront){
+            $(this).attr("disabled","true")
+         } 
+      });     
+      sdisableOption();
 }
 
 function sdisableOption(){
-	   // shinChung List
-	   $("input[name='shinChung']").each(function(i, obj){
-		   var arrayObj = $(obj).val().split(",");
-		   for(var i=0; i<arrayObj.length; i++){
-					$(".res option").each(function(j, obj){ 
-						if($(this).data("res") == arrayObj[i]){
-							$(this).attr("disabled","true")
-							return;
-						}
-					});
-		   }
-		   });   
+      // shinChung List
+      $("input[name='shinChung']").each(function(i, obj){
+         var arrayObj = $(obj).val().split(",");
+         for(var i=0; i<arrayObj.length; i++){
+               $(".res option").each(function(j, obj){ 
+                  if($(this).data("res") == arrayObj[i]){
+                     $(this).attr("disabled","true")
+                     return;
+                  }
+               });
+         }
+         });   
 }
 
 function cdisableOption(val){
-	$(".res option").each(function(i,obj){
-		if($(this).data("res") == val){
-			$(this).attr("disabled","true");
-		}
-	})
+   $(".res option").each(function(i,obj){
+      if($(this).data("res") == val){
+         $(this).attr("disabled","true");
+      }
+   })
 }
 
    $(function() {
-	   $.ajax({
-		   url : "/uniform/memberByMno?mno=${workplaceVO.mno}",
-		   type : "get",
-		   success : function(result){
-			   $("#addName").html("등록자명: "+result.name);
-			   $("#addNames").html(result.name);
-			   $("#addPhone").html("등록자번호: "+result.phone);
-			   $("#addEmail").html("등록자이메일: "+result.email);
-			   if(result.userID.length > 20){
-			   	$(".userPhotoD").attr("src", result.photo);
-			   }else{
-				   if(result.photo == ""){
-					   	$(".userPhotoID").attr("src","/resources/image/profileDefault.jpg");
-				   }else{
-				   		$(".userPhotoID").attr("src","display?fileName="+resultPhoto);
-				   }
-			   }
-		   },
-		   error : function(err){
-			   console.log(err);
-		   }
-	   });
-	   
-	   $("input[type=submit]").click(function(e){
-		   e.preventDefault();
-		   $("#timeSelect").submit();
-	   });
-	   
-	   var hourback = "${hourback}";
-	   var hourbacks = "${hourback}"*1;
-	   var hourfront = "${hourfront}";
-	   var hourfronts = "${hourfront}"*1;
-	   if(hourbacks < 10 || hourfronts < 10){
-	   	hourback = "0"+"${hourback}";
-	   	hourfronts = "0"+"${hourfronts}";
-	   }
-	   hourbackDisable(hourback, hourfront);
-	   
+      $.ajax({
+         url : "/uniform/memberByMno?mno=${workplaceVO.mno}",
+         type : "get",
+         success : function(result){
+            $("#addName").html("등록자명: "+result.name);
+            $("#addNames").html(result.name);
+            $("#addPhone").html("등록자번호: "+result.phone);
+            $("#addEmail").html("등록자이메일: "+result.email);
+            if(result.userID.length > 20){
+               $(".userPhotoD").attr("src", result.photo);
+            }else{
+               if(result.photo == ""){
+                     $(".userPhotoID").attr("src","/resources/image/profileDefault.jpg");
+               }else{
+                     $(".userPhotoID").attr("src","display?fileName="+resultPhoto);
+               }
+            }
+         },
+         error : function(err){
+            console.log(err);
+         }
+      });
+      
+      $("input[type=submit]").click(function(e){
+         e.preventDefault();
+         $("#timeSelect").submit();
+      });
+      
+      var hourback = "${hourback}";
+      var hourbacks = "${hourback}"*1;
+      var hourfront = "${hourfront}";
+      var hourfronts = "${hourfront}"*1;
+      if(hourbacks < 10 || hourfronts < 10){
+         hourback = "0"+"${hourback}";
+         hourfronts = "0"+"${hourfronts}";
+      }
+      hourbackDisable(hourback, hourfront);
+      
 
-	   $("select").on("change", function(e){
-		   $("#timeSelect").append("<input type='hidden' name='reservation' value='"+$(this).val()+"'>");
-		   cdisableOption($(this).val());
-	   });
-	   
-	   var imageLength = "${workplaceVO.attachList.size()}";
-	   console.log(imageLength.length);
-	   
-	   for(var i=0; i<imageLength; i++){
-		   // div img 동적 생성
-	   }
+      $("select").on("change", function(e){
+         $("#timeSelect").append("<input type='hidden' name='reservation' value='"+$(this).val()+"'>");
+         cdisableOption($(this).val());
+      });
+      
+      //
+      var imageLength = "${workplaceVO.attachList.size()}";
+      console.log(imageLength.length);
+      
+      for(var i=0; i<imageLength; i++){
+         // div img 동적 생성
+      }
+      //파일이미지 등록하기
+      var atthachList = new Array();
+      attachList = "${workplaceVO.attachList}";
+      
 
-	 //지도 생성을 위한 javascript, jquery
+      
+/*       switch(attachList.length){
+      case 1:
+         var str = ""
+         $("#reservation").val(reservations[0]);
+         break;
+      case 2:
+         $("#reservation").val(reservations[0]);
+         $("#reservation1").val(reservations[1]);
+         $(".apply_content").eq(6).css("display","block");
+         break;
+      case 3:
+         $("#reservation").val(reservations[0]);
+         $("#reservation1").val(reservations[1]);
+         $("#reservation2").val(reservations[2]);
+         $(".apply_content").eq(6).css("display","block");
+         $(".apply_content").eq(7).css("display","block");
+         break;
+      }
+      
+      
+      case
+      $("#inoPhotoNum2").append();
+      $("#inoPhotoNum3").append();
+      $("#inoPhotoNum4").append();
+      $("#inoPhotoNum5").append();
+       */
+      
+      
+      
+      
+
+    //지도 생성을 위한 javascript, jquery
         var mapContainer = document.getElementById('inoResultMap'), // 지도를 표시할 div
         mapOption = {
             center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
@@ -434,14 +482,14 @@ function cdisableOption(val){
                 console.log("삭제완료!");
                 $("#inofooter").css("display", "block");
                 $("#carouselExampleIndicators").css("visibility", "visible");
-                $("#inoPhotoNum1").css("background-image","none");
+                //$("#inoPhotoNum1").css("background-image","none");
             }
             
             if(windowWidth >= 575){
                 $("#reservationTap").show();
                 $("#inofooter").css("display", "none");
                 $("#carouselExampleIndicators").css("visibility", "hidden");
-                $("#inoPhotoNum1").css("background-image","url(/img/1.jpg)");
+                //$("#inoPhotoNum1").css("background-image","url(/img/1.jpg)");
             }
 
         
@@ -455,7 +503,7 @@ function cdisableOption(val){
                 console.log("삭제완료!");
                 $("#inofooter").css("display", "block");
                 $("#carouselExampleIndicators").css("visibility", "visible");
-                $("#inoPhotoNum1").css("background-image","none");
+                //$("#inoPhotoNum1").css("background-image","none");
                 
             }
             
@@ -463,7 +511,7 @@ function cdisableOption(val){
                 $("#reservationTap").show();
                 $("#inofooter").css("display", "none");
                 $("#carouselExampleIndicators").css("visibility", "hidden");
-                $("#inoPhotoNum1").css("background-image","url(/img/1.jpg)");
+                //$("#inoPhotoNum1").css("background-image","url(/img/1.jpg)");
             }
         })
 
@@ -515,7 +563,6 @@ function cdisableOption(val){
 </script>
 
 <link rel="stylesheet" href="/resources/css/style_ino.css">
-<sec:authentication property="principal" var="pinfo" />
 
 <!--  shin Chung  -->
 <c:forEach var="shinChung" items="${shinChungList }">
@@ -544,19 +591,25 @@ function cdisableOption(val){
 
                         <div class="row">
                             <div id="inoPhotoNum1" class="inobox col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                            	<img src="/display?fileName=${workplaceVO.thumbnail}">
+                               <img class="num1" src="/display?fileName=${workplaceVO.thumbnail}">
                                 <!--캐러셀------------------------------------------------------------------------------------>
                                     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                                       
                                       <div class="carousel-inner">
                                         <div class="carousel-item active">
-                                          <img src="/img/4.jpg" class="d-block w-100" alt="...">
+                                          <img class="num1" src="/display?fileName=${workplaceVO.thumbnail}">
                                         </div>
                                         <div class="carousel-item">
-                                          <img src="/img/5.jpg" class="d-block w-100" alt="...">
+                                          <img class="num1" src="/display?fileName=${workplaceVO.attachList[0].path}/${workplaceVO.attachList[0].uuid}_${workplaceVO.attachList[0].fileName}">
                                         </div>
                                         <div class="carousel-item">
-                                          <img src="/img/3.jpg" class="d-block w-100" alt="...">
+                                          <img class="num1" src="/display?fileName=${workplaceVO.attachList[1].path}/${workplaceVO.attachList[1].uuid}_${workplaceVO.attachList[1].fileName}">
+                                        </div>
+                                        <div class="carousel-item">
+                                          <img class="num1" src="/display?fileName=${workplaceVO.attachList[2].path}/${workplaceVO.attachList[2].uuid}_${workplaceVO.attachList[2].fileName}">
+                                        </div>
+                                        <div class="carousel-item">
+                                          <img class="num1" src="/display?fileName=${workplaceVO.attachList[3].path}/${workplaceVO.attachList[3].uuid}_${workplaceVO.attachList[3].fileName}">
                                         </div>
                                       </div>
                                       <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -571,14 +624,26 @@ function cdisableOption(val){
                                 <!--캐러셀------------------------------------------------------------------------------------>
                                 
                             </div>
-
+                            
                             <div class="inobox boxx col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                            	<c:forEach items="${workplaceVO.attachList }" var="attach">
-                            	<div>
-                            	<img src="/display?fileName=${attach.path}/${attach.uuid}_${attach.fileName}">
-                            	</div>
-                            	</c:forEach>
+                                <div class="row">
+                                    <div id="inoPhotoNum2" class="inobox1 col-xs-12 col-sm-12 col-md-6 col-lg-6"><img class="num1" src="/display?fileName=${workplaceVO.attachList[0].path}/${workplaceVO.attachList[0].uuid}_${workplaceVO.attachList[0].fileName}"></div>
+                                    <div id="inoPhotoNum3" class="inobox2 col-xs-12 col-sm-12 col-md-3 col-lg-6"><img class="num1" src="/display?fileName=${workplaceVO.attachList[1].path}/${workplaceVO.attachList[1].uuid}_${workplaceVO.attachList[1].fileName}"></div>
+
+                                </div>
+                                <div class="row">
+                                    <div id="inoPhotoNum4" class="inobox1 col-xs-12 col-sm-12 col-md-6 col-lg-6"><img class="num1" src="/display?fileName=${workplaceVO.attachList[2].path}/${workplaceVO.attachList[2].uuid}_${workplaceVO.attachList[2].fileName}"></div>
+                                    <div id="inoPhotoNum5" class="inobox2 col-xs-12 col-sm-12 col-md-3 col-lg-6"><img class="num1" src="/display?fileName=${workplaceVO.attachList[3].path}/${workplaceVO.attachList[3].uuid}_${workplaceVO.attachList[3].fileName}"></div>
+                                </div>
                             </div>
+
+                            <%-- <div class="inobox boxx col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                               <c:forEach items="${workplaceVO.attachList }" var="attach">
+                               <div>
+                               <img src="/display?fileName=${attach.path}/${attach.uuid}_${attach.fileName}">
+                               </div>
+                               </c:forEach>
+                            </div> --%>
                         </div>
                         <!-- // 사진 출력 -->
                         <!--상세정보 및 기타-->
@@ -614,7 +679,7 @@ function cdisableOption(val){
                                             <div class="row">
                                                 <div style="border: 1px solid black;" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                     <c:forEach items="${workplaceVO.comforts } " var="comforts">
-                                                    	<li>${comforts }</li>
+                                                       <li>${comforts }</li>
                                                     </c:forEach>
                                                 </div>
                                                     
@@ -657,9 +722,9 @@ function cdisableOption(val){
                                         <!-- 1set-->
                                         <div>
                                             <form action="/uniform/insertShinChung" method="post" id="timeSelect">
-                                            		<input type="hidden" name="ino" value="${workplaceVO.ino }">
-                                            		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-                                            		<input type="hidden" name="mno" value="${pinfo.member.mno }">
+                                                  <input type="hidden" name="ino" value="${workplaceVO.ino }">
+                                                  <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+                                                  <input type="hidden" name="mno" value="${pinfo.member.mno }">
     <!-- 1set-->
                                         <div id="iBtn">
                                             <input type="submit" class="btn btn-danger" value="예약하기">
@@ -669,7 +734,7 @@ function cdisableOption(val){
                                             <!-- selectBox-->
                                                 <div id="inoClone">
                                                     <select  name="reservation"  class="browser-default custom-select selectBox res" id="select1">
-                                                  		<option data-res="25" value="">사용시간 선택</option>
+                                                        <option data-res="25" value="">사용시간 선택</option>
                                                         <option data-res="00:00~02:00"  value="00:00~02:00">00 : 00 ~ 02 : 00</option>
                                                         <option data-res= "02:00~04:00" value="02:00~04:00">02 : 00 ~ 04 : 00</option>
                                                         <option data-res= "04:00~06:00" value="04:00~06:00">04 : 00 ~ 06 : 00</option>
@@ -686,8 +751,8 @@ function cdisableOption(val){
                                                 </div>
                                                 <!-- //selectBox-->
                                                 <div id="addSelect">
-       													<select name="reservation"  class="browser-default custom-select selectBox res"  id="select2">
-                                                  		<option data-res="25" value="">사용시간 선택</option>
+                                              <select name="reservation"  class="browser-default custom-select selectBox res"  id="select2">
+                                                        <option data-res="25" value="">사용시간 선택</option>
                                                         <option data-res="00:00~02:00"  value="00:00~02:00">00 : 00 ~ 02 : 00</option>
                                                         <option data-res= "02:00~04:00" value="02:00~04:00">02 : 00 ~ 04 : 00</option>
                                                         <option data-res= "04:00~06:00" value="04:00~06:00">04 : 00 ~ 06 : 00</option>
@@ -701,8 +766,8 @@ function cdisableOption(val){
                                                         <option data-res= "20:00~22:00"  value="20:00~22:00">20 : 00 ~ 22 : 00</option>
                                                         <option data-res= "22:00~24:00"  value="22:00~24:00">22 : 00 ~ 24 : 00</option>
                                                     </select>
-                                                    	<select  name="reservation"  class="browser-default custom-select selectBox res"  id="select3">
-                                                  		<option data-res="25" value="">사용시간 선택</option>
+                                                       <select  name="reservation"  class="browser-default custom-select selectBox res"  id="select3">
+                                                        <option data-res="25" value="">사용시간 선택</option>
                                                         <option data-res="00:00~02:00"  value="00:00~02:00">00 : 00 ~ 02 : 00</option>
                                                         <option data-res= "02:00~04:00" value="02:00~04:00">02 : 00 ~ 04 : 00</option>
                                                         <option data-res= "04:00~06:00" value="04:00~06:00">04 : 00 ~ 06 : 00</option>
@@ -825,7 +890,7 @@ function cdisableOption(val){
                                     <div>
                                                <div id="inoClone">
                                                     <select  name="reservation"  class="browser-default custom-select selectBox res" id="select1">
-                                                  		<option data-res="25" value="">사용시간 선택</option>
+                                                        <option data-res="25" value="">사용시간 선택</option>
                                                         <option data-res="00:00~02:00"  value="00:00~02:00">00 : 00 ~ 02 : 00</option>
                                                         <option data-res= "02:00~04:00" value="02:00~04:00">02 : 00 ~ 04 : 00</option>
                                                         <option data-res= "04:00~06:00" value="04:00~06:00">04 : 00 ~ 06 : 00</option>
@@ -842,8 +907,8 @@ function cdisableOption(val){
                                                 </div>
                                                 <!-- //selectBox-->
                                                 <div id="addSelect">
-       													<select name="reservation"  class="browser-default custom-select selectBox res"  id="select2">
-                                                  		<option data-res="25" value="">사용시간 선택</option>
+                                              <select name="reservation"  class="browser-default custom-select selectBox res"  id="select2">
+                                                        <option data-res="25" value="">사용시간 선택</option>
                                                         <option data-res="00:00~02:00"  value="00:00~02:00">00 : 00 ~ 02 : 00</option>
                                                         <option data-res= "02:00~04:00" value="02:00~04:00">02 : 00 ~ 04 : 00</option>
                                                         <option data-res= "04:00~06:00" value="04:00~06:00">04 : 00 ~ 06 : 00</option>
@@ -857,8 +922,8 @@ function cdisableOption(val){
                                                         <option data-res= "20:00~22:00"  value="20:00~22:00">20 : 00 ~ 22 : 00</option>
                                                         <option data-res= "22:00~24:00"  value="22:00~24:00">22 : 00 ~ 24 : 00</option>
                                                     </select>
-                                                    	<select  name="reservation"  class="browser-default custom-select selectBox res"  id="select3">
-                                                  		<option data-res="25" value="">사용시간 선택</option>
+                                                       <select  name="reservation"  class="browser-default custom-select selectBox res"  id="select3">
+                                                        <option data-res="25" value="">사용시간 선택</option>
                                                         <option data-res="00:00~02:00"  value="00:00~02:00">00 : 00 ~ 02 : 00</option>
                                                         <option data-res= "02:00~04:00" value="02:00~04:00">02 : 00 ~ 04 : 00</option>
                                                         <option data-res= "04:00~06:00" value="04:00~06:00">04 : 00 ~ 06 : 00</option>
@@ -899,4 +964,3 @@ function cdisableOption(val){
 
    <script src="/resources/js/main.inho.js"></script>
    <%@ include file="../includes/footer.jsp"%>
- No newline at end of file

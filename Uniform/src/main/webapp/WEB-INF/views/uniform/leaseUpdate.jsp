@@ -25,10 +25,10 @@ if(oauth2LoginUser == 0){
                             <div style="width: 100%; height: 1100px; margin-top: 50px;" id="totalDiv">
                                 <div class="row" id="divRows" style="height:1000px;">
                                     <div class="col-sm-6" id="section1">
-                                    <form action="/uniform/updateWorkplace" method="post">
+                                    <form action="/uniform/updateWorkplaceS" method="post">
                                     <input type="hidden" name="${_csrf.parameterName }"
 						value="${_csrf.token }" />
-									<input type="hidden" name="ino" value="${workplaceVO.ino }">
+									<input type="hidden" name="sno" value="${vo.ino }">
                                         <label for="leaseTitle">
                                             <b>제목</b>
                                             <div style="width: 100%; height: 1.5px; background-color: black; position: relative; top: -5px;" ></div>
@@ -43,16 +43,17 @@ if(oauth2LoginUser == 0){
                                         <div style="width: 100%; height: 2px; background-color: black; position: relative; top: -5px;"></div>
                                         </label>
                                         	
-                                        <div style="width: 100%; height: 100px;" id="comforts">	
-                                            <input type="checkbox" value="wifi" id="wifi" name="comforts"><label for="wifi" class="labelMargin">WIFI</label>
-                                            <input type="checkbox" value="amp" id="amp" name="comforts"><label for="amp" class="labelMargin">앰프</label>
-                                            <input type="checkbox" value="mike" id="mike" name="comforts"><label for="mike" class="labelMargin">마이크</label>
-                                            <input type="checkbox" value="restroom" id="restroom" name="comforts"><label for="restroom" class="labelMargin">화장실</label>
+                                        <div style="width: 100%; height: 100px; margin-left:20px;" id="comforts">	
+                          				 	<input type="checkbox" value="WIFI" id="wifi" name="comforts"><label for="wifi" class="labelMargin">WIFI</label>
+                                            <input type="checkbox" value="앰프" id="amp" name="comforts"><label for="amp" class="labelMargin">앰프</label>
+                                            <input type="checkbox" value="마이크" id="mike" name="comforts"><label for="mike" class="labelMargin">마이크</label>
+                                            <input type="checkbox" value="화장실" id="restroom" name="comforts"><label for="restroom" class="labelMargin">화장실</label>
+                                        	
                                             <br>
-                                            <input type="checkbox" value="aircon" name="comforts" id="aircon"><label for="aircon" class="labelMargin">에어컨</label>
-                                            <input type="checkbox" value="refrigerator" name="comforts" id="refrigerator"><label for="refrigerator" class="labelMargin">냉장고</label>
-                                            <input type="checkbox" value="fan" name="comforts" id="fan"><label for="fan" class="labelMargin">선풍기</label>
-                                            <input type="checkbox" value="airclean" name="comforts" id="airclean"><label for="airclean" class="labelMargin">공기청정기</label>
+                                             <input type="checkbox" value="에어컨" name="comforts" id="aircon"><label for="aircon" class="labelMargin">에어컨</label>
+                                            <input type="checkbox" value="냉장고" name="comforts" id="refrigerator"><label for="refrigerator" class="labelMargin">냉장고</label>
+                                            <input type="checkbox" value="선풍기" name="comforts" id="fan"><label for="fan" class="labelMargin">선풍기</label>
+                                            <input type="checkbox" value="공기청정기" name="comforts" id="airclean"><label for="airclean" class="labelMargin">공기청정기</label>
                                         </div>
                                         
                                         <label><b>가격</b>
@@ -140,12 +141,31 @@ if(oauth2LoginUser == 0){
                 }).open();
             }
 
-            	$(function(){
-            		var section2 = $("#section2").clone();
-            		var width = $(this).width();
-            		console.log(width);
-            		if(width < 400){
-            			$("#section2").remove();
+        	$(function(){
+        		var section2 = $("#section2").clone();
+        		var width = $(this).width();
+        		console.log(width);
+        		if(width < 400){
+        			$("#section2").remove();
+        			$("#divRows").prepend(section2);
+        			$("#totalDiv").css("height","1500");
+        			$("#section2").css("height","400");
+        		}else{
+        			$("#section2").remove();
+        			$("#divRows").append(section2);
+        			$("#totalDiv").css("height","1000");
+        			$("#thumbnailImg").attr({
+        				width : "450px",
+        				height : "450px"
+        			});
+        			$("#leaseSection").css("margin-left","100px");
+        			$("#imgRes").css("margin-left","30px");
+        		}
+        		
+        		$(window).on("resize",function(){
+        			var widths = $(this).width();
+        			if(widths < 400){
+        				$("#section2").remove();
             			$("#divRows").prepend(section2);
             			$("#totalDiv").css("height","1500");
             			$("#thumbnailImg").attr({
@@ -153,8 +173,9 @@ if(oauth2LoginUser == 0){
             				height : "200px"
             			});
             			$("#leaseSection").css("margin-left","0px");
-            		}else{
-            			$("#section2").remove();
+
+        			}else{
+        				$("#section2").remove();
             			$("#divRows").append(section2);
             			$("#totalDiv").css("height","1000");
             			$("#thumbnailImg").attr({
@@ -162,30 +183,24 @@ if(oauth2LoginUser == 0){
             				height : "450px"
             			});
             			$("#leaseSection").css("margin-left","100px");
-            		}
-            		
-            		$(window).on("resize",function(){
-            			var widths = $(this).width();
-            			if(widths < 400){
-            				$("#section2").remove();
-                			$("#divRows").prepend(section2);
-                			$("#totalDiv").css("height","1500");
-                			$("#thumbnailImg").attr({
-                				width : "200px",
-                				height : "200px"
-                			});
-                			$("#leaseSection").css("margin-left","0px");
-            			}else{
-            				$("#section2").remove();
-                			$("#divRows").append(section2);
-                			$("#totalDiv").css("height","1000");
-                			$("#thumbnailImg").attr({
-                				width : "450px",
-                				height : "450px"
-                			});
-                			$("#leaseSection").css("margin-left","100px");
-            			}
-            		});
+        			}
+        		});
+        		
+        			var str = "";
+    			
+    			var thumbnail = $("#thumbnailImg").attr("src").substring(18);
+    			
+    			str += "<input type='hidden' name='thumbnail' value='"+decodeURIComponent(thumbnail)+"'>";
+    			
+    			$(".uploadResult ul li").each(function(i, obj){
+    				var jobj = $(obj);
+    				console.log(jobj);
+    				str += "<input type = 'hidden' name='attachList["+i+"].fileName' value='"+jobj.data("filename")+"'>";
+    				str += "<input type = 'hidden' name='attachList["+i+"].uuid' value='"+jobj.data("uuid")+"'>";
+    				str += "<input type = 'hidden' name='attachList["+i+"].path' value='"+jobj.data("path")+"'>";
+    			});
+    			formObj.append(str).submit();
+    		});
             		
             		// 파일의 확장자 검사
             		var regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");

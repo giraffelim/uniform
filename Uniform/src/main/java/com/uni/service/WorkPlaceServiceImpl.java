@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.uni.domain.IWorkPlaceVO;
+import com.uni.domain.JoinSCMemVO;
 import com.uni.domain.SWorkPlaceVO;
 import com.uni.domain.SinchungVO;
 import com.uni.domain.Sinchung_ListVO;
@@ -17,6 +18,7 @@ import com.uni.domain.StarAvgVO;
 import com.uni.domain.uni_MemberVO;
 import com.uni.domain.uni_PhotoVO;
 import com.uni.domain.uni_ShinChungVO;
+import com.uni.domain.uni_confirmVO;
 import com.uni.domain.uni_hotTopicVO;
 import com.uni.domain.uni_workplace_iVO;
 import com.uni.mapper.uni_workplaceMapper;
@@ -249,5 +251,171 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 		
 		mapper.insertShinChung(vo);
 	}
+	
+	@Transactional
+	@Override
+	public void insertWorkPlace_s(SWorkPlaceVO vo) {
+		// TODO Auto-generated method stub
+		mapper.insertWorkplace_s(vo);
+		vo.getAttachList().forEach(attach -> {
+			uni_PhotoVO pVo = new uni_PhotoVO();
+			pVo.setFileName(attach.getFileName());
+			pVo.setPath(attach.getPath());
+			pVo.setSno(vo.getSno());
+			pVo.setUuid(attach.getUuid());
+			mapper.insertAttach(pVo);
+		});
+	}
+	
+	@Override
+	public SWorkPlaceVO readShare(int sno) {
+		// TODO Auto-generated method stub
+		return mapper.readShare(sno);
+	}
+	
+	@Transactional
+	@Override
+	public void updateWorkplace_s(SWorkPlaceVO vo) {
+		// TODO Auto-generated method stub
+		mapper.updateWorkplace_s(vo);
+		mapper.deletePhotoS(vo.getSno());
+		vo.getAttachList().forEach(attach -> {
+			attach.setSno(vo.getSno());
+			mapper.insertAttach(attach);
+		});
+	}
 
+	@Override
+	public List<JoinSCMemVO> getSinchungBySno(int sno) {
+		// TODO Auto-generated method stub
+		return mapper.getSinchungBySno(sno);
+	}
+
+	@Override
+	@Transactional
+	public int insertShareSinchung(uni_ShinChungVO vo) {
+		// 신청 테이블 비교
+		// 1. 신청 정보를 가져온다
+		List<JoinSCMemVO> joinVO = mapper.getSinchungBySno(vo.getSno());
+		// 2. 신청자가 등록한 시간을 split 한다.
+		String[] toReservation = 	vo.getReservation().split(",");
+		// 3. 신청자가 신청한 시간을 가져온다.
+		int toFirstTime = Integer.parseInt(toReservation[0]);
+		int toLastTime = Integer.parseInt(toReservation[1]);
+		
+		// 등록자 시간 비교
+		SWorkPlaceVO originVO = mapper.readShare(vo.getSno());
+		// 등록자가 작성한 시간을 구해온다.
+		String masterTime = originVO.getMyTime();
+		String[] masterTimes = masterTime.split("~");
+		for(int i=0; i<masterTimes.length; i++) {
+			masterTimes[i] = masterTimes[i].replace(":00", "");
+		}
+		int mFirstTime = Integer.parseInt(masterTimes[0]);
+		int mLastTime = Integer.parseInt(masterTimes[1]);
+		int flag = mapper.duplicateCheckTime(mFirstTime, toLastTime, mLastTime, toFirstTime);
+		
+		if(flag == 1) {
+			return 1;
+		}
+		
+		for(int i=0; i<joinVO.size(); i++) {
+			// 4. 신청 테이블에 담긴 시간을 split한다
+			String [] reservation = joinVO.get(i).getReservation().split("~");
+			
+			// 5. 신청 테이블과 사용자가 신청한 시간을 비교한다.
+			int firstTime = 0;
+			int lastTime = 0;
+			for(int j=0; j<reservation.length; j++) {
+				String res = reservation[j].replace(":00", "");
+				if(j == 0) {
+					firstTime = Integer.parseInt(res);
+				}
+				if(j == 1) {
+					lastTime = Integer.parseInt(res);
+				}
+			}
+			flag = mapper.duplicateCheckTime(firstTime, toLastTime, lastTime, toFirstTime);
+			
+			if(flag == 1) {
+				return 1;
+			}
+			
+		}
+		
+		//INSERT
+		String reservation2 = toFirstTime +":00~"+toLastTime+":00";
+		vo.setReservation(reservation2);
+		mapper.insertShinChungS(vo);
+		return 0;
+	}
+
+	// 신청 삭제
+	@Override
+	public int deleteSinchung(int mno, int sno) {
+		// TODO Auto-generated method stub
+		return mapper.deleteSinchung(mno, sno);
+	}
+	
+	// share Confirm
+	@Transactional
+	@Override
+	public int shareConfirm(int sno) {
+		int count = 0;
+		
+		//Confirm VO 생성
+		uni_confirmVO cVo = new uni_confirmVO();
+		
+		cVo.setSno(sno);
+		
+		// TODO sno로 신청 테이블 정보 가져오기
+		List<JoinSCMemVO>sinchungList = mapper.getSinchungBySno(sno);
+		StringBuilder nameSB = new StringBuilder();
+		StringBuilder phoneSB = new StringBuilder();
+		StringBuilder reservationSB = new StringBuilder();
+		StringBuilder mnoSB = new StringBuilder();
+		for (JoinSCMemVO joinSCMemVO : sinchungList) {
+			nameSB.append(joinSCMemVO.getName());
+			phoneSB.append(joinSCMemVO.getPhone());
+			reservationSB.append(joinSCMemVO.getReservation());
+			mnoSB.append(joinSCMemVO.getMno());
+			
+			if(count < sinchungList.size()-1) {
+				nameSB.append(",");
+				phoneSB.append(",");
+				reservationSB.append(",");
+				mnoSB.append(",");
+			}
+			count++;
+		}
+		
+		cVo.setCName(nameSB.toString());
+		cVo.setCPhone(phoneSB.toString());
+		cVo.setReservation(reservationSB.toString());
+		cVo.setMno(mnoSB.toString());
+		
+		// TODO sno로 등록자 정보 가져오기
+		SWorkPlaceVO sVo = mapper.readShare(sno);
+		cVo.setMyTime(sVo.getMyTime());
+		
+		System.out.println(cVo);
+		
+		// insert Confirm
+		mapper.insertConfirm(cVo);
+		
+		// sinchung table delete
+		mapper.deleteSinchung(0, cVo.getSno());
+		
+		return 1;
+	}
+
+	@Override
+	public void updateReadCount(int ino, int sno) {
+		// TODO Auto-generated method stub
+		if(sno != 0) {
+			mapper.updateReadCount(0, sno);
+		}else {
+			mapper.updateReadCount(ino, 0);
+		}
+	}
 }

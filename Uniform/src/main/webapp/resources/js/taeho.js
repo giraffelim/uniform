@@ -136,12 +136,12 @@ $(function() {
 
 	$("#shareBtn").on("click", function() {
 		console.log("공유 등록 버튼 클릭!!");
-		location.href = "/uniform/goShare"
+		location.href = "/uniform/shareInsert"
 	});
 
 	$("#imdeBtn").on("click", function() {
 		console.log("임대 버튼 클릭 !!");
-		location.href = "/uniform/goImde";
+		location.href = "/uniform/leaseInsert";
 	});
 
 	/*

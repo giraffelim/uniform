@@ -58,7 +58,7 @@
 					<li><a href="/uniform/hotTopicList">작업실 Share</a>
 						<ul class="side_ul">
 							<li><a href="/uniform/leaseInsert">임대</a></li>
-							<li><a href="services.html">공유</a></li>
+							<li><a href="/uniform/shareInsert">공유</a></li>
 						</ul></li>
 					<li><a href="about.html">인력풀</a>
 						<ul class="side_ul">
