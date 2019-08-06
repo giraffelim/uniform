@@ -42,15 +42,9 @@ public interface uni_workplaceMapper {
 	// 핫토픽 리스트 select(임대)
 	public List<uni_hotTopicVO> readHotTopicImde();
 
-	public List<Sinchung_ListVO> sinchung_list_s(Long mno);
-
-	public List<Sinchung_ListVO> sinchung_list_d(Long mno);
+	public List<Sinchung_ListVO> sinchung_list(Long mno);
 
 	public List<Sinchung_ListVO> Isinchung_list(Long mno);
-
-	public List<Sinchung_ListVO> sinchung_list_s_ajax(Long mno);
-
-	public List<Sinchung_ListVO> sinchung_list_d_ajax(Long mno);
 
 	public List<Sinchung_ListVO> Isinchung_list_ajax(Long mno);
 

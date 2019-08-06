@@ -122,10 +122,13 @@
 
 		select round(avg(r.star)) as star, w.name, w.photo, w.sno,
 		w.context, w.thumbnail, w.mno, w.readcount from
-		(select m.name, m.photo, w.sno,
+		(select m.name,
+		m.photo, w.sno,
 		w.context,w.thumbnail, m.mno, w.readcount from
-		uni_workplace_s w, uni_member m where w.mno = m.mno) w full outer join uni_review r
-		on w.sno is not null group by w.name, w.photo, w.sno, w.context,
+		uni_workplace_s w, uni_member m where w.mno = m.mno) w full outer join
+		uni_review r
+		on w.sno is not null group by w.name, w.photo, w.sno,
+		w.context,
 		w.thumbnail,
 		w.mno, w.readcount order by w.readcount desc
 
@@ -170,51 +173,18 @@
 		reservation like '%'||#{reservation}||'%'
 	</select>
 
-	<select id="sinchung_list_s"
+
+	<select id="sinchung_list"
 		resultType="com.uni.domain.Sinchung_ListVO">
-	<![CDATA[
-		select aa.*, ss.reservation, ss.mno from (select w.title,
-		m.name, m.phone, s.sno
-		from uni_sinchung s, uni_member m,
-		uni_workplace_s w where w.sno
-		= s.sno
-		and m.mno = s.mno and flag='d'  order by s.sno asc)
-		aa,
-		(select s.reservation, s.sno, m.mno
-		from uni_sinchung s, uni_member
-		m, uni_workplace_s w where w.sno =
-		s.sno
-		and m.mno = s.mno and flag='s'
-		and m.mno = #{mno}  order by s.sno asc) ss
-		where aa.sno= ss.sno and rownum<4
-		]]>
+		select w.title, w.name, w.phone, w.sno, s.reservation,
+		s.mno from
+		(select w.title, m.name, m.phone, w.sno, m.mno from
+		uni_workplace_s w,
+		uni_member m where w.mno = m.mno) w, uni_sinchung s
+		where w.sno = s.sno and s.mno = #{mno} order by sno asc
 	</select>
 
-	<select id="sinchung_list_d"
-		resultType="com.uni.domain.Sinchung_ListVO">
-	<![CDATA[
-		select aa.*, ss.mno from (select w.title, m.name, m.phone,
-		s.sno,
-		s.reservation
-		from uni_sinchung s, uni_member m, uni_workplace_s
-		w
-		where w.sno = s.sno
-		and m.mno = s.mno and flag='d' and m.mno = #{mno}
-		order by s.sno asc)
-		aa,
-		(select
-		s.reservation, s.sno, m.mno
-		from
-		uni_sinchung s, uni_member
-		m,
-		uni_workplace_s w where w.sno = s.sno
-		and
-		m.mno = s.mno and flag='s' order by s.sno asc)
-		ss
-		where aa.sno = ss.sno
-		and rownum < 4
-]]>
-	</select>
+
 
 	<select id="Isinchung_list"
 		resultType="com.uni.domain.Sinchung_ListVO">
@@ -226,51 +196,7 @@
 	</select>
 
 
-	<select id="sinchung_list_s_ajax"
-		resultType="com.uni.domain.Sinchung_ListVO">
-	<![CDATA[
-		select aa.*, ss.reservation, ss.mno from (select w.title,
-		m.name, m.phone, s.sno
-		from uni_sinchung s, uni_member m,
-		uni_workplace_s w where w.sno
-		= s.sno
-		and m.mno = s.mno and flag='d'  order by s.sno asc)
-		aa,
-		(select s.reservation, s.sno, m.mno
-		from uni_sinchung s, uni_member
-		m, uni_workplace_s w where w.sno =
-		s.sno
-		and m.mno = s.mno and flag='s'
-		and m.mno = #{mno}  order by s.sno asc) ss
-		where aa.sno= ss.sno
-		]]>
-	</select>
 
-
-	<select id="sinchung_list_d_ajax"
-		resultType="com.uni.domain.Sinchung_ListVO">
-	<![CDATA[
-		select aa.*, ss.mno from (select w.title, m.name, m.phone,
-		s.sno,
-		s.reservation
-		from uni_sinchung s, uni_member m, uni_workplace_s
-		w
-		where w.sno = s.sno
-		and m.mno = s.mno and flag='d' and m.mno = #{mno}
-		order by s.sno asc)
-		aa,
-		(select
-		s.reservation, s.sno, m.mno
-		from
-		uni_sinchung s, uni_member
-		m,
-		uni_workplace_s w where w.sno = s.sno
-		and
-		m.mno = s.mno and flag='s' order by s.sno asc)
-		ss
-		where aa.sno = ss.sno
-]]>
-	</select>
 	<select id="Isinchung_list_ajax"
 		resultType="com.uni.domain.Sinchung_ListVO">
 		select w.title, w.name, w.phone, s.ino, s.reservation
@@ -281,6 +207,8 @@
 		s.mno and m.mno = #{mno} order by s.ino
 
 	</select>
+
+
 
 	<!-- 로그인한 사람에 대한 작업실 신청 정보 검색 -->
 	<select id="sinchungList" resultType="com.uni.domain.SinchungVO">

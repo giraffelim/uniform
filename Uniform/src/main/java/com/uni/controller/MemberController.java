@@ -111,6 +111,7 @@ public class MemberController {
 	@GetMapping("/myPage")
 	public void mypage(Model model, Long mno) {
 		log.info("마이페이지 컨트롤러 mno" + mno);
+		
 		List<Sinchung_ListVO> unionSinchungList = service_work.sinchung_list(mno);
 		List<Sinchung_ListVO> IunionSinchungList = service_work.Isinchung_list(mno);
 		model.addAttribute("unionSinchungList", unionSinchungList);
@@ -123,9 +124,9 @@ public class MemberController {
 
 	@RequestMapping(value = "moreInfo", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
 	public ResponseEntity<List<Sinchung_ListVO>> moreInfo(Long mno) {
-		service_work.sinchung_list_ajax(mno);
+		service_work.sinchung_list(mno);
 
-		return new ResponseEntity<List<Sinchung_ListVO>>(service_work.sinchung_list_ajax(mno), HttpStatus.OK);
+		return new ResponseEntity<List<Sinchung_ListVO>>(service_work.sinchung_list(mno), HttpStatus.OK);
 
 	}
 

@@ -11,15 +11,17 @@
 <link rel="stylesheet" href="/resources/css/avg_star.css">
 
 <div id="colorlib-main">
-<script>
-	var csrfHeaderName = "${_csrf.headerName }";
-	var csrfTokenValue = "${_csrf.token }";
-
-</script>
+	<script>
+		var csrfHeaderName = "${_csrf.headerName }";
+		var csrfTokenValue = "${_csrf.token }";
+	</script>
 
 
 	<sec:authentication property="principal" var="pinfo" />
-	<input type="hidden" id="mno" value="${pinfo.member.mno}">
+
+
+
+
 
 	<section class="ftco-section ftco-bread ftco-extend-mb">
 		<div class="container-fluid px-3 px-md-0">
@@ -50,11 +52,22 @@
 
 										<div class="row profile-Row">
 											<div
-												class="col-sm-4 icon d-flex justify-content-center align-items-center profile-icon">
-												<span class="flaticon-idea"></span>
+												class="col-sm-4  d-flex justify-content-center align-items-center profile-icon">
+
+												<%-- <img src='/uniform/display?fileName=${pinfo.member.photo }'> --%>
+
 											</div>
 											<div class="col-sm-8 media-body p-2 mt-3 profile-context">
 
+												<input type="hidden" name="${_csrf.parameterName }"
+													value="${_csrf.token }">											
+													
+													<input type="hidden" id="memberPhoto" value = "${pinfo.member.photo }">
+													
+													<input type="hidden" id="userid" value='<sec:authentication property="principal.member.userID"/>'>
+													
+											
+													
 												<div>
 													이름 : <span id="name"><sec:authentication
 															property="principal.member.name" /></span>
@@ -67,10 +80,7 @@
 													이메일 : <span id="email"><sec:authentication
 															property="principal.member.email" /></span>
 												</div>
-												<div>
-													회원번호 : <span id="email"><sec:authentication
-															property="principal.member.mno" /></span>
-												</div>
+
 
 
 											</div>
@@ -213,10 +223,12 @@
 										</thead>
 										<tbody class="sinchung_tbody">
 											<c:forEach var="unionSinchungList"
-												items="${unionSinchungList }" varStatus="status">
+												items="${unionSinchungList }" begin="0" end="2"
+												varStatus="status">
 												<tr>
 													<td>${status.count }</td>
-													<td>${unionSinchungList.title }</td>
+													<td><a class="SsinchungBtn"
+														data-sno="${unionSinchungList.sno}">${unionSinchungList.title }</a></td>
 													<td>${unionSinchungList.name }</td>
 													<td>${unionSinchungList.phone }</td>
 													<td>${unionSinchungList.reservation }</td>
@@ -226,6 +238,9 @@
 										</tbody>
 
 									</table>
+									<div id="sinchung_PagingBtn">
+										<span></span> <span></span>
+									</div>
 								</div>
 
 
@@ -256,6 +271,10 @@
 											</c:forEach>
 										</tbody>
 									</table>
+
+									<div id="Isinchung_PagingBtn">
+										<span></span> <span></span>
+									</div>
 								</div>
 
 								<!-- 제목을 누르면 상세 정보를 띄워주는 Modal -->
@@ -285,24 +304,24 @@
 																	name="price" />
 															</div>
 															<div class="apply_content">
-																<label>등록자 이름</label><input type="text" id="name"
+																<label>등록자 이름</label><input type="text" id="hname"
 																	name="name" />
 															</div>
 															<div class="apply_content">
-																<label>등록자 번호</label><input type="text" id="phone"
+																<label>등록자 번호</label><input type="text" id="hphone"
 																	name="phone" />
 															</div>
 															<div class="apply_content">
 																<label>사용할 시간</label><input type="text" id="reservation"
 																	name="reservation" />
 															</div>
-															<div class="apply_content" style="display:none;">
-																<label>사용할 시간</label><input type="text" id="reservation1"
-																	name="reservation" />
+															<div class="apply_content" style="display: none;">
+																<label>사용할 시간</label><input type="text"
+																	id="reservation1" name="reservation" />
 															</div>
-															<div class="apply_content" style="display:none;">
-																<label>사용할 시간</label><input type="text" id="reservation2"
-																	name="reservation" />
+															<div class="apply_content" style="display: none;">
+																<label>사용할 시간</label><input type="text"
+																	id="reservation2" name="reservation" />
 															</div>
 														</form>
 													</div>
@@ -321,7 +340,7 @@
 
 					<!--확정내역 시작------------------------------------------->
 					<br>
-					<hr>
+					<hr class="hr">
 					<div class="profile-table">
 						<div class="container">
 
@@ -544,8 +563,7 @@
 														<input type="hidden" name="${_csrf.parameterName }"
 															value="${_csrf.token }" /> <input type="hidden" id="ino"
 															name="ino"> <input type="hidden" id="sno"
-															name="sno">
-															<input type="hidden" id="cno"
+															name="sno"> <input type="hidden" id="cno"
 															name="cno">
 														<div>
 															<sec:authorize access="isAuthenticated()">
@@ -599,7 +617,7 @@
 
 						</div>
 					</div>
-					<!--확정내역 끝--> 
+					<!--확정내역 끝-->
 				</div>
 			</div>
 		</div>

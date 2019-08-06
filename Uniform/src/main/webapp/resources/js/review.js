@@ -130,6 +130,11 @@ $(function() {
 
 
 	/* 마이페이지 신청 내역에서 제목을 클릭하면 상세페이지에 정보를 띄워줌 */
+	$(document).on("click",".SsinchungBtn",function(){
+		var workplaceNo = $(this).data("sno");
+		location.href = "/uniform/rendDetail?type=share&no="+workplaceNo;
+	});
+	
 	var loginMno = $("#mno").val();
 
 	$(".sinchungBtn").on("click", function() {
@@ -142,8 +147,8 @@ $(function() {
 				$("#title").val(item.title);
 				$("#location").val(item.location);
 				$("#price").val(item.price);
-				$("#name").val(item.name);
-				$("#phone").val(item.phone);
+				$("#hname").val(item.hname);
+				$("#hphone").val(item.hphone);
 				
 				var reservations = item.reservation.split(",");
 

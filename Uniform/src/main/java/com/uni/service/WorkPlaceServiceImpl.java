@@ -129,38 +129,21 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 			return mapper.avg_star_i(location);
 		}
 	}
-	@Transactional
+
 	@Override
 	public List<Sinchung_ListVO> sinchung_list(Long mno) {
 
 		ArrayList<Sinchung_ListVO> unionSinchungList = new ArrayList<Sinchung_ListVO>();
 
-		unionSinchungList.addAll(mapper.sinchung_list_d(mno));
-		unionSinchungList.addAll(mapper.sinchung_list_s(mno));
+		unionSinchungList.addAll(mapper.sinchung_list(mno));
 
-		/* System.out.println("=======================마이페이지 mno :" + mno); */
-
-		/*
-		 * for (int i = 0; i < unionSinchungList.size(); i++) {
-		 * System.out.println("split 전 :" + unionSinchungList); String[] arr =
-		 * unionSinchungList.get(i).getReservation().split("/");
-		 * unionSinchungList.get(i).setReservation(arr[1]);
-		 * 
-		 * }
-		 */
-
-		System.out.println("split 후:" + unionSinchungList);
 		return unionSinchungList;
 	}
 
 	@Transactional
 	@Override
 	public List<Sinchung_ListVO> Isinchung_list(Long mno) {
-		/*
-		 * ArrayList<Sinchung_ListVO> unionSinchungList = new
-		 * ArrayList<Sinchung_ListVO>();
-		 */
-		System.out.println(mapper.Isinchung_list(mno));
+
 
 		return mapper.Isinchung_list(mno);
 	}
@@ -169,29 +152,6 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 		return mapper.Isinchung_list_ajax(mno);
 	}
 
-	@Transactional
-	@Override
-	public List<Sinchung_ListVO> sinchung_list_ajax(Long mno) {
-
-		ArrayList<Sinchung_ListVO> unionSinchungList = new ArrayList<Sinchung_ListVO>();
-
-		unionSinchungList.addAll(mapper.sinchung_list_d_ajax(mno));
-		unionSinchungList.addAll(mapper.sinchung_list_s_ajax(mno));
-
-		/* System.out.println("=======================마이페이지 mno :" + mno); */
-
-		/*
-		 * for (int i = 0; i < unionSinchungList.size(); i++) {
-		 * System.out.println("split 전 :" + unionSinchungList); String[] arr =
-		 * unionSinchungList.get(i).getReservation().split("/");
-		 * unionSinchungList.get(i).setReservation(arr[1]);
-		 * 
-		 * }
-		 */
-
-		/* System.out.println("split 후:" + unionSinchungList); */
-		return unionSinchungList;
-	}
 
 	// 로그인 한 사람의 신청 정보를 검색
 	@Override

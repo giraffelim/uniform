@@ -49,8 +49,6 @@ public interface WorkPlaceService {
 
 	public List<Sinchung_ListVO> Isinchung_list(Long mno);
 
-	public List<Sinchung_ListVO> sinchung_list_ajax(Long mno);
-
 	public List<Sinchung_ListVO> Isinchung_list_ajax(Long mno);
 
 	// 로그인한 사람이 신청한 작업실에 대한 정보

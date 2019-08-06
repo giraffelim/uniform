@@ -1,4 +1,3 @@
-
 .tab {
 	display: table;
 	background-color: inherit;
@@ -136,8 +135,15 @@ span[class*='star-input']>.input, .result {
 }
 
 .profile-icon {
-	border: 2px solid #aaa;
 	margin-top: 1em;
+	overflow: hidden;
+	width: 100%;
+}
+
+.profile-icon img {
+	border-radius: 50%;
+	width: 100%;
+	height: 100%;
 }
 
 .profile-container {
@@ -189,7 +195,20 @@ span[class*='star-input']>.input, .result {
 	cursor: pointer;
 }
 
-/* contact.html 부분 */
+./* contact.html 부분 */
+.workplaceTitle{
+	padding-top: 1em !important;
+}
+
+.ftco-bread{
+	padding-top: 1em !important;
+}
+
+.shareBody{
+	margin-top: 1em;
+}
+
+
 .select-info {
 	margin-top: 2em;
 	margin-bottom: 2em;
@@ -222,21 +241,21 @@ span[class*='star-input']>.input, .result {
 	width: 22em;
 	height: 15em;
 	overflow: hidden;
-	background-image: url(../images/image_1.jpg);
+
 }
 
 #secondShareImg {
 	width: 22em;
 	height: 15em;
 	overflow: hidden;
-	background-image: url("../images/image_2.jpg");
+
 }
 
 #thirdShareImg {
 	width: 22em;
 	height: 15em;
 	overflow: hidden;
-	background-image: url("../images/image_3.jpg");
+
 }
 
 .starChecked {
@@ -244,25 +263,28 @@ span[class*='star-input']>.input, .result {
 }
 
 #firstBestShareContext {
+	height:8em;
 	width: 28em;
 	font-size: 0.8em;
 }
 
 #secondBestShareContext {
+	height:8em;
 	width: 28em;
 	font-size: 0.8em;
 }
 
 #thirdBestShareContext {
+	height:8em;
 	width: 28em;
 	font-size: 0.8em;
 }
 
 #firstBestShareProfile {
-	background-image: url(../images/person_1.jpg);
+	overflow: hidden;
+	padding-right: 0.5em;
 	width: 3em;
 	height: 3em;
-	border: 1px solid black;
 	border-radius: 50%;
 }
 
@@ -271,10 +293,8 @@ span[class*='star-input']>.input, .result {
 }
 
 #secondBestShareProfile {
-	background-image: url(../images/person_4.jpg);
 	width: 3em;
 	height: 3em;
-	border: 1px solid black;
 	border-radius: 50%;
 }
 
@@ -283,10 +303,8 @@ span[class*='star-input']>.input, .result {
 }
 
 #thirdBestShareProfile {
-	background-image: url(../images/person_3.jpg);
 	width: 3em;
 	height: 3em;
-	border: 1px solid black;
 	border-radius: 50%;
 }
 
@@ -302,43 +320,52 @@ span[class*='star-input']>.input, .result {
 	width: 22em;
 	height: 15em;
 	overflow: hidden;
-	background-image: url(../images/image_4.jpg);
+
 }
 
 #secondImdeImg {
 	width: 22em;
 	height: 15em;
 	overflow: hidden;
-	background-image: url(../images/image_5.jpg);
+
 }
 
 #thirdImdeImg {
 	width: 22em;
 	height: 15em;
 	overflow: hidden;
-	background-image: url(../images/image_6.jpg);
+
 }
 
 #firstBestImdeContext {
+	height:8em;
 	width: 28em;
 	font-size: 0.8em;
+	overflow: hidden;
 }
 
 #secondBestImdeContext {
 	width: 28em;
 	font-size: 0.8em;
+	height:8em;
+	overflow:hidden;
 }
 
 #thirdBestImdeContext {
+	height:8em;
 	width: 28em;
 	font-size: 0.8em;
+	overflow:hidden;
+}
+
+.BestImdeWriterDiv{
+	height:5em;
 }
 
 #firstBestImdeProfile {
 	background-image: url(../images/person_4.jpg);
 	width: 3em;
 	height: 3em;
-	border: 1px solid black;
 	border-radius: 50%;
 }
 
@@ -350,7 +377,6 @@ span[class*='star-input']>.input, .result {
 	background-image: url(../images/person_3.jpg);
 	width: 3em;
 	height: 3em;
-	border: 1px solid black;
 	border-radius: 50%;
 }
 
@@ -362,7 +388,6 @@ span[class*='star-input']>.input, .result {
 	background-image: url(../images/person_1.jpg);
 	width: 3em;
 	height: 3em;
-	border: 1px solid black;
 	border-radius: 50%;
 }
 
