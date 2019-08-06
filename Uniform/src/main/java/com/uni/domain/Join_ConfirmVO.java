@@ -3,7 +3,7 @@ package com.uni.domain;
 import lombok.Data;
 
 @Data
-public class uni_confirmVO {
+public class Join_ConfirmVO {
 	
 	private Long cno;
 	private Long ino;
@@ -20,5 +20,6 @@ public class uni_confirmVO {
 	private String myTime;
 	private String myDate;
 	private String mno;
+	private String dno;
 
 }
