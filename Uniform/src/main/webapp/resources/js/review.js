@@ -2,7 +2,7 @@
  * review에서 사용할 javascript, jquery
  */
 
-var result_star;
+var result_star = 0;
 
 var moreFlag = 1;
 var confirmStr;
@@ -28,6 +28,9 @@ var reviewIno;
 var reviewFlag;
 
 var cNo;
+
+var iconfirmThumbnail;
+var sconfirmThumbnail;
 
 $(function() {
 
@@ -58,27 +61,29 @@ $(function() {
 	$(".IreviewBtn").on("click", function() {
 		reviewIno = $(".confirm_form #ino").val();
 		starRating(reviewSno, reviewIno);
-	})
-
-
+	});
 	
+	$("#review_insert").on("click", function(e) {
+		e.preventDefault();
+		if (result_star == 0) {
+			alert("별점을 등록해주세요.");
+			return;
+		}
+	});
+
 	function starRating(reviewSno, reviewIno) {
 		var $star = $(".star-input"), $result = $star.find("output>b");
 
 		$(document).on("focusin", ".star-input>.input", function() {
 			$(this).addClass("focus");
-		})
-
-		.on("focusout", ".star-input>.input", function() {
+		}).on("focusout", ".star-input>.input", function() {
 			var $this = $(this);
 			setTimeout(function() {
 				if ($this.find(":focus").length === 0) {
 					$this.removeClass("focus");
 				}
 			}, 100);
-		})
-
-		.on("change", ".star-input :radio", function() {
+		}).on("change", ".star-input :radio", function() {
 			$result.text($(this).next().text());
 		}).on("mouseover", ".star-input label", function() {
 			$result.text($(this).text());
@@ -89,44 +94,62 @@ $(function() {
 			} else {
 				$result.text($checked.next().text());
 				result_star = $checked.next().text();
-
-				$("#review_insert").on("click", function(e) {
-					e.preventDefault();
-					$("#review_star").attr("value", result_star);
-					$("#review_form #cno").val(cNo);
-					if (reviewSno != null) {
-						$("#review_form #ino").val(0);
-						$("#review_form #sno").val(reviewSno);
-						reviewFlag = "sno";
-					} else {
-						$("#review_form #ino").val(reviewIno);
-						$("#review_form #sno").val(0);
-						reviewFlag = "ino";
-					}
-
-					$.ajax({
-				        type:"POST",
-				        url:"/uniform/new_review",
-				        data : {
-				        	content : $("#review-content").val(),
-							star : result_star,
-							cno : $("#review_form #cno").val(),
-							mno : $("#review_form #mno").val(),
-							ino : $("#review_form #ino").val(),
-							sno : $("#review_form #sno").val(),
-							flag : reviewFlag},
-						beforeSend : function(xhr){
-							xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
-						},
-				        dataType : "text",
-				        success: function(result){
-				            $("#review").modal("hide");
-				        }
-				    });
-				});
+				reviewInsert(result_star);
 			}
 		});
 	};
+	
+	function reviewInsert(result_star) {
+		$("#review_insert").on("click", function(e) {
+			e.preventDefault();
+			$("#review_star").attr("value", result_star);
+			if ($("#review-content").val() == null || $("#review-content").val() == "") {
+				alert("내용을 입력해주세요.");
+				return;
+			}
+			$("#review_form #cno").val(cNo);
+			if (reviewSno != null) {
+				$("#review_form #ino").val(0);
+				$("#review_form #sno").val(reviewSno);
+				reviewFlag = "sno";
+			} else {
+				$("#review_form #ino").val(reviewIno);
+				$("#review_form #sno").val(0);
+				reviewFlag = "ino";
+			}
+
+			console.log("result : " + result_star + " :" + $("#review-content").val()+":");
+
+			$.ajax({
+		        type:"POST",
+		        url:"/uniform/new_review",
+		        data : {
+		        	content : $("#review-content").val(),
+					star : result_star,
+					cno : $("#review_form #cno").val(),
+					mno : $("#review_form #mno").val(),
+					ino : $("#review_form #ino").val(),
+					sno : $("#review_form #sno").val(),
+					flag : reviewFlag},
+				beforeSend : function(xhr){
+					xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+				},
+		        dataType : "text",
+		        success: function(result){
+		        	
+		            $("#review").modal("hide");
+		        }
+		    });
+		});
+	}
+	
+	console.log($("#myPageUserid").val());
+	
+	if ($("#myPageUserid").val().length < 20) {
+		$("#reviewProfile").append("<img src='/uniform/display?fileName="+$("#myPagePhoto").val()+"'>");
+	} else {
+		$("#reviewProfile").append("<img src='"+$("#myPagePhoto").val()+"'>");
+	}
 
 
 	/* 마이페이지 신청 내역에서 제목을 클릭하면 상세페이지에 정보를 띄워줌 */
@@ -373,10 +396,13 @@ $(function() {
 				$("#Sphone").val(item.phone);
 				$("#Shtime").val(item.myTime);
 				$("#Shdate").val(item.myDate);
+				var thumbnailEncode = encodeURIComponent(item.thumbnail);
+				sconfirmThumbnail = '<img src="/display?fileName='+thumbnailEncode+'">';
 				sconfirmStr += '<label>이름</label><input type="text" id="Scname'+item.cno+'" name="cname" value="'+item.cname+'"/>';
 				sconfirmStr += '<label>번호</label><input type="text" id="Scphone'+item.cno+'" name="cphone"  value="'+item.cphone+'"/>';
 				sconfirmStr += '<label>시간</label><input type="text" id="Sreservation'+item.cno+'" name="reservation"  value="'+item.reservation+'"/> <br>';
 			});
+			$("#SThumbnail").html(sconfirmThumbnail);
 			$(".sconfirmStr").html(sconfirmStr);
 		});
 
@@ -398,10 +424,14 @@ $(function() {
 				$("#Iprice").val(item.price);
 				$("#Iname").val(item.name);
 				$("#Iphone").val(item.phone);
+				var thumbnailEncode = encodeURIComponent(item.thumbnail);
+				console.log(item.thumbnail + " : " + thumbnailEncode);
+				iconfirmThumbnail = '<img src="/display?fileName='+thumbnailEncode+'">';
 				iconfirmStr += '<label>이름</label><input type="text" id="Scname'+item.cno+'" name="cname" value="'+item.cname+'"/>';
 				iconfirmStr += '<label>번호</label><input type="text" id="Scphone'+item.cno+'" name="cphone"  value="'+item.cphone+'"/>';
 				iconfirmStr += '<label>시간</label><input type="text" id="Sreservation'+item.cno+'" name="reservation"  value="'+item.reservation+'"/> <br>';
 			});
+			$("#IThumbnail").html(iconfirmThumbnail);
 			$(".iconfirmStr").html(iconfirmStr);
 		});
 

@@ -40,6 +40,7 @@
 		values(#{ino},
 		#{title}, #{location}, #{thumbnail}, #{comforts}, #{price},
 		#{context}, sysdate, #{mno}, 0)
+
 	</insert>
 
 	<select id="read" resultMap="leaseMap">
@@ -138,7 +139,6 @@
 	<select id="readHotTopicImde"
 		resultType="com.uni.domain.uni_hotTopicVO">
 
-
 		select round(avg(r.star)) as star, w.name, w.photo, w.ino,
 		w.context, w.thumbnail, w.mno, w.readcount from
 		(select m.name,
@@ -146,8 +146,7 @@
 		w.context,w.thumbnail, m.mno, w.readcount from
 		uni_workplace_i w, uni_member m where w.mno = m.mno) w full outer join
 		uni_review r on w.ino is not null group by w.name, w.photo, w.ino,
-		w.context, w.thumbnail,
-		w.mno, w.readcount order by w.readcount desc
+		w.context, w.thumbnail,	w.mno, w.readcount order by w.readcount desc
 
 	</select>
 
@@ -171,6 +170,7 @@
 		resultType="com.uni.domain.uni_ShinChungVO">
 		select * from uni_sinchung where ino = #{ino} and
 		reservation like '%'||#{reservation}||'%'
+
 	</select>
 
 
@@ -229,35 +229,40 @@
 
 	<!-- 로그인한 사람에 대한 작업실 확정 정보 검색 -->
 	<select id="IConfirmList"
-		resultType="com.uni.domain.uni_confirmVO">
+		resultType="com.uni.domain.Join_ConfirmVO">
 		select c.cno, w.ino, w.title, w.location, w.thumbnail,
-		w.price, w.name, w.phone, c.mytime, c.cname, c.cphone, c.reservation,
-		c.mno from uni_confirm c,
+		w.price, w.name, w.phone, c.cname, c.cphone, c.reservation, c.mno,
+		w.mno as dno from
+		uni_confirm c,
 		(select w.ino, w.title, w.location,
-		w.thumbnail, w.price, m.name, m.phone
+		w.thumbnail,
+		w.price, m.name, m.phone, m.mno
 		from uni_workplace_i w,
-		uni_member m where w.mno = m.mno) w where
+		uni_member m where
+		w.mno = m.mno) w where
 		c.ino = w.ino order by c.cno
 	</select>
 
 	<select id="SConfirmList"
-		resultType="com.uni.domain.uni_confirmVO">
+		resultType="com.uni.domain.Join_ConfirmVO">
 		select c.cno, w.sno, w.title, w.location, w.thumbnail,
-		w.price, w.name, w.phone, c.mytime, c.cname, c.cphone, c.reservation,
-		c.mno from uni_confirm c,
-		(select w.sno, w.title, w.location,
-		w.thumbnail, w.price, m.name, m.phone
-		from uni_workplace_s w,
-		uni_member m where w.mno = m.mno) w where
+		w.price, w.name, w.phone, w.mydate, c.mytime, c.cname, c.cphone,
+		c.reservation, c.mno, w.mno as dno from uni_confirm c,
+		(select w.sno,
+		w.title, w.location, w.thumbnail, w.price, w.myDate,
+		m.name, m.phone,
+		m.mno from uni_workplace_s w, uni_member m where w.mno =
+		m.mno) w where
 		c.sno = w.sno order by c.cno
 	</select>
 
-	<select id="Sconfirm" resultType="com.uni.domain.uni_confirmVO">
+	<select id="Sconfirm" resultType="com.uni.domain.Join_ConfirmVO">
 		select c.cno, w.sno, w.title,
-		w.location, w.thumbnail, w.mydate,
-		w.price, w.name, w.phone, c.mytime,
-		c.cname, c.cphone, c.reservation,
-		c.mno
+		w.location, w.thumbnail,
+		w.price, w.name, w.phone,
+		c.cname, c.cphone,
+		c.reservation,
+		c.mno, w.mydate, c.mytime
 		from uni_confirm c,
 		(select
 		w.sno, w.title, w.location,
@@ -270,18 +275,22 @@
 		c.sno = w.sno and c.cno = #{cno}
 	</select>
 
-	<select id="Iconfirm" resultType="com.uni.domain.uni_confirmVO">
+	<select id="Iconfirm" resultType="com.uni.domain.Join_ConfirmVO">
 		select c.cno, w.ino, w.title,
 		w.location, w.thumbnail,
-		w.price, w.name, w.phone, c.mytime, c.cname,
-		c.cphone, c.reservation,
+		w.price, w.name, w.phone, c.cname,
+		c.cphone,
+		c.reservation,
 		c.mno from uni_confirm c,
 		(select w.ino,
-		w.title, w.location, w.thumbnail, w.price, m.name, m.phone
+		w.title,
+		w.location, w.thumbnail, w.price, m.name, m.phone
 		from
-		uni_workplace_i w, uni_member m where w.mno = m.mno) w where
+		uni_workplace_i
+		w, uni_member m where w.mno = m.mno) w where
 		c.ino =
-		w.ino and c.cno = #{cno}
+		w.ino and c.cno =
+		#{cno}
 	</select>
 
 	<insert id="Ireview_insert">

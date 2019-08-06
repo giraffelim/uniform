@@ -101,11 +101,11 @@
 			<div class="row justify-content-end">
 				<div class="col-md-10">
 					<div class="row d-flex">
-						<div class="col-lg-6">
+						<div class="col-lg-5">
 							<div class="row resultList"></div>
 							<!--end-->
 						</div>
-						<div class="col-md-6 mapWrap">
+						<div class="col-md-7 mapWrap">
 							<div id="resultMap" class="bg-light"></div>
 						</div>
 						<!-- END COL -->

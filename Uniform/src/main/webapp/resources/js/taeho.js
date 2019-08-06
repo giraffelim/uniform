@@ -499,12 +499,12 @@ $(function() {
 	$(window).resize(function() {
 		var windowSize = $(window).width() + 17;
 		console.log(windowSize);
-		if (windowSize <= 900) {
+		if (windowSize <= 1090) {
 
-			$(".profile-div").removeClass("col-md-6");
-			$(".profile-div").addClass("col-md-12");
+			$(".profile-div").removeClass("col-md-5");
+			$(".profile-div").addClass("col-md-12").css("width", "30em");
 		} else {
-			$(".profile-div").addClass("col-md-6");
+			$(".profile-div").addClass("col-md-5").css("width", "30em");
 			$(".profile-div").removeClass("col-md-12");
 		}
 	});

@@ -9,9 +9,10 @@ import com.uni.domain.SWorkPlaceVO;
 import com.uni.domain.SinchungVO;
 import com.uni.domain.Sinchung_ListVO;
 import com.uni.domain.StarAvgVO;
-import com.uni.domain.uni_confirmVO;
+import com.uni.domain.Join_ConfirmVO;
 import com.uni.domain.uni_ShinChungVO;
 import com.uni.domain.uni_hotTopicVO;
+import com.uni.domain.uni_reviewVO;
 import com.uni.domain.uni_workplace_iVO;
 
 @Service
@@ -54,13 +55,13 @@ public interface WorkPlaceService {
 	// 로그인한 사람이 신청한 작업실에 대한 정보
 	public List<SinchungVO> sinchungList(Long mno);
 
-	public List<uni_confirmVO> IConfirmList(Long mno);
+	public List<Join_ConfirmVO> IConfirmList(Long mno);
 
-	public List<uni_confirmVO> SConfirmList(Long mno);
+	public List<Join_ConfirmVO> SConfirmList(Long mno);
 
-	public List<uni_confirmVO> confirm(Long cno, Long mno, String flag);
+	public List<Join_ConfirmVO> confirm(Long cno, Long mno, String flag);
 
-	public boolean review_insert(String content, int star, Long mno, Long ino, Long sno, Long cno, String flag);
+	public boolean review_insert(uni_reviewVO vo);
 	
 	public int getWorkplaceCount();
 

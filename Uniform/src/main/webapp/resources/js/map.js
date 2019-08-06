@@ -103,8 +103,9 @@ $(function() {
 								var regDates = resultList[index].rdate.substring(0, 10);
 
 								if (index >= firstCount && index < lastCount) {
+									var thumbnailEncode = encodeURIComponent(resultList[index].thumbnail);
 									str = '<div class="col-md-12"> <div class="blog-entry"> ';
-									str += '<a href="#" class="img img-2" style="background-image: url(/resources/images/image_1.jpg);"> </a> ';
+									str += '<a href="#" class="img img-2"> <img src="/display?fileName='+thumbnailEncode+'"> </a> ';
 									str += '<div class="text pt-3"> <h2 class="mb-2">'
 											+ resultList[index].title
 											+ '</h2> ';
@@ -135,11 +136,13 @@ $(function() {
 					.each(
 							resultList,
 							function(index, item) {
-								var regDates = resultList[index].regDate
+								var regDates = resultList[index].rdate
 										.substring(0, 10);
 								if (index >= firstCount && index < lastCount) {
+									var thumbnailEncode = encodeURIComponent(resultList[index].thumbnail);
+									console.log(thumbnailEncode);
 									str = '<div class="col-md-12"> <div class="blog-entry"> ';
-									str += '<a href="#" class="img img-2" style="background-image: url(/resources/images/image_1.jpg);"> </a> ';
+									str += '<a href="#" class="img img-2 thumbnail"> <img src="/display?fileName='+thumbnailEncode+'"> </a> ';
 									str += '<div class="text pt-3"> <h2 class="mb-2">'
 											+ resultList[index].title
 											+ '</h2> ';

@@ -31,6 +31,7 @@ import net.coobird.thumbnailator.Thumbnailator;
 @Log4j
 public class UploadController {
 
+
    // 파일을 년/월/일 단위의 폴더를 통해 관리
    private String getFolder() {
 
@@ -161,3 +162,4 @@ public class UploadController {
    }
 
 }
+

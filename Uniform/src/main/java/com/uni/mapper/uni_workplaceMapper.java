@@ -10,7 +10,7 @@ import com.uni.domain.SinchungVO;
 import com.uni.domain.Sinchung_ListVO;
 import com.uni.domain.StarAvgVO;
 import com.uni.domain.uni_PhotoVO;
-import com.uni.domain.uni_confirmVO;
+import com.uni.domain.Join_ConfirmVO;
 import com.uni.domain.uni_ShinChungVO;
 import com.uni.domain.uni_hotTopicVO;
 import com.uni.domain.uni_workplace_iVO;
@@ -62,13 +62,13 @@ public interface uni_workplaceMapper {
 	// 공유 작업실 review에 작성된 평균 별점
 	public List<StarAvgVO> avg_star_s(String location);
 
-	public List<uni_confirmVO> IConfirmList(Long mno);
+	public List<Join_ConfirmVO> IConfirmList(Long mno);
 
-	public List<uni_confirmVO> SConfirmList(Long mno);
+	public List<Join_ConfirmVO> SConfirmList(Long mno);
 
-	public List<uni_confirmVO> Sconfirm(@Param("cno") Long cno, @Param("mno") Long mno);
+	public List<Join_ConfirmVO> Sconfirm(@Param("cno") Long cno, @Param("mno") Long mno);
 
-	public List<uni_confirmVO> Iconfirm(@Param("cno") Long cno, @Param("mno") Long mno);
+	public List<Join_ConfirmVO> Iconfirm(@Param("cno") Long cno, @Param("mno") Long mno);
 
 	public boolean Ireview_insert(@Param("content") String content, @Param("star") int star, @Param("mno") Long mno,
 			@Param("ino") Long ino, @Param("cno") Long cno);
