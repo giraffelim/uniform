@@ -118,6 +118,8 @@ span[class*='star-input']>.input, .result {
 
 .profile-Row {
 	padding: 0 3em;
+	margin-top: -2em;
+	margin-bottom: 3em;
 }
 
 .profile-context {
@@ -125,27 +127,27 @@ span[class*='star-input']>.input, .result {
 	margin-left: 2em;
 }
 
-.profile-btn-div {
-	margin-bottom: 1em;
-	margin-left: 22em;
-}
-
-.profile-btn-div2 {
+div[class*='profile-btn-div'] {
 	margin-bottom: 1em;
 	margin-left: 20em;
+	top: -2.7em;
+	position: relative;
 }
 
 .profile-icon {
-	border: 2px solid #aaa;
-	margin-top: 1em;
+	margin-top: 0.5em;
+	margin-left: 1em;
 }
 
 .profile-container {
 	background-color: #eee;
-	margin-left: 2em;
+	margin-left: 5em;
+	margin-right: 5em;
 	width: 30em;
-	border: 2px solid #aaa;
+	height: 18em;
+	border : 2px solid #aaa;
 	box-shadow: 1px 1px 1px;
+	border: 2px solid #aaa;
 }
 
 .profile-title {

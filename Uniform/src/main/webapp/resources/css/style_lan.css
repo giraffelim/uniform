@@ -83,7 +83,6 @@
 	height: 6em;
 	border: 1px solid #aaa;
 	border-radius: 50%;
-	background: url('/resources/images/profile.png') no-repeat;
 	background-size: cover;
 	margin-top: 3em;
 	margin-bottom: 3em;
@@ -409,4 +408,20 @@ star-input>.input.focus {
 #SThumbnail img {
 	width: 100%;
 	height: 100%;
+}
+
+.profile-icon img {
+	width: 100%;
+	height: 70%;
+	border: 1.2px solid #aaa;
+	overflow: hidden;
+	border-radius: 50%;
+}
+
+.profile-image img {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	border-radius: 50%;
 }

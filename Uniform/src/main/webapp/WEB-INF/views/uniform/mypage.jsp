@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://www.springframework.org/security/tags"
 	prefix="sec"%>
 
@@ -39,19 +40,21 @@
 				<div class="col-md-10">
 					<div class="row mb-lg-5">
 						<!--회원 정보 ---------------------------------------------->
-						<div class="profile-div"
-							class="col-md-6  d-flex align-self-stretch ftco-animate">
+						<div
+							class="profile-div col-md-5  d-flex align-self-stretch ftco-animate">
 							<div class="media block-6 services d-block">
 
 								<div class="container-fluid">
 									<div class="profile-container">
 										<h3 class="profile-title">프로필</h3>
-
+										<div class="profile-btn-div">
+											<button data-oper="modify" id="btnModify" type="button"
+												class="btn btn-default">수정</button>
+										</div>
 										<div class="row profile-Row">
 											<div
-												class="col-sm-4 icon d-flex justify-content-center align-items-center profile-icon">
-												<span><img
-													src="/uniform/display?fileName=${pinfo.member.photo }"></span>
+												class="col-sm-4 d-flex justify-content-center align-items-center profile-icon">
+												<img src="/uniform/display?fileName=${pinfo.member.photo }">
 											</div>
 											<div class="col-sm-8 media-body p-2 mt-3 profile-context">
 
@@ -67,18 +70,13 @@
 													이메일 : <span id="email"><sec:authentication
 															property="principal.member.email" /></span>
 												</div>
-												<div>
+												<%-- <div>
 													회원번호 : <span id="email"><sec:authentication
 															property="principal.member.mno" /></span>
-												</div>
-
-
+												</div> --%>
 											</div>
 										</div>
-										<div class="profile-btn-div">
-											<button data-oper="modify" id="btnModify" type="button"
-												class="btn-modify btn-default\">수정</button>
-										</div>
+
 									</div>
 								</div>
 
@@ -91,12 +89,16 @@
 						<!--회원 정보 끝-->
 
 						<!-- 결제창-------------------------------------->
-						<div class="col-md-6 d-flex align-self-stretch ftco-animate">
+						<div class="col-md-5 d-flex align-self-stretch ftco-animate">
 							<div class="media block-6 services d-block">
 
 								<div class="container-fluid">
 									<div class="profile-container">
 										<h3 class="profile-title">결제수단</h3>
+										<div class="profile-btn-div2">
+											<button type="button" class="btn btn-default">수정</button>
+											<button type="button" class="btn btn-default">조회</button>
+										</div>
 										<div class="row profile-Row">
 
 											<div class="col-sm-8 media-body p-2 mt-3 payment-context">
@@ -104,11 +106,6 @@
 												<div class="profile-payment">결제수단을 관리할 수 있습니다</div>
 
 											</div>
-										</div>
-										<div class="profile-btn-div2">
-
-											<button type="button" class="btn-modify btn-default">수정</button>
-											<button type="button" class="btn-read btn-default">조회</button>
 										</div>
 									</div>
 								</div>
@@ -537,7 +534,12 @@
 										<div class="modal-body">
 											<div class="row review-body">
 												<div class="col-md-3">
-													<div class="profile-image"></div>
+													<div class="profile-image" id="reviewProfile">
+														<input type="hidden" id="myPageUserid"
+															value="${pinfo.member.userID}"> <input
+															type="hidden" id="myPagePhoto"
+															value="${pinfo.member.photo}">
+													</div>
 												</div>
 												<div class="col-md-9">
 													<form action="new_review" method="post" id="review_form">
@@ -550,8 +552,7 @@
 															<sec:authorize access="isAuthenticated()">
 																<input type="hidden" id="mno" name="mno"
 																	value='<sec:authentication property="principal.member.mno"/>' />
-																<span>아이디 : <sec:authentication
-																		property="principal.username" /></span>
+																<span>이름 : ${pinfo.member.name }</span>
 
 															</sec:authorize>
 															<sec:authorize access="isAnonymous ()">

@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.uni.domain.IWorkPlaceVO;
 import com.uni.domain.SWorkPlaceVO;
 import com.uni.domain.StarAvgVO;
-import com.uni.domain.uni_confirmVO;
+import com.uni.domain.Join_ConfirmVO;
+import com.uni.domain.uni_reviewVO;
 import com.uni.service.WorkPlaceService;
 
 import lombok.AllArgsConstructor;
@@ -65,31 +66,33 @@ public class MapController {
 	}
 
 	@RequestMapping(value = "SConfirmList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
-	public ResponseEntity<List<uni_confirmVO>> SConfirmList(Long mno) {
+	public ResponseEntity<List<Join_ConfirmVO>> SConfirmList(Long mno) {
 		log.info("sinchung : " + service.SConfirmList(mno));
-		return new ResponseEntity<List<uni_confirmVO>>(service.SConfirmList(mno), HttpStatus.OK);
+		return new ResponseEntity<List<Join_ConfirmVO>>(service.SConfirmList(mno), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "IConfirmList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
-	public ResponseEntity<List<uni_confirmVO>> IConfirmList(Long mno) {
+	public ResponseEntity<List<Join_ConfirmVO>> IConfirmList(Long mno) {
 		log.info("sinchung : " + service.IConfirmList(mno));
-		return new ResponseEntity<List<uni_confirmVO>>(service.IConfirmList(mno), HttpStatus.OK);
+		return new ResponseEntity<List<Join_ConfirmVO>>(service.IConfirmList(mno), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "confirm", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
-	public ResponseEntity<List<uni_confirmVO>> Scofirm(Long cno, Long mno, String flag) {
+	public ResponseEntity<List<Join_ConfirmVO>> Scofirm(Long cno, Long mno, String flag) {
 		log.info("sinchung : " + service.confirm(cno, mno, flag));
-		return new ResponseEntity<List<uni_confirmVO>>(service.confirm(cno, mno, flag), HttpStatus.OK);
+		return new ResponseEntity<List<Join_ConfirmVO>>(service.confirm(cno, mno, flag), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "new_review", produces = MediaType.TEXT_PLAIN_VALUE, method = RequestMethod.POST)
-	public ResponseEntity<String> new_review(String content, String star, Long mno, Long ino, Long sno, Long cno,
-			String flag) {
-		log.info(content + " : " + star + " : " + mno + " : " + ino + " : " + sno + " : " + cno + " : " + flag);
-		int int_star = Integer.parseInt(star);
-		log.info("review : " + service.review_insert(content, int_star, mno, ino, sno, cno, flag));
-
-		return new ResponseEntity<String>("true", HttpStatus.OK);
+	public ResponseEntity<String> new_review(uni_reviewVO vo) {
+		log.info(vo.getContent() + " : " + vo.getStar() + " : " + vo.getCno() + " : " + vo.getIno() + " : " + vo.getSno());
+		String result = "";
+		if(service.review_insert(vo)) {
+			result = "true";
+		} else {
+			result = "false";
+		}
+		return new ResponseEntity<String>(result, HttpStatus.OK);
 
 	}
 
