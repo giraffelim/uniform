@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.security.access.prepost.PreAuthorize;
-
 
 /*
  *  작성자 : 임태양
@@ -20,18 +18,20 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.uni.domain.JoinSCMemVO;
+import com.uni.domain.SWorkPlaceVO;
 import com.uni.domain.SinchungVO;
-import com.uni.domain.StarAvgVO;
 import com.uni.domain.uni_ShinChungVO;
-
-
 import com.uni.domain.uni_hotTopicVO;
 import com.uni.domain.uni_workplace_iVO;
 import com.uni.service.WorkPlaceService;
@@ -96,7 +96,6 @@ public class WorkPlaceController {
 		model.addAttribute("SfirstDate", SfirstDate);
 		model.addAttribute("SlastDate", SlastDate);
 	}
-
 	// workplaceList에서 검색했을 때 가져오는 post
 	@Transactional
 	@RequestMapping(value = "workplaceList", method = RequestMethod.POST)
@@ -132,14 +131,16 @@ public class WorkPlaceController {
 	}
 	
 	// 임대 작업실 데이터베이스 Crud
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping(value="/workplaceI")
 	public String insertWorkSpace(uni_workplace_iVO vo) {
 		log.info("workplaceI Insert"+vo);
 		service.insertWorkPlace_i(vo);
-		return null;
+		return "redirect:/uniform/rentDetail?type=imde&no="+vo.getIno();
 	}
 	
 	// 임대 작업실 데이터베이스 crUd
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping(value="/updateWorkplace")
 	public String updateWorkSpace(uni_workplace_iVO vo) {
 		log.warn("workplaceI update"+vo);
@@ -158,15 +159,23 @@ public class WorkPlaceController {
 	
 	// rentDetail get
 	@GetMapping(value = "/rentDetail")
-	public void getRentDetail(@RequestParam("type") String type, @RequestParam("no") int no, Model model) {
+	public String getRentDetail(@RequestParam("type") String type, @RequestParam("no") int no, Model model) {
 		log.warn("get Rent Detail");
 		
 		if(type.equals("share")) {
 			// TODO 아직 미완성
+			service.updateReadCount(0,no);
+			//TODO sno값으로 sinchung table에서 신청 내역이 있는지 체크
+			List<uni_ShinChungVO> shinChungList = service.getShinChung(no);
+			model.addAttribute("shinChungList", shinChungList);
+			SWorkPlaceVO vo = service.readShare(no);
+			model.addAttribute("workplaceVO",vo);
+			// readCount update
+			return "/uniform/shareDetail";
 		}
 		
 		if(type.equals("imde")) {
-			
+			service.updateReadCount(no,0);
 			//TODO 서버에서 시간 받아오기
 			Calendar cal = Calendar.getInstance();
 			int hourback = cal.get(Calendar.HOUR_OF_DAY);
@@ -192,11 +201,21 @@ public class WorkPlaceController {
 			log.info(thumbnail);
 			vo.setThumbnail(thumbnail);
 			model.addAttribute("workplaceVO",vo);
+			return "/uniform/rentDetail";
 		}
+		return null;
 		
 	}
-
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/workplaceS")
+	public String insertWorkplaceS(SWorkPlaceVO vo) {
+		//TODO 상세보기로 이동해야한다!
+		log.warn("insert Workplace s: "+vo);
+		service.insertWorkPlace_s(vo);
+		return "redirect:/uniform/shareDetail?type=share&no="+vo.getSno();
+	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/insertShinChung")
 	public String insertShinChung(uni_ShinChungVO vo) {
 		//TODO 데이터 넘어오나 확인
@@ -205,5 +224,70 @@ public class WorkPlaceController {
 		service.insertShinChung(vo);
 		return "redirect:/uniform/myPage?mno="+vo.getMno();
 	}
+
+	@GetMapping("/shareInsert")
+	public void insertShare() {
+		log.info("share Insert...");
+	}
+	
+	@GetMapping("/shareUpdate")
+	public void shareUpdate(@RequestParam("sno") int sno, Model model) {
+		log.warn("share update..."+service.readShare(sno).getPCount());
+		model.addAttribute("vo",service.readShare(sno));
+	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/updateWorkplaceS")
+	public void shareUpdates(SWorkPlaceVO vo) {
+		log.warn("share updates..."+vo);
+		
+		//TODO update workplace_s
+		service.updateWorkplace_s(vo);
+	}
+	
+	@GetMapping(value = "/getSinchungBySno", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<List<JoinSCMemVO>> getSinchungBySno(int sno){
+		List<JoinSCMemVO> sinList = service.getSinchungBySno(sno);
+		sinList.forEach(sinchung -> {
+			log.warn(sinchung);
+		});
+		return sinList == null ? new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR) : new ResponseEntity<List<JoinSCMemVO>>(sinList, HttpStatus.OK);
+	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping(value = "/insertShareSinchung", produces = "text/plain; charset=utf-8", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public String insertShareSinchung(@RequestBody uni_ShinChungVO vo) {
+		log.warn("sinchungShare=++++++"+vo);
+		int flag = service.insertShareSinchung(vo);
+		
+		return Integer.toString(flag);
+	}
+	
+	// remove sinchung
+	@PreAuthorize("isAuthenticated()")
+	@DeleteMapping(value="/removeSinchung/{mno}/{sno}", produces="text/plain; charset=utf-8")
+	@ResponseBody
+	public String removeSinChung(@PathVariable String mno, @PathVariable String sno) {
+		log.warn("removeSinChung"+mno+","+sno);
+		
+		//TODO 삭제 처리
+		
+		return service.deleteSinchung(Integer.parseInt(mno), Integer.parseInt(sno)) == 1 ?  "OK" : "FAIL";
+	}
+	
+	// Share Confirm
+	@PostMapping(value = "/shareConfirm", produces="text/plain; charset=utf-8")
+	@ResponseBody
+	public String shareConfirm(String sno) {
+		log.warn("share Confirm === "+sno);
+		int result = service.shareConfirm(Integer.parseInt(sno));
+		if(result == 1) {
+			log.warn("confirm 성공!!!!!!!!!!@@@@");
+		}
+		return null;
+	}
+
 
 }

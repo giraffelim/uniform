@@ -60,7 +60,7 @@
 						<div class="col-md-10"></div>
 						<div class="col-md-2">
 							<sec:authorize access="isAuthenticated()">
-								<button type="button" class="btn btn-primary" id="shareBtn">등록</button>
+								<button type="button" class="btn btn-primary" id="shareBtn" onclick="location.href='/uniform/shareInsert'">등록</button>
 							</sec:authorize>
 						</div>
 					</div>
@@ -228,7 +228,7 @@
 						<div class="col-md-10"></div>
 						<div class="col-md-2">
 							<sec:authorize access="isAuthenticated()">
-								<button type="button" class="btn btn-primary" id="imdeBtn">등록</button>
+								<button type="button" class="btn btn-primary" id="imdeBtn" onclick="location.href='/uniform/leaseInsert'">등록</button>
 							</sec:authorize>
 						</div>
 					</div>

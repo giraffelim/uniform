@@ -44,17 +44,17 @@ if(oauth2LoginUser == 0){
                                         <label><b>편의시설</b>
                                         <div style="width: 100%; height: 2px; background-color: black; position: relative; top: -5px;"></div>
                                         </label>
-                                        	   <div style="width: 100%; height: 100px;" id="comforts">	
-                                            <input type="checkbox" value="wifi" id="wifi" name="comforts"><label for="wifi" class="labelMargin">WIFI</label>
-                                            <input type="checkbox" value="amp" id="amp" name="comforts"><label for="amp" class="labelMargin">앰프</label>
-                                            <input type="checkbox" value="mike" id="mike" name="comforts"><label for="mike" class="labelMargin">마이크</label>
-                                            <input type="checkbox" value="restroom" id="restroom" name="comforts"><label for="restroom" class="labelMargin">화장실</label>
+                                        	   <div style="width: 100%; height: 100px; margin-left:20px;" id="comforts">	
+                                            <input type="checkbox" value="WIFI" id="wifi" name="comforts"><label for="wifi" class="labelMargin">WIFI</label>
+                                            <input type="checkbox" value="앰프" id="amp" name="comforts"><label for="amp" class="labelMargin">앰프</label>
+                                            <input type="checkbox" value="마이크" id="mike" name="comforts"><label for="mike" class="labelMargin">마이크</label>
+                                            <input type="checkbox" value="화장실" id="restroom" name="comforts"><label for="restroom" class="labelMargin">화장실</label>
                                         	
                                             <br>
-                                             <input type="checkbox" value="aircon" name="comforts" id="aircon"><label for="aircon" class="labelMargin">에어컨</label>
-                                            <input type="checkbox" value="refrigerator" name="comforts" id="refrigerator"><label for="refrigerator" class="labelMargin">냉장고</label>
-                                            <input type="checkbox" value="fan" name="comforts" id="fan"><label for="fan" class="labelMargin">선풍기</label>
-                                            <input type="checkbox" value="airclean" name="comforts" id="airclean"><label for="airclean" class="labelMargin">공기청정기</label>
+                                             <input type="checkbox" value="에어컨" name="comforts" id="aircon"><label for="aircon" class="labelMargin">에어컨</label>
+                                            <input type="checkbox" value="냉장고" name="comforts" id="refrigerator"><label for="refrigerator" class="labelMargin">냉장고</label>
+                                            <input type="checkbox" value="선풍기" name="comforts" id="fan"><label for="fan" class="labelMargin">선풍기</label>
+                                            <input type="checkbox" value="공기청정기" name="comforts" id="airclean"><label for="airclean" class="labelMargin">공기청정기</label>
 
                                         </div>
 
@@ -91,7 +91,7 @@ if(oauth2LoginUser == 0){
                                                                         <div class="col-sm-6" style="margin-top: 20px; height:500px;" id="section2">
                                     
                                         <div style="width: 100%; height: 300px;" id="imgRes">
-                                                                                		<img src="/resources/images/no-img.png" id="thumbnailImg">
+                                                                                		<img src="/resources/images/no-img.png" id="thumbnailImg"  id="thumbnailg">
                                         
                                         </div>
                                     </div>
@@ -155,7 +155,8 @@ if(oauth2LoginUser == 0){
             		if(width < 400){
             			$("#section2").remove();
             			$("#divRows").prepend(section2);
-            			$("#totalDiv").css("height","1100");
+            			$("#totalDiv").css("height","1500");
+            			$("#section2").css("height","400");
             		}else{
             			$("#section2").remove();
             			$("#divRows").append(section2);
@@ -165,7 +166,7 @@ if(oauth2LoginUser == 0){
             				height : "450px"
             			});
             			$("#leaseSection").css("margin-left","100px");
-
+            			$("#imgRes").css("margin-left","30px");
             		}
             		
             		$(window).on("resize",function(){

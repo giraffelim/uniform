@@ -368,7 +368,6 @@ div[class*='profile-btn-div'] {
 }
 
 #firstBestImdeProfile {
-	background-image: url(../images/person_4.jpg);
 	width: 3em;
 	height: 3em;
 	border-radius: 50%;
@@ -379,7 +378,6 @@ div[class*='profile-btn-div'] {
 }
 
 #secondBestImdeProfile {
-	background-image: url(../images/person_3.jpg);
 	width: 3em;
 	height: 3em;
 	border-radius: 50%;
@@ -390,7 +388,6 @@ div[class*='profile-btn-div'] {
 }
 
 #thirdBestImdeProfile {
-	background-image: url(../images/person_1.jpg);
 	width: 3em;
 	height: 3em;
 	border-radius: 50%;

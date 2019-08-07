@@ -119,7 +119,7 @@ $(function() {
 			}
 
 			console.log("result : " + result_star + " :" + $("#review-content").val()+":");
-
+			
 			$.ajax({
 		        type:"POST",
 		        url:"/uniform/new_review",
@@ -136,8 +136,17 @@ $(function() {
 				},
 		        dataType : "text",
 		        success: function(result){
-		        	
+		        	var ino = $("#review_form #ino").val();
+		        	var sno = $("#review_form #sno").val();
 		            $("#review").modal("hide");
+		            if(ino != 0){
+		            	location.href="/uniform/rentDetail?type=imde&no="+ino;
+		            	return;
+		            }
+		            if(sno != 0){
+		            	location.href="/uniform/rentDetail?type=share&no="+sno;
+		            	return;
+		            }
 		        }
 		    });
 		});
@@ -146,11 +155,14 @@ $(function() {
 	console.log($("#myPageUserid").val());
 	
 	if ($("#myPageUserid").val().length < 20) {
-		$("#reviewProfile").append("<img src='/uniform/display?fileName="+$("#myPagePhoto").val()+"'>");
+		if($("#myPagePhoto").val() === "") {
+			$("#reviewProfile").append("<img src='/resources/images/default.png'>");
+		} else {
+			$("#reviewProfile").append("<img src='/uniform/display?fileName="+$("#myPagePhoto").val()+"'>");
+		}
 	} else {
 		$("#reviewProfile").append("<img src='"+$("#myPagePhoto").val()+"'>");
 	}
-
 
 	/* 마이페이지 신청 내역에서 제목을 클릭하면 상세페이지에 정보를 띄워줌 */
 	$(document).on("click",".SsinchungBtn",function(){

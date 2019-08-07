@@ -230,6 +230,7 @@ public class MemberController {
 	@ResponseBody
 	public uni_MemberVO getMember(int mno) {
 		log.info("memberByMno: "+mno);
+		log.info("memberByMno11111111111111: "+ service.getMember(mno));
 		return service.getMember(mno);
 	}
 

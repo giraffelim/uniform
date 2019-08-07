@@ -315,7 +315,8 @@
 															</form>
 														</div>
 														<div class="col-md-6 img_div">
-															<div class="author-image"></div>
+															<div class="author-image">
+															</div>
 														</div>
 													</div>
 												</div>

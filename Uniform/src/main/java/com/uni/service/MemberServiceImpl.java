@@ -287,7 +287,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public uni_MemberVO getMember(int mno) {
 		// TODO Auto-generated method stub
-		return null;
+		return mapper.readMember(mno);
 	}
 
 }
