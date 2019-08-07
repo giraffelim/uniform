@@ -167,7 +167,7 @@ $(function() {
 	/* 마이페이지 신청 내역에서 제목을 클릭하면 상세페이지에 정보를 띄워줌 */
 	$(document).on("click",".SsinchungBtn",function(){
 		var workplaceNo = $(this).data("sno");
-		location.href = "/uniform/rendDetail?type=share&no="+workplaceNo;
+		location.href = "/uniform/rentDetail?type=share&no="+workplaceNo;
 	});
 	
 	var loginMno = $("#mno").val();
@@ -178,17 +178,21 @@ $(function() {
 		$.getJSON("/uniform/sinchung.json", {
 			no : workplaceNo
 		}, function(result) {
+			var thumbnailEncode, iSinchungStr;
 			$.each(result, function(index, item) {
 				$("#title").val(item.title);
 				$("#location").val(item.location);
 				$("#price").val(item.price);
 				$("#hname").val(item.hname);
 				$("#hphone").val(item.hphone);
+				$("#reservation").val(item.reservation);
+				thumbnailEncode = encodeURIComponent(item.thumbnail);
+				console.log(item.thumbnail + " : " + thumbnailEncode);
 				
 				var reservations = item.reservation.split(",");
 
 				if (loginMno == item.mno + "") {
-					switch(reservations.length){
+					switch(reservations.length) {
 					case 1:
 						$("#reservation").val(reservations[0]);
 						break;
@@ -206,9 +210,12 @@ $(function() {
 						break;
 					}
 				}
+				
+			});
+				$("#iSinchungStr").append(iSinchungStr);
+				$("#sinchungThumbnail").append('<img src="/display?fileName='+thumbnailEncode+'">');
 			});
 		});
-	});
 
 	/* 마이페이지 확정 내역에서 제목을 클릭하면 상세페이지에 정보를 띄워줌 */
 
@@ -437,7 +444,6 @@ $(function() {
 				$("#Iname").val(item.name);
 				$("#Iphone").val(item.phone);
 				var thumbnailEncode = encodeURIComponent(item.thumbnail);
-				console.log(item.thumbnail + " : " + thumbnailEncode);
 				iconfirmThumbnail = '<img src="/display?fileName='+thumbnailEncode+'">';
 				iconfirmStr += '<label>이름</label><input type="text" id="Scname'+item.cno+'" name="cname" value="'+item.cname+'"/>';
 				iconfirmStr += '<label>번호</label><input type="text" id="Scphone'+item.cno+'" name="cphone"  value="'+item.cphone+'"/>';

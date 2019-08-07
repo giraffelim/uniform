@@ -18,23 +18,29 @@ import lombok.extern.log4j.Log4j;
 @AllArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
 
-	@Setter(onMethod_ = @Autowired)
-	private uni_reviewMapper mapper;
+   @Setter(onMethod_ = @Autowired)
+   private uni_reviewMapper mapper;
 
-	@Override
-	public List<uni_JoinReviewVO> readReviewByino(int ino) {
-		System.out.println(mapper.readReview(ino));
-		return mapper.readReview(ino);
-	}
+   @Override
+   public List<uni_JoinReviewVO> readReviewListByino(int ino) {
+      System.out.println(mapper.readReviewList(ino));
+      return mapper.readReviewList(ino);
+   }
 
-	@Override
-	public boolean removeReview(int hno) {
-		return mapper.removeReview(hno);
-	}
+   @Override
+   public boolean removeReview(int hno) {
+      return mapper.removeReview(hno);
+   }
 
-	@Override
-	public boolean updateReview(String content, int star, int hno) {
-		return mapper.updateReview(content, star, hno);
-	}
+   @Override
+   public boolean updateReview(String content, int star, int hno) {
+      return mapper.updateReview(content, star, hno);
+   }
+
+   @Override
+   public uni_JoinReviewVO readReview(int hno) {
+      
+      return mapper.readReview(hno);
+   }
 
 }

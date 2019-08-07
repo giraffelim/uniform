@@ -313,13 +313,12 @@ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&lib
         						$(".sName").eq(i).html(obj.name);
 							$(".sReservation").eq(i).html(obj.reservation);
 							$(".photoS").eq(i).attr("src",obj.photo);
-							$(".refusePeople").eq(i).data("mno", obj.mno);
+							$(".sName").eq(i).data("mno", obj.mno);
         					}else{
         						$(".sName").eq(i).html(obj.name);
         						$(".sReservation").eq(i).html(obj.reservation);
         						$(".photoS").eq(i).attr("src","/display?fileName="+obj.photo);
-        						$(".refusePeople").eq(i).data("mno", obj.mno);
-        						console.log($(".refusePeople").eq(i).data("mno"));
+        						$(".sName").eq(i).data("mno", obj.mno);
         					}
         				});
         			}
@@ -331,7 +330,7 @@ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&lib
         	/* 삭제 */
         	$("#refuseParent").on("click",".refusePeople",function(){
         		
-        		var mno = $(this).data("mno");
+        		var mno = $(this).prev().prev().prev().data("mno");
         		var sno = "${workplaceVO.sno}"
         		
         		$.ajax({
@@ -557,7 +556,7 @@ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&lib
             	
             	// 사용자당 신청은 1회만 가능
             	var flag = false;
-            	$(".refusePeople").each(function(i, obj){
+            	$(".sName").each(function(i, obj){
             		var mno = $(obj).data("mno");
             		var loginMno = "${pinfo.member.mno}";
             		if(mno == loginMno){
@@ -565,11 +564,13 @@ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&lib
             			return;
             		}
             	});
+            	console.log($(".sName").eq(0).data("mno"));
             	
             	if(flag == true){
             		alert("신청은 1회만 가능합니다.");
             		return;
             	}
+            	
             	// 신청 1회 end
             	
             	// 글 등록자는 신청불가
@@ -632,9 +633,8 @@ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&lib
             		data : {
             			sno : sno
             		},
-            		dataType : "text/plain;",
             		success : function(result){
-            			console.log(result);
+            			location.href='uniform/myPage?mno=${pinfo.member.mno}';
             		}
             	});
             });
@@ -843,10 +843,12 @@ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&lib
                                         </div>
                                         <!-- 1set-->
                                          <sec:authorize access="isAuthenticated()">
-                                              <div id="iBtn">
-	                                            <button type="button" class="btn btn-danger" id="resBtn">예약하기</button>
-	                                            <button type="button" class="btn btn-danger">찜 하 기</button>
-                                       		 </div>
+                                         	<c:if test="${flag != 1 }">
+                                              	<div id="iBtn">
+	                                            		<button type="button" class="btn btn-danger" id="resBtn">예약하기</button>
+	                                            		<button type="button" class="btn btn-danger">찜 하 기</button>
+                                       		 	</div>
+                                       		 </c:if>
  										</sec:authorize>
                                     </div>
                                 </div>
@@ -923,6 +925,8 @@ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&lib
                             </div>
 
                             <!--580px 이하시 예약-->
+                               <sec:authorize access="isAuthenticated()">
+                                         	<c:if test="${flag != 1 }">
                             <div id="inofooter">
                                 <div id="inofooterBtn" class="text-center" style="margin-top: 20px;">
                                     <b style="font-size: 15px">당신의 작업실을 예약하세요!</b>
@@ -930,6 +934,8 @@ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&lib
                                     <button class="btn btn-danger btn-sm float-right" data-toggle="modal" data-target="#myModal">예약하기</button>
                                 </div>
                             </div>
+                            </c:if>
+                            </sec:authorize>
 
 
 
@@ -966,10 +972,14 @@ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&lib
                                 </div>
 
                                 <!-- Modal footer -->
+                                   <sec:authorize access="isAuthenticated()">
+                                         	<c:if test="${flag != 1 }">
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" >예약하기</button>
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                                 </div>
+                                </c:if>
+                                </sec:authorize>
 
                             </div>
                         </div>

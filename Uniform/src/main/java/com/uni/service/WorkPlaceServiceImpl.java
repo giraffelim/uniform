@@ -79,7 +79,7 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 		if (SfirstDate == null || SfirstDate.equals("fail") || SfirstDate.equals("")) {
 			SfirstDate = CurrentDate();
 		}
-		if (SlastDate == null || SfirstDate.equals("fail") || SfirstDate.equals("")) {
+		if (SlastDate == null || SlastDate.equals("fail") || SlastDate.equals("")) {
 			SlastDate = CurrentDate();
 		}
 
@@ -87,12 +87,12 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 
 			// 검색한 날짜
 			Date firstDate = new SimpleDateFormat("yyyy-MM-dd").parse(SfirstDate);
-			Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse(SfirstDate);
+			Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse(SlastDate);
 
 			System.out.println("workplace_s date : " + firstDate + " : " + lastDate);
 
 			for (int j = 0; j < list.size(); j++) {
-				String[] dateList = list.get(j).getMyDate().split("~");
+				String[] dateList = list.get(j).getMyDate().split(",");
 				for (int i = 0; i < dateList.length; i++) {
 
 					Date dbDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateList[i]);
@@ -145,14 +145,12 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 	@Override
 	public List<Sinchung_ListVO> Isinchung_list(Long mno) {
 
-
 		return mapper.Isinchung_list(mno);
 	}
 
 	public List<Sinchung_ListVO> Isinchung_list_ajax(Long mno) {
 		return mapper.Isinchung_list_ajax(mno);
 	}
-
 
 	// 로그인 한 사람의 신청 정보를 검색
 	@Override
@@ -230,18 +228,27 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 					confirmList.setCphone(phoneList[j]);
 					confirmList.setName(list.get(i).getName());
 					confirmList.setPhone(list.get(i).getPhone());
-					if (list.get(i).getDno().equals(mnoStr)) {
-						confirmList.setReservation(list.get(i).getMyTime());
-						confirmList.setMyTime(list.get(i).getMyTime());
-						confirmList.setMyDate(list.get(i).getMyDate());
-					} else {
-						confirmList.setReservation(reservationList[j]);
-						confirmList.setMyTime("사용하지 않음");
-						confirmList.setMyDate(CurrentDate());
-					}
+					confirmList.setReservation(reservationList[j]);
 					confirmList.setMno(mnoList[j]);
 					resultList.add(confirmList);
+				} else if (list.get(i).getDno().equals(mnoStr)) {
+					Join_ConfirmVO confirmList = new Join_ConfirmVO();
+					confirmList.setCno(list.get(i).getCno());
+					confirmList.setIno(list.get(i).getIno());
+					confirmList.setTitle(list.get(i).getTitle());
+					confirmList.setLocation(list.get(i).getLocation());
+					confirmList.setThumbnail(list.get(i).getThumbnail());
+					confirmList.setPrice(list.get(i).getPrice());
+					confirmList.setCname(nameList[j]);
+					confirmList.setCphone(phoneList[j]);
+					confirmList.setName(list.get(i).getName());
+					confirmList.setPhone(list.get(i).getPhone());
+					confirmList.setReservation("사용하지않음 (등록자)");
+					confirmList.setMno(mnoList[j]);
+					resultList.add(confirmList);
+					j = 100;
 				}
+
 			}
 
 		}
@@ -297,7 +304,7 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 					confirmList.setReservation(list.get(i).getMyTime());
 					confirmList.setMyDate(list.get(i).getMyDate());
 					resultList.add(confirmList);
-					j++;
+					j = 100;
 				}
 			}
 
@@ -394,7 +401,7 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 
 		mapper.insertShinChung(vo);
 	}
-	
+
 	@Transactional
 	@Override
 	public void insertWorkPlace_s(SWorkPlaceVO vo) {
@@ -409,13 +416,13 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 			mapper.insertAttach(pVo);
 		});
 	}
-	
+
 	@Override
 	public SWorkPlaceVO readShare(int sno) {
 		// TODO Auto-generated method stub
 		return mapper.readShare(sno);
 	}
-	
+
 	@Transactional
 	@Override
 	public void updateWorkplace_s(SWorkPlaceVO vo) {
@@ -441,53 +448,53 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 		// 1. 신청 정보를 가져온다
 		List<JoinSCMemVO> joinVO = mapper.getSinchungBySno(vo.getSno());
 		// 2. 신청자가 등록한 시간을 split 한다.
-		String[] toReservation = 	vo.getReservation().split(",");
+		String[] toReservation = vo.getReservation().split(",");
 		// 3. 신청자가 신청한 시간을 가져온다.
 		int toFirstTime = Integer.parseInt(toReservation[0]);
 		int toLastTime = Integer.parseInt(toReservation[1]);
-		
+
 		// 등록자 시간 비교
 		SWorkPlaceVO originVO = mapper.readShare(vo.getSno());
 		// 등록자가 작성한 시간을 구해온다.
 		String masterTime = originVO.getMyTime();
 		String[] masterTimes = masterTime.split("~");
-		for(int i=0; i<masterTimes.length; i++) {
+		for (int i = 0; i < masterTimes.length; i++) {
 			masterTimes[i] = masterTimes[i].replace(":00", "");
 		}
 		int mFirstTime = Integer.parseInt(masterTimes[0]);
 		int mLastTime = Integer.parseInt(masterTimes[1]);
 		int flag = mapper.duplicateCheckTime(mFirstTime, toLastTime, mLastTime, toFirstTime);
-		
-		if(flag == 1) {
+
+		if (flag == 1) {
 			return 1;
 		}
-		
-		for(int i=0; i<joinVO.size(); i++) {
+
+		for (int i = 0; i < joinVO.size(); i++) {
 			// 4. 신청 테이블에 담긴 시간을 split한다
-			String [] reservation = joinVO.get(i).getReservation().split("~");
-			
+			String[] reservation = joinVO.get(i).getReservation().split("~");
+
 			// 5. 신청 테이블과 사용자가 신청한 시간을 비교한다.
 			int firstTime = 0;
 			int lastTime = 0;
-			for(int j=0; j<reservation.length; j++) {
+			for (int j = 0; j < reservation.length; j++) {
 				String res = reservation[j].replace(":00", "");
-				if(j == 0) {
+				if (j == 0) {
 					firstTime = Integer.parseInt(res);
 				}
-				if(j == 1) {
+				if (j == 1) {
 					lastTime = Integer.parseInt(res);
 				}
 			}
 			flag = mapper.duplicateCheckTime(firstTime, toLastTime, lastTime, toFirstTime);
-			
-			if(flag == 1) {
+
+			if (flag == 1) {
 				return 1;
 			}
-			
+
 		}
-		
-		//INSERT
-		String reservation2 = toFirstTime +":00~"+toLastTime+":00";
+
+		// INSERT
+		String reservation2 = toFirstTime + ":00~" + toLastTime + ":00";
 		vo.setReservation(reservation2);
 		mapper.insertShinChungS(vo);
 		return 0;
@@ -499,20 +506,20 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 		// TODO Auto-generated method stub
 		return mapper.deleteSinchung(mno, sno);
 	}
-	
+
 	// share Confirm
 	@Transactional
 	@Override
 	public int shareConfirm(int sno) {
 		int count = 0;
-		
-		//Confirm VO 생성
+
+		// Confirm VO 생성
 		uni_confirmVO cVo = new uni_confirmVO();
-		
+
 		cVo.setSno(sno);
-		
+
 		// TODO sno로 신청 테이블 정보 가져오기
-		List<JoinSCMemVO>sinchungList = mapper.getSinchungBySno(sno);
+		List<JoinSCMemVO> sinchungList = mapper.getSinchungBySno(sno);
 		StringBuilder nameSB = new StringBuilder();
 		StringBuilder phoneSB = new StringBuilder();
 		StringBuilder reservationSB = new StringBuilder();
@@ -522,8 +529,8 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 			phoneSB.append(joinSCMemVO.getPhone());
 			reservationSB.append(joinSCMemVO.getReservation());
 			mnoSB.append(joinSCMemVO.getMno());
-			
-			if(count < sinchungList.size()-1) {
+
+			if (count < sinchungList.size() - 1) {
 				nameSB.append(",");
 				phoneSB.append(",");
 				reservationSB.append(",");
@@ -531,34 +538,45 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 			}
 			count++;
 		}
-		
+
 		cVo.setCName(nameSB.toString());
 		cVo.setCPhone(phoneSB.toString());
 		cVo.setReservation(reservationSB.toString());
 		cVo.setMno(mnoSB.toString());
-		
+
 		// TODO sno로 등록자 정보 가져오기
 		SWorkPlaceVO sVo = mapper.readShare(sno);
 		cVo.setMyTime(sVo.getMyTime());
-		
+
 		System.out.println(cVo);
-		
+
 		// insert Confirm
 		mapper.insertConfirm(cVo);
-		
+
 		// sinchung table delete
 		mapper.deleteSinchung(0, cVo.getSno());
-		
+
 		return 1;
 	}
 
 	@Override
 	public void updateReadCount(int ino, int sno) {
 		// TODO Auto-generated method stub
-		if(sno != 0) {
+		if (sno != 0) {
 			mapper.updateReadCount(0, sno);
-		}else {
+		} else {
 			mapper.updateReadCount(ino, 0);
 		}
+	}
+
+	@Override
+	public int checkConfirm(int sno) {
+		// TODO Auto-generated method stub
+		return mapper.checkConfirm(sno);
+	}
+
+	@Override
+	public StarAvgVO IworkplaceStar(int no) {
+		return mapper.IworkplaceStar(no);
 	}
 }

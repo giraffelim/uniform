@@ -13,7 +13,10 @@ public class SinchungVO {
 	private int price;
 	private String hname;
 	private String hphone;
+	private String cname;
+	private String cphone;
 	private String reservation;
+	private String thumbnail;
 	private Long mno;
 
 }

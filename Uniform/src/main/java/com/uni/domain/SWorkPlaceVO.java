@@ -17,7 +17,7 @@ public class SWorkPlaceVO {
 	private String comforts;
 	private int price;
 	private String context;
-	private Date  rDate;
+	private Date rDate;
 	private int pCount;
 	private String myTime;
 	private String myDate;
