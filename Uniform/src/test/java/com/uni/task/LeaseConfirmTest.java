@@ -43,16 +43,21 @@ public class LeaseConfirmTest {
 			int count = 0;
 			List<uni_ShinChungVO> sinchungList = workplace.getTodaySinchungList(ino);
 			for (uni_ShinChungVO sinchung : sinchungList) {
-				reservationSB.append(sinchung.getReservation());
+				String[] sinArray = sinchung.getReservation().split(",");
+				for(int i=0; i<sinArray.length; i++) {
+					reservationSB.append(sinArray[i]);
+					if(i < sinArray.length-1)
+					reservationSB.append("/");
+				}
 				mnoSB.append(sinchung.getMno());
 				uni_MemberVO mem = member.readMember(sinchung.getMno());
 				nameSB.append(mem.getName());
 				phoneSB.append(mem.getPhone());
 				if (count < sinchungList.size() - 1) {
 					nameSB.append(",");
-					phoneSB.append(",");
 					reservationSB.append(",");
 					mnoSB.append(",");
+					phoneSB.append(",");
 				}
 				count++;
 			}
@@ -75,7 +80,7 @@ public class LeaseConfirmTest {
 		
 		//confirm Insert
 		confirmList.forEach(confirm -> {
-			log.warn(confirm);
+			log.warn(confirm.getReservation());
 			workplace.insertConfirm(confirm);
 		});
 

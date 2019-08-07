@@ -16,8 +16,10 @@ public interface uni_MemberMapper {
 
 	public uni_MemberVO getByGoogle(String snsID);
 
+	// 아이디 찾기 select
 	public uni_MemberVO find_id(@Param("name") String name, @Param("email") String email);
 
+	// 비밀번호 찾기 update
 	public boolean find_pw(@Param("userPW") String userPW, @Param("userID") String userID,
 			@Param("email") String email);
 

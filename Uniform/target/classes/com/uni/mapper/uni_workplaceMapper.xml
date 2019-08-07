@@ -6,7 +6,8 @@
 <mapper namespace="com.uni.mapper.uni_workplaceMapper">
 
 
-	<resultMap type="com.uni.domain.uni_workplace_iVO" id="leaseMap">
+	<resultMap type="com.uni.domain.uni_workplace_iVO"
+		id="leaseMap">
 		<id property="ino" column="ino" />
 		<result property="title" column="title" />
 		<result property="location" column="location" />
@@ -50,10 +51,14 @@
 	
 	<insert id="insertWorkPlace_i">
 		<selectKey keyProperty="ino" order="BEFORE" resultType="int">
-				select uni_workplace_i_seq.nextval from dual
+			select uni_workplace_i_seq.nextval from dual
 		</selectKey>
-		insert into uni_workplace_i (ino, title, location, thumbnail, comforts, price, context, rDate, mno, readcount)
-		values(#{ino}, #{title}, #{location}, #{thumbnail}, #{comforts}, #{price}, #{context}, sysdate, #{mno}, 0)
+		insert into uni_workplace_i (ino, title, location, thumbnail,
+		comforts, price, context, rDate, mno, readcount)
+		values(#{ino},
+		#{title}, #{location}, #{thumbnail}, #{comforts}, #{price},
+		#{context}, sysdate, #{mno}, 0)
+
 	</insert>
 	
 	<select id="readShare" resultMap="ShareMap">
@@ -63,11 +68,12 @@
 	</select>
 	
 	<select id="read" resultMap="leaseMap">
-	 	select *
-		from uni_workplace_I i , uni_photo p 
+		select *
+		from uni_workplace_I i ,
+		uni_photo p
 		where i.ino = p.ino and i.ino = #{ino}
 	</select>
-	
+
 	<insert id="insertAttach">
 		<if test="ino != 0">
 		insert into uni_photo (pno, path, uuid, filename, ino)
@@ -78,13 +84,17 @@
 		values(uni_photo_seq.nextval, #{path}, #{uuid}, #{fileName}, #{sno})
 		</if>
 	</insert>
-	
+
 	<update id="updateWorkPlace_i">
-	update uni_workplace_i set title = #{title}, location = #{location}, thumbnail = #{thumbnail}, comforts = #{comforts}, price = #{price} where ino = #{ino}
+		update uni_workplace_i set title = #{title}, location
+		= #{location},
+		thumbnail = #{thumbnail}, comforts = #{comforts}, price
+		= #{price}
+		where ino = #{ino}
 	</update>
-	
-	<delete id ="deletePhoto">
-	delete from uni_photo where ino =#{ino}
+
+	<delete id="deletePhoto">
+		delete from uni_photo where ino =#{ino}
 	</delete>
 	
 	<delete id ="deletePhotoS">
@@ -105,6 +115,7 @@
 		select * from uni_workplace_i
 	</select>
 
+	<!-- 임대 작업실 검색 -->
 	<select id="workPlaceList_i"
 		resultType="com.uni.domain.IWorkPlaceVO">
 		select * from uni_workplace_i
@@ -112,6 +123,7 @@
 		'%'||#{location}||'%' order by ino
 	</select>
 
+	<!-- 공유 작업실 검색 -->
 	<select id="workPlaceList_s"
 		resultType="com.uni.domain.SWorkPlaceVO">
 		select * from uni_workplace_s
@@ -119,6 +131,7 @@
 		'%'||#{location}||'%' order by sno
 	</select>
 
+	<!-- 임대 작업실에 대한 평균 별점 -->
 	<select id="avg_star_i" resultType="com.uni.domain.StarAvgVO">
 		select round(avg(star)) as
 		avg,
@@ -131,13 +144,15 @@
 		i.location order by r.ino
 	</select>
 
+	<!-- 공유 작업실에 대한 평균 별점 -->
 	<select id="avg_star_s" resultType="com.uni.domain.StarAvgVO">
 		select round(avg(star)) as
 		avg,
 		r.sno, s.location from uni_review r full outer join
 		uni_workplace_s s on r.sno
 		=
-		s.sno where s.location like '%'||#{location}||'%' group by r.sno,
+		s.sno where s.location like
+		'%'||#{location}||'%' group by r.sno,
 		s.location order by r.sno
 	</select>
 
@@ -145,87 +160,70 @@
 	<select id="readHotTopic"
 		resultType="com.uni.domain.uni_hotTopicVO">
 
-		select round(avg(r.star)) as star, w.name, w.photo, w.sno, w.context, w.thumbnail, w.mno, w.readcount from
-        (select m.name, m.photo, w.sno,
-      w.context,w.thumbnail, m.mno, w.readcount from
-      uni_workplace_s w, uni_member m where w.mno = m.mno) w full outer join uni_review r on w.sno is not null group by w.name, w.photo, w.sno, w.context, w.thumbnail, 
-        w.mno, w.readcount order by w.readcount desc
+		select round(avg(r.star)) as star, w.name, w.photo, w.sno,
+		w.context, w.thumbnail, w.mno, w.readcount from
+		(select m.name,
+		m.photo, w.sno,
+		w.context,w.thumbnail, m.mno, w.readcount from
+		uni_workplace_s w, uni_member m where w.mno = m.mno) w full outer join
+		uni_review r
+		on w.sno is not null group by w.name, w.photo, w.sno,
+		w.context,
+		w.thumbnail,
+		w.mno, w.readcount order by w.readcount desc
+
 
 	</select>
 	<!-- 임대 핫토픽 -->
 	<select id="readHotTopicImde"
 		resultType="com.uni.domain.uni_hotTopicVO">
 
-		select round(avg(r.star)) as star, w.name, w.photo, w.ino, w.context, w.thumbnail, w.mno, w.readcount from
-        (select m.name, m.photo, w.ino,
-      w.context,w.thumbnail, m.mno, w.readcount from
-      uni_workplace_i w, uni_member m where w.mno = m.mno) w full outer join uni_review r on w.ino is not null group by w.name, w.photo, w.ino, w.context, w.thumbnail, 
-        w.mno, w.readcount order by w.readcount desc
+		select round(avg(r.star)) as star, w.name, w.photo, w.ino,
+		w.context, w.thumbnail, w.mno, w.readcount from
+		(select m.name,
+		m.photo, w.ino,
+		w.context,w.thumbnail, m.mno, w.readcount from
+		uni_workplace_i w, uni_member m where w.mno = m.mno) w full outer join
+		uni_review r on w.ino is not null group by w.name, w.photo, w.ino,
+		w.context, w.thumbnail,	w.mno, w.readcount order by w.readcount desc
 
 	</select>
-	
-	<select id = "getOldFiles" resultType = "com.uni.domain.uni_PhotoVO">
-		select * from uni_photo where path = to_char(sysdate-1, 'yyyy/mm/dd')
+
+	<select id="getOldFiles" resultType="com.uni.domain.uni_PhotoVO">
+		select * from uni_photo
+		where path = to_char(sysdate-1, 'yyyy/mm/dd')
 	</select>
-	
-	<select id ="getShinChung" resultType="com.uni.domain.uni_ShinChungVO">
+
+	<select id="getShinChung"
+		resultType="com.uni.domain.uni_ShinChungVO">
 		select * from uni_sinchung where ino = #{ino}
 	</select>
-	
-	<insert id ="insertShinChung">
-		insert into uni_sinchung(rno, reservation, mno, ino, sDate) values (uni_sinchung_seq.nextval,#{reservation},#{mno},#{ino}, sysdate)
+
+	<insert id="insertShinChung">
+		insert into uni_sinchung(rno, reservation, mno, ino,
+		sDate) values (uni_sinchung_seq.nextval,#{reservation},#{mno},#{ino},
+		sysdate)
 	</insert>
-	
-	<select id="getShinChungLike" resultType="com.uni.domain.uni_ShinChungVO">
-		select * from uni_sinchung where ino = #{ino} and reservation like '%'||#{reservation}||'%' 
-	</select>
-	
-	
-	<select id="sinchung_list_s"
-		resultType="com.uni.domain.Sinchung_ListVO">
-	<![CDATA[
-		select aa.*, ss.reservation, ss.mno from (select w.title,
-		m.name, m.phone, s.sno
-		from uni_sinchung s, uni_member m,
-		uni_workplace_s w where w.sno
-		= s.sno
-		and m.mno = s.mno and flag='d'  order by s.sno asc)
-		aa,
-		(select s.reservation, s.sno, m.mno
-		from uni_sinchung s, uni_member
-		m, uni_workplace_s w where w.sno =
-		s.sno
-		and m.mno = s.mno and flag='s'
-		and m.mno = #{mno}  order by s.sno asc) ss
-		where aa.sno= ss.sno and rownum<4
-		]]>
+
+	<select id="getShinChungLike"
+		resultType="com.uni.domain.uni_ShinChungVO">
+		select * from uni_sinchung where ino = #{ino} and
+		reservation like '%'||#{reservation}||'%'
+
 	</select>
 
-	<select id="sinchung_list_d"
+
+	<select id="sinchung_list"
 		resultType="com.uni.domain.Sinchung_ListVO">
-	<![CDATA[
-		select aa.*, ss.mno from (select w.title, m.name, m.phone,
-		s.sno,
-		s.reservation
-		from uni_sinchung s, uni_member m, uni_workplace_s
-		w
-		where w.sno = s.sno
-		and m.mno = s.mno and flag='d' and m.mno = #{mno}
-		order by s.sno asc)
-		aa,
-		(select
-		s.reservation, s.sno, m.mno
-		from
-		uni_sinchung s, uni_member
-		m,
-		uni_workplace_s w where w.sno = s.sno
-		and
-		m.mno = s.mno and flag='s' order by s.sno asc)
-		ss
-		where aa.sno = ss.sno
-		and rownum < 4
-]]>
+		select w.title, w.name, w.phone, w.sno, s.reservation,
+		s.mno from
+		(select w.title, m.name, m.phone, w.sno, m.mno from
+		uni_workplace_s w,
+		uni_member m where w.mno = m.mno) w, uni_sinchung s
+		where w.sno = s.sno and s.mno = #{mno} order by sno asc
 	</select>
+
+
 
 	<select id="Isinchung_list"
 		resultType="com.uni.domain.Sinchung_ListVO">
@@ -237,51 +235,7 @@
 	</select>
 
 
-	<select id="sinchung_list_s_ajax"
-		resultType="com.uni.domain.Sinchung_ListVO">
-	<![CDATA[
-		select aa.*, ss.reservation, ss.mno from (select w.title,
-		m.name, m.phone, s.sno
-		from uni_sinchung s, uni_member m,
-		uni_workplace_s w where w.sno
-		= s.sno
-		and m.mno = s.mno and flag='d'  order by s.sno asc)
-		aa,
-		(select s.reservation, s.sno, m.mno
-		from uni_sinchung s, uni_member
-		m, uni_workplace_s w where w.sno =
-		s.sno
-		and m.mno = s.mno and flag='s'
-		and m.mno = #{mno}  order by s.sno asc) ss
-		where aa.sno= ss.sno
-		]]>
-	</select>
 
-
-	<select id="sinchung_list_d_ajax"
-		resultType="com.uni.domain.Sinchung_ListVO">
-	<![CDATA[
-		select aa.*, ss.mno from (select w.title, m.name, m.phone,
-		s.sno,
-		s.reservation
-		from uni_sinchung s, uni_member m, uni_workplace_s
-		w
-		where w.sno = s.sno
-		and m.mno = s.mno and flag='d' and m.mno = #{mno}
-		order by s.sno asc)
-		aa,
-		(select
-		s.reservation, s.sno, m.mno
-		from
-		uni_sinchung s, uni_member
-		m,
-		uni_workplace_s w where w.sno = s.sno
-		and
-		m.mno = s.mno and flag='s' order by s.sno asc)
-		ss
-		where aa.sno = ss.sno
-]]>
-	</select>
 	<select id="Isinchung_list_ajax"
 		resultType="com.uni.domain.Sinchung_ListVO">
 		select w.title, w.name, w.phone, s.ino, s.reservation
@@ -292,19 +246,6 @@
 		s.mno and m.mno = #{mno} order by s.ino
 
 	</select>
-	
-	<select id="sinchungList"
-        resultType="com.uni.domain.SinchungVO">
-        select w.title, w.location, w.price, w.name as hname,
-        w.phone as hphone,
-        m.name as cname, m.phone as cphone, s.ino,
-        s.reservation, m.mno
-        from uni_sinchung s, uni_member m, (select * from
-        uni_workplace_i i,
-        uni_member m where i.mno = m.mno) w where w.ino =
-        s.ino
-        and m.mno = s.mno and s.ino = #{no} order by s.ino
-    </select>
     
     <update id="updateWorkplace_s">
     	update uni_workplace_s set title = #{title}, location = #{location}, thumbnail = #{thumbnail}, comforts = #{comforts}, price = #{price}, context = #{context}, pCount = #{PCount}, myTime = #{myTime}, myDate = #{myDate}   where sno = #{sno}
@@ -362,11 +303,115 @@
     </select>
     
     <select id="getTodaySinchungList" resultType="com.uni.domain.uni_ShinChungVO">
-    	select * from uni_sinchung where ino = #{ino} and TO_CHAR(sDate,'yy/MM/DD') = (select TO_CHAR(sysdate,'yy/MM/dd') from dual)
+    	select * from uni_sinchung where ino = #{ino} and TO_CHAR(sDate,'yy/MM/DD') = (select TO_CHAR(sysdate,'yy/MM/dd') from dual) order by rno
     </select>
     
     <delete id="deleteLeaseS">
     	delete from uni_sinchung where ino = #{ino}
     </delete>
     
+
+	<!-- 로그인한 사람에 대한 작업실 신청 정보 검색 -->
+	<select id="sinchungList" resultType="com.uni.domain.SinchungVO">
+		select w.title, w.location,
+		w.price, w.name as hname,
+		w.phone as hphone,
+		m.name as cname, m.phone as
+		cphone, s.ino,
+		s.reservation, m.mno
+		from uni_sinchung s, uni_member m,
+		(select * from
+		uni_workplace_i i,
+		uni_member m where i.mno = m.mno) w
+		where w.ino =
+		s.ino
+		and m.mno = s.mno and s.ino = #{no} order by s.ino
+	</select>
+
+	<!-- 로그인한 사람에 대한 작업실 확정 정보 검색 -->
+	<select id="IConfirmList"
+		resultType="com.uni.domain.Join_ConfirmVO">
+		select c.cno, w.ino, w.title, w.location, w.thumbnail,
+		w.price, w.name, w.phone, c.cname, c.cphone, c.reservation, c.mno,
+		w.mno as dno from
+		uni_confirm c,
+		(select w.ino, w.title, w.location,
+		w.thumbnail,
+		w.price, m.name, m.phone, m.mno
+		from uni_workplace_i w,
+		uni_member m where
+		w.mno = m.mno) w where
+		c.ino = w.ino order by c.cno
+	</select>
+
+	<select id="SConfirmList"
+		resultType="com.uni.domain.Join_ConfirmVO">
+		select c.cno, w.sno, w.title, w.location, w.thumbnail,
+		w.price, w.name, w.phone, w.mydate, c.mytime, c.cname, c.cphone,
+		c.reservation, c.mno, w.mno as dno from uni_confirm c,
+		(select w.sno,
+		w.title, w.location, w.thumbnail, w.price, w.myDate,
+		m.name, m.phone,
+		m.mno from uni_workplace_s w, uni_member m where w.mno =
+		m.mno) w where
+		c.sno = w.sno order by c.cno
+	</select>
+
+	<select id="Sconfirm" resultType="com.uni.domain.Join_ConfirmVO">
+		select c.cno, w.sno, w.title,
+		w.location, w.thumbnail,
+		w.price, w.name, w.phone,
+		c.cname, c.cphone,
+		c.reservation,
+		c.mno, w.mydate, c.mytime
+		from uni_confirm c,
+		(select
+		w.sno, w.title, w.location,
+		w.thumbnail,
+		w.price, w.mydate, m.name,
+		m.phone
+		from uni_workplace_s w,
+		uni_member m
+		where w.mno = m.mno) w where
+		c.sno = w.sno and c.cno = #{cno}
+	</select>
+
+	<select id="Iconfirm" resultType="com.uni.domain.Join_ConfirmVO">
+		select c.cno, w.ino, w.title,
+		w.location, w.thumbnail,
+		w.price, w.name, w.phone, c.cname,
+		c.cphone,
+		c.reservation,
+		c.mno from uni_confirm c,
+		(select w.ino,
+		w.title,
+		w.location, w.thumbnail, w.price, m.name, m.phone
+		from
+		uni_workplace_i
+		w, uni_member m where w.mno = m.mno) w where
+		c.ino =
+		w.ino and c.cno =
+		#{cno}
+	</select>
+
+	<insert id="Ireview_insert">
+		insert into uni_review(hno, content, star, cno, ino,
+		mno) values (review_seq.nextval, #{content}, #{star}, #{cno}, #{ino},
+		#{mno})
+	</insert>
+
+	<insert id="Sreview_insert">
+		insert into uni_review(hno, content, star, cno, sno,
+		mno) values (review_seq.nextval, #{content}, #{star}, #{cno}, #{sno},
+		#{mno})
+	</insert>
+
+	<select id="getWorkplaceCount" resultType="int">
+		select sum(c.count) as
+		sum from (
+		select count(*) as count from uni_workplace_i union
+		select
+		count(*) as count from uni_workplace_s) c
+	</select>
+
 </mapper>

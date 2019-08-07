@@ -12,8 +12,10 @@ import com.uni.domain.uni_hotTopicVO;
 @Service
 public interface MemberService {
 
+	// 아이디 찾기 select
 	public uni_MemberVO find_id(String name, String email);
 
+	// 비밀번호 찾기 update
 	public boolean find_pw(String userPW, String userID, String email);
 
 	public boolean updateMember(uni_MemberVO vo);
@@ -30,15 +32,12 @@ public interface MemberService {
 
 	public void mergeNaver(uni_MemberVO vo);
 	
-	public uni_MemberVO getMember(int mno);
-	
 	public ResponseEntity<String> uploadProfile(MultipartFile[] uploadFile);
 	
 	public ResponseEntity<byte[]> getFile(String fileName);
 	
 	public ResponseEntity<String> deleteFile(String fileName);
 
-	public List<uni_hotTopicVO> listImde();
-
-
+	public uni_MemberVO getMember(int mno);
+	
 }

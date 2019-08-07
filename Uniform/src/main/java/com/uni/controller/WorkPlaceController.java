@@ -70,6 +70,7 @@ public class WorkPlaceController {
 
 	}
 
+	// hottopicList에서 검색했을때 가져온 값들을 검색해서 가져오는 get
 	@Transactional
 	@RequestMapping(value = "workplaceList", method = RequestMethod.GET)
 	public void listG(@RequestParam("location") String location, @RequestParam("SfirstDate") String SfirstDate,
@@ -95,7 +96,7 @@ public class WorkPlaceController {
 		model.addAttribute("SfirstDate", SfirstDate);
 		model.addAttribute("SlastDate", SlastDate);
 	}
-	
+	// workplaceList에서 검색했을 때 가져오는 post
 	@Transactional
 	@RequestMapping(value = "workplaceList", method = RequestMethod.POST)
 	public void listP(String location, String SfirstDate, String SlastDate, String type, Model model) {
@@ -121,6 +122,8 @@ public class WorkPlaceController {
 		model.addAttribute("SlastDate", SlastDate);
 	}
 	
+
+	// 마이페이지 신청내역에서 제목을 누르면 신청 정보를 띄우기 위해 값을 가져오는 get
 	@RequestMapping(value = "sinchung", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
 	public ResponseEntity<List<SinchungVO>> sinchung(Long no) {
 		log.info("sinchung : " + service.sinchungList(no));
@@ -203,7 +206,6 @@ public class WorkPlaceController {
 		return null;
 		
 	}
-	
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/workplaceS")
 	public String insertWorkplaceS(SWorkPlaceVO vo) {
@@ -286,9 +288,6 @@ public class WorkPlaceController {
 		}
 		return null;
 	}
-	
-	
-	
 
 
 }

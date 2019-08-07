@@ -26,7 +26,7 @@ public class LeaseConfirmTask {
 	@Inject
 	private uni_MemberMapper member;
 	
-	@Scheduled(cron = "0 29 19 * * *")
+	@Scheduled(cron = "0 58 10 * * *")
 	public void leaseConfirmCheck() {
 		log.warn("lease insert confirm...");
 		StringBuilder nameSB = new StringBuilder();

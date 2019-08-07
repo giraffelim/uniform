@@ -17,6 +17,7 @@
 <link
 	href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
 	rel="stylesheet">
+	
 
 <link rel="stylesheet"
 	href="/resources/css/open-iconic-bootstrap.min.css">
@@ -25,8 +26,6 @@
 <link rel="stylesheet" href="/resources/css/owl.carousel.min.css">
 <link rel="stylesheet" href="/resources/css/owl.theme.default.min.css">
 <link rel="stylesheet" href="/resources/css/magnific-popup.css">
-<link rel="stylesheet" href="/resources/css/taeho.css">
-
 <link rel="stylesheet" href="/resources/css/aos.css">
 
 <link rel="stylesheet" href="/resources/css/ionicons.min.css">
@@ -40,6 +39,7 @@
 <link rel="stylesheet" href="/resources/css/flaticon.css">
 <link rel="stylesheet" href="/resources/css/icomoon.css">
 <link rel="stylesheet" href="/resources/css/style.css">
+<link rel="stylesheet" href="/resources/css/taeho.css">
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&libraries=services"></script>

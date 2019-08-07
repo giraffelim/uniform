@@ -11,18 +11,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.uni.domain.IWorkPlaceVO;
 import com.uni.domain.JoinSCMemVO;
+import com.uni.domain.Join_ConfirmVO;
 import com.uni.domain.SWorkPlaceVO;
 import com.uni.domain.SinchungVO;
 import com.uni.domain.Sinchung_ListVO;
 import com.uni.domain.StarAvgVO;
-import com.uni.domain.uni_MemberVO;
 import com.uni.domain.uni_PhotoVO;
 import com.uni.domain.uni_ShinChungVO;
 import com.uni.domain.uni_confirmVO;
 import com.uni.domain.uni_hotTopicVO;
+import com.uni.domain.uni_reviewVO;
 import com.uni.domain.uni_workplace_iVO;
 import com.uni.mapper.uni_workplaceMapper;
-import com.uni.service.WorkPlaceService;
 
 import lombok.AllArgsConstructor;
 import lombok.Setter;
@@ -61,16 +61,20 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 		return CurrentDate;
 	}
 
+	// 주소 키워드를 사용한 임대 작업실 검색
 	@Override
 	public List<IWorkPlaceVO> workPlaceList_i(String location, String type) {
 		return mapper.workPlaceList_i(location);
 
 	}
 
+	// 주소와 날짜를 사용한 공유 작업실 검색
 	@Override
 	public List<SWorkPlaceVO> workPlaceList_s(String location, String type, String SfirstDate, String SlastDate) {
 		List<SWorkPlaceVO> list = mapper.workPlaceList_s(location);
 		List<SWorkPlaceVO> resultList = new ArrayList<>();
+
+		System.out.println("workplaceList_s list : " + list);
 
 		if (SfirstDate == null || SfirstDate.equals("fail") || SfirstDate.equals("")) {
 			SfirstDate = CurrentDate();
@@ -85,6 +89,8 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 			Date firstDate = new SimpleDateFormat("yyyy-MM-dd").parse(SfirstDate);
 			Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse(SfirstDate);
 
+			System.out.println("workplace_s date : " + firstDate + " : " + lastDate);
+
 			for (int j = 0; j < list.size(); j++) {
 				String[] dateList = list.get(j).getMyDate().split("~");
 				for (int i = 0; i < dateList.length; i++) {
@@ -98,7 +104,7 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 						result = lastDate.compareTo(dbDate);
 						if (result <= 0) {
 							resultList.add(list.get(j));
-							System.out.println(list.get(j));
+							System.out.println("workplace_s list.get : " + list.get(j));
 						}
 					} else {
 						break;
@@ -115,6 +121,7 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 		return resultList;
 	}
 
+	// 작업실에 등록된 review에 평균 별점 검색
 	@Override
 	public List<StarAvgVO> avg_star(String location, String type) {
 		if (type.equals("share")) {
@@ -123,35 +130,21 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 			return mapper.avg_star_i(location);
 		}
 	}
-	@Transactional
+
 	@Override
 	public List<Sinchung_ListVO> sinchung_list(Long mno) {
 
 		ArrayList<Sinchung_ListVO> unionSinchungList = new ArrayList<Sinchung_ListVO>();
 
-		unionSinchungList.addAll(mapper.sinchung_list_d(mno));
-		unionSinchungList.addAll(mapper.sinchung_list_s(mno));
+		unionSinchungList.addAll(mapper.sinchung_list(mno));
 
-		/* System.out.println("=======================마이페이지 mno :" + mno); */
-
-		for (int i = 0; i < unionSinchungList.size(); i++) {
-			/* System.out.println("split 전 :" + unionSinchungList); */
-			String[] arr = unionSinchungList.get(i).getReservation().split("/");
-			unionSinchungList.get(i).setReservation(arr[1]);
-
-		}
-		System.out.println("split 후:" + unionSinchungList);
 		return unionSinchungList;
 	}
 
 	@Transactional
 	@Override
 	public List<Sinchung_ListVO> Isinchung_list(Long mno) {
-		/*
-		 * ArrayList<Sinchung_ListVO> unionSinchungList = new
-		 * ArrayList<Sinchung_ListVO>();
-		 */
-		System.out.println(mapper.Isinchung_list(mno));
+
 
 		return mapper.Isinchung_list(mno);
 	}
@@ -160,33 +153,13 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 		return mapper.Isinchung_list_ajax(mno);
 	}
 
-	@Transactional
+
+	// 로그인 한 사람의 신청 정보를 검색
 	@Override
-	public List<Sinchung_ListVO> sinchung_list_ajax(Long mno) {
-
-		ArrayList<Sinchung_ListVO> unionSinchungList = new ArrayList<Sinchung_ListVO>();
-
-		unionSinchungList.addAll(mapper.sinchung_list_d_ajax(mno));
-		unionSinchungList.addAll(mapper.sinchung_list_s_ajax(mno));
-
-		/* System.out.println("=======================마이페이지 mno :" + mno); */
-
-		for (int i = 0; i < unionSinchungList.size(); i++) {
-			/* System.out.println("split 전 :" + unionSinchungList); */
-			String[] arr = unionSinchungList.get(i).getReservation().split("/");
-			unionSinchungList.get(i).setReservation(arr[1]);
-
-		}
-
-		/* System.out.println("split 후:" + unionSinchungList); */
-		return unionSinchungList;
+	public List<SinchungVO> sinchungList(Long no) {
+		System.out.println("service sinchung : " + mapper.sinchungList(no));
+		return mapper.sinchungList(no);
 	}
-
-	@Override
-    public List<SinchungVO> sinchungList(Long no) {
-        System.out.println("service sinchung : " + mapper.sinchungList(no));
-        return mapper.sinchungList(no);
-    }
 
 	@Transactional
 	@Override
@@ -232,23 +205,193 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 	}
 
 	@Override
+	public List<Join_ConfirmVO> IConfirmList(Long mno) {
+		System.out.println("service confirm : " + mapper.IConfirmList(mno));
+		List<Join_ConfirmVO> list = mapper.IConfirmList(mno);
+		List<Join_ConfirmVO> resultList = new ArrayList<Join_ConfirmVO>();
+		String mnoStr = mno.toString();
+
+		for (int i = 0; i < list.size(); i++) {
+			String[] mnoList = list.get(i).getMno().split(",");
+			String[] nameList = list.get(i).getCname().split(",");
+			String[] phoneList = list.get(i).getCphone().split(",");
+			String[] reservationList = list.get(i).getReservation().split(",");
+			for (int j = 0; j < mnoList.length; j++) {
+				log.info(mnoList[j] + " : " + mno);
+				if (mnoList[j].equals(mnoStr)) {
+					Join_ConfirmVO confirmList = new Join_ConfirmVO();
+					confirmList.setCno(list.get(i).getCno());
+					confirmList.setIno(list.get(i).getIno());
+					confirmList.setTitle(list.get(i).getTitle());
+					confirmList.setLocation(list.get(i).getLocation());
+					confirmList.setThumbnail(list.get(i).getThumbnail());
+					confirmList.setPrice(list.get(i).getPrice());
+					confirmList.setCname(nameList[j]);
+					confirmList.setCphone(phoneList[j]);
+					confirmList.setName(list.get(i).getName());
+					confirmList.setPhone(list.get(i).getPhone());
+					if (list.get(i).getDno().equals(mnoStr)) {
+						confirmList.setReservation(list.get(i).getMyTime());
+						confirmList.setMyTime(list.get(i).getMyTime());
+						confirmList.setMyDate(list.get(i).getMyDate());
+					} else {
+						confirmList.setReservation(reservationList[j]);
+						confirmList.setMyTime("사용하지 않음");
+						confirmList.setMyDate(CurrentDate());
+					}
+					confirmList.setMno(mnoList[j]);
+					resultList.add(confirmList);
+				}
+			}
+
+		}
+		System.out.println("service confirm update : " + resultList);
+		return resultList;
+	}
+
+	@Override
+	public List<Join_ConfirmVO> SConfirmList(Long mno) {
+		System.out.println("service confirm : " + mapper.SConfirmList(mno));
+		List<Join_ConfirmVO> list = mapper.SConfirmList(mno);
+		List<Join_ConfirmVO> resultList = new ArrayList<Join_ConfirmVO>();
+		String mnoStr = mno.toString();
+
+		for (int i = 0; i < list.size(); i++) {
+			String[] mnoList = list.get(i).getMno().split(",");
+			String[] nameList = list.get(i).getCname().split(",");
+			String[] phoneList = list.get(i).getCphone().split(",");
+			String[] reservationList = list.get(i).getReservation().split(",");
+			for (int j = 0; j < mnoList.length; j++) {
+				log.info(mnoList[j] + " : " + mnoStr + " : " + list.get(i).getDno());
+				if (mnoList[j].equals(mnoStr)) {
+					Join_ConfirmVO confirmList = new Join_ConfirmVO();
+					confirmList.setCno(list.get(i).getCno());
+					confirmList.setSno(list.get(i).getSno());
+					confirmList.setTitle(list.get(i).getTitle());
+					confirmList.setLocation(list.get(i).getLocation());
+					confirmList.setThumbnail(list.get(i).getThumbnail());
+					confirmList.setPrice(list.get(i).getPrice());
+					confirmList.setCname(nameList[j]);
+					confirmList.setCphone(phoneList[j]);
+					confirmList.setReservation(reservationList[j]);
+					confirmList.setName(list.get(i).getName());
+					confirmList.setPhone(list.get(i).getPhone());
+					confirmList.setMyTime(list.get(i).getMyTime());
+					confirmList.setReservation(reservationList[j]);
+					confirmList.setMyDate(CurrentDate());
+					confirmList.setMno(mnoList[j]);
+					resultList.add(confirmList);
+				} else if (list.get(i).getDno().equals(mnoStr)) {
+					Join_ConfirmVO confirmList = new Join_ConfirmVO();
+					confirmList.setCno(list.get(i).getCno());
+					confirmList.setSno(list.get(i).getSno());
+					confirmList.setTitle(list.get(i).getTitle());
+					confirmList.setLocation(list.get(i).getLocation());
+					confirmList.setThumbnail(list.get(i).getThumbnail());
+					confirmList.setPrice(list.get(i).getPrice());
+					confirmList.setCname(nameList[j]);
+					confirmList.setCphone(phoneList[j]);
+					confirmList.setReservation(reservationList[j]);
+					confirmList.setName(list.get(i).getName());
+					confirmList.setPhone(list.get(i).getPhone());
+					confirmList.setReservation(list.get(i).getMyTime());
+					confirmList.setMyDate(list.get(i).getMyDate());
+					resultList.add(confirmList);
+					j++;
+				}
+			}
+
+		}
+		System.out.println("service confirm update : " + resultList);
+		return resultList;
+	}
+
+	@Override
+	public List<Join_ConfirmVO> confirm(Long cno, Long mno, String flag) {
+		System.out.println(cno + " : " + mno + " : " + flag + " : service all Iconfirm : " + mapper.Iconfirm(cno, mno));
+		System.out.println(cno + " : " + mno + " : " + flag + " : service all Sconfirm : " + mapper.Sconfirm(cno, mno));
+
+		List<Join_ConfirmVO> resultList = new ArrayList<Join_ConfirmVO>();
+
+		List<Join_ConfirmVO> list;
+
+		if (flag.equals("1")) {
+			list = mapper.Sconfirm(cno, mno);
+		} else {
+			list = mapper.Iconfirm(cno, mno);
+		}
+
+		String[] mnoList = list.get(0).getMno().split(",");
+		String[] nameList = list.get(0).getCname().split(",");
+		String[] phoneList = list.get(0).getCphone().split(",");
+		String[] reservationList = list.get(0).getReservation().split(",");
+
+		for (int i = 0; i < mnoList.length; i++) {
+			Join_ConfirmVO selectConfirm = new Join_ConfirmVO();
+			log.info("service all list : " + list.get(0).getMyDate() + " : " + list.get(0).getMyTime());
+			selectConfirm.setCno(list.get(0).getCno());
+			if (list.get(0).getIno() != null) {
+				selectConfirm.setIno(list.get(0).getIno());
+			} else {
+				selectConfirm.setSno(list.get(0).getSno());
+			}
+			selectConfirm.setTitle(list.get(0).getTitle());
+			selectConfirm.setLocation(list.get(0).getLocation());
+			selectConfirm.setThumbnail(list.get(0).getThumbnail());
+			selectConfirm.setPrice(list.get(0).getPrice());
+			selectConfirm.setCname(nameList[i]);
+			selectConfirm.setCphone(phoneList[i]);
+			selectConfirm.setReservation(reservationList[i]);
+			selectConfirm.setName(list.get(0).getName());
+			selectConfirm.setPhone(list.get(0).getPhone());
+			if (list.get(0).getMyTime() != null) {
+				selectConfirm.setMyTime(list.get(0).getMyTime());
+				selectConfirm.setMyDate(list.get(0).getMyDate());
+			} else {
+				selectConfirm.setMyTime("사용하지 않음");
+				selectConfirm.setMyDate(CurrentDate());
+			}
+			selectConfirm.setMno(mnoList[i]);
+			resultList.add(selectConfirm);
+		}
+
+		System.out.println("service confirm update : " + resultList);
+		return resultList;
+	}
+
+	@Override
+	public boolean review_insert(uni_reviewVO vo) {
+		System.out.println("service review : " + vo);
+		if (vo.getFlag().equals("sno")) {
+			return mapper.Sreview_insert(vo.getContent(), vo.getStar(), vo.getMno(), vo.getSno(), vo.getCno());
+		} else {
+			return mapper.Ireview_insert(vo.getContent(), vo.getStar(), vo.getMno(), vo.getIno(), vo.getCno());
+		}
+
+	}
+
+	@Override
+	public int getWorkplaceCount() {
+		return mapper.getWorkplaceCount();
+	}
+
 	public List<uni_ShinChungVO> getShinChung(int ino) {
 		// TODO Auto-generated method stub
 		return mapper.getShinChung(ino);
 	}
-	
+
 	@Transactional
 	@Override
 	public void insertShinChung(uni_ShinChungVO vo) {
-		//TODO split 배열로 하나씩 넣어서 검증
+		// TODO split 배열로 하나씩 넣어서 검증
 		String[] validate = vo.getReservation().split(",");
-		for(int i=0; i<validate.length; i++) {
+		for (int i = 0; i < validate.length; i++) {
 			uni_ShinChungVO confirmVO = mapper.getShinChungLike(vo.getIno(), validate[i]);
-			if(confirmVO != null) {
+			if (confirmVO != null) {
 				return;
 			}
 		}
-		
+
 		mapper.insertShinChung(vo);
 	}
 	

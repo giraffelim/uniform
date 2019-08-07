@@ -8,18 +8,17 @@
 
 <div id="colorlib-main">
 
-
 	<!--검색 조건 --------------------------------------------------------------->
-
 	<input type="hidden" id="currentDate" value=${currentDate }>
 
-	<section class="ftco-section ftco-bread select-info">
+	<section class="workplaceTitle ftco-section ftco-bread select-info">
 		<div class="container-fluid px-3 px-md-0">
-			<div
-				class="row no-gutters slider-text justify-content-end align-items-center">
+			<div	class="row no-gutters slider-text justify-content-end align-items-center">
 				<div class="col-md-10 ftco-animate">
+				<h2 >원하는 정보를 검색 해보세요</h2>
 					<form action="/uniform/workplaceList" method="get" id="select_form">
 						<div>
+							
 							<input type="text" id="inputLocation" name="location"
 								placeholder="모든위치"> <input type="text"
 								id="inputFirstDate" name="SfirstDate" placeholder="년/월/일">
@@ -42,18 +41,19 @@
 	<!--검색 조건 끝 -->
 
 	<!--작업실 공유 핫토픽 시작--------------------------------------------------->
-	<section class="ftco-section ftco-bread">
-		<div class="container-fluid px-3 px-md-0">
+
+	<section class="workplaceTitle ftco-section ftco-bread ">
+		<div class="container-fluid px-3 px-md-0 shareTitle">
 			<div
 				class="row no-gutters slider-text justify-content-end align-items-center">
 				<div class="col-md-10 ftco-animate">
 
-					<h3>작업실 공유</h3>
+					<h2>작업실 공유</h2>
 					<div class="row">
 						<div class="col-md-10"></div>
 						<div class="col-md-2">
 							<sec:authorize access="isAuthenticated()">
-								<button type="button" class="btn btn-primary" id="shareBtn">등록</button>
+								<button type="button" class="btn btn-primary" id="shareBtn" onclick="location.href='/uniform/shareInsert'">등록</button>
 							</sec:authorize>
 						</div>
 					</div>
@@ -64,8 +64,7 @@
 	</section>
 
 
-
-	<section class="ftco-section ftco-bread ftco-extend-mb">
+	<section class="workplaceTitle ftco-section ftco-bread ftco-extend-mb shareBody">
 		<div class="container-fluid px-3 px-md-0">
 			<div
 				class="row no-gutters slider-text justify-content-end align-items-center">
@@ -74,7 +73,10 @@
 
 						<div class="col-sm-4" id="firstShareDiv">
 
-							<div id="firstShareImg"></div>
+							<div id="firstShareImg">
+								<input type="hidden" id="firstBestShareImg"
+									value='<c:forEach var = "hotTopicList" items="${hotTopicList }" begin="0" end="0" >${hotTopicList.thumbnail}</c:forEach>'>
+							</div>
 
 
 							<div class="stardiv">
@@ -102,7 +104,9 @@
 							<div class="BestShareWriterDiv">
 								<input type="hidden" id="firstBestShareProfileIP"
 									value='<c:forEach var = "hotTopicList" items="${hotTopicList }" begin="0" end="0" >${hotTopicList.photo}</c:forEach>'>
+
 								<div id="firstBestShareProfile"></div>
+
 								<div id="firstbestShareWriter">
 									<c:forEach var="hotTopicList" items="${hotTopicList }"
 										begin="0" end="0">${hotTopicList.name}</c:forEach>
@@ -111,7 +115,10 @@
 
 						</div>
 						<div class="col-sm-4" id="secondShareDiv">
-							<div id="secondShareImg"></div>
+							<div id="secondShareImg">
+								<input type="hidden" id="secondBestShareImg"
+									value='<c:forEach var = "hotTopicList" items="${hotTopicList }" begin="1" end="1" >${hotTopicList.thumbnail}</c:forEach>'>
+							</div>
 							<div class="stardiv">
 
 								<input type="hidden" id="bestShareStar2"
@@ -135,8 +142,10 @@
 							</div>
 							<h1></h1>
 							<div class="BestShareWriterDiv">
+
 								<input type="hidden" id="secondBestShareProfileIP"
 									value='<c:forEach var = "hotTopicList" items="${hotTopicList }" begin="1" end="1" >${hotTopicList.photo}</c:forEach>'>
+
 								<div id="secondBestShareProfile"></div>
 								<div id="secondbestShareWriter">
 									<c:forEach var="hotTopicList" items="${hotTopicList }"
@@ -147,7 +156,11 @@
 
 						</div>
 						<div class="col-sm-4" id="thirdShareDiv">
-							<div id="thirdShareImg"></div>
+							<div id="thirdShareImg">
+								<input type="hidden" id="thirdBestShareImg"
+									value='<c:forEach var = "hotTopicList" items="${hotTopicList }" begin="2" end="2" >${hotTopicList.thumbnail}</c:forEach>'>
+							</div>
+
 							<div class="stardiv">
 
 								<input type="hidden" id="bestShareStar3"
@@ -190,18 +203,18 @@
 	<!--작업실 공유 핫토픽 끝-->
 
 	<!--작업실 임대 핫토픽 시작--------------------------------------------------------------->
-	<section class="ftco-section ftco-bread imde">
+	<section class="workplaceTitle ftco-section ftco-bread imde">
 		<div class="container-fluid px-3 px-md-0">
 			<div
 				class="row no-gutters slider-text justify-content-end align-items-center">
 				<div class="col-md-10 ftco-animate">
 
-					<h3>작업실 임대</h3>
+					<h2>작업실 임대</h2>
 					<div class="row">
 						<div class="col-md-10"></div>
 						<div class="col-md-2">
 							<sec:authorize access="isAuthenticated()">
-								<button type="button" class="btn btn-primary" id="imdeBtn">등록</button>
+								<button type="button" class="btn btn-primary" id="imdeBtn" onclick="location.href='/uniform/leaseInsert'">등록</button>
 							</sec:authorize>
 						</div>
 					</div>
@@ -212,7 +225,7 @@
 
 
 
-	<section class="ftco-section ftco-bread ftco-extend-mb">
+	<section class="workplaceTitle ftco-section ftco-bread ftco-extend-mb">
 		<div class="container-fluid px-3 px-md-0">
 			<div
 				class="row no-gutters slider-text justify-content-end align-items-center">
@@ -221,7 +234,10 @@
 
 						<div class="col-sm-4" id="firstImdeDiv">
 
-							<div id="firstImdeImg"></div>
+							<div id="firstImdeImg">
+								<input type="hidden" id="firstBestImg"
+									value='<c:forEach var = "hotTopicListImde" items="${hotTopicListImde }" begin="0" end="0" >${hotTopicListImde.thumbnail}</c:forEach>'>
+							</div>
 
 							<div class="stardiv">
 
@@ -259,7 +275,10 @@
 
 						</div>
 						<div class="col-sm-4" id="secondImdeDiv">
-							<div id="secondImdeImg"></div>
+							<div id="secondImdeImg">
+								<input type="hidden" id="secondBestImg"
+									value='<c:forEach var = "hotTopicListImde" items="${hotTopicListImde }" begin="1" end="1" >${hotTopicListImde.thumbnail}</c:forEach>'>
+							</div>
 							<div class="stardiv">
 
 								<input type="hidden" id="bestImdeStar2"
@@ -280,7 +299,7 @@
 							<div id="secondBestImdeContext">
 								<c:forEach var="hotTopicListImde" items="${hotTopicListImde }"
 									begin="1" end="1">${hotTopicListImde.context}</c:forEach>
-								
+
 							</div>
 							<h1></h1>
 							<div class="BestImdeWriterDiv">
@@ -296,7 +315,10 @@
 
 						</div>
 						<div class="col-sm-4" id="thirdImdeDiv">
-							<div id="thirdImdeImg"></div>
+							<div id="thirdImdeImg">
+								<input type="hidden" id="thirdBestImg"
+									value='<c:forEach var = "hotTopicListImde" items="${hotTopicListImde }" begin="2" end="2" >${hotTopicListImde.thumbnail}</c:forEach>'>
+							</div>
 
 							<div class="stardiv">
 

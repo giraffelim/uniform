@@ -1,27 +1,16 @@
 package com.uni.controller;
 
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URLDecoder;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import javax.inject.Inject;
 
-import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,7 +31,6 @@ import com.uni.service.WorkPlaceService;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
-import net.coobird.thumbnailator.Thumbnailator;
 
 @Controller
 @AllArgsConstructor
@@ -60,6 +48,8 @@ public class MemberController {
 	@Inject
 	private uni_MemberMapper mapper;
 
+	
+	// 회원 아이디 찾기
 	@RequestMapping(value = "find_id", method = RequestMethod.POST)
 	public String find_id(String name, String email, Model model) {
 		log.info(name + " : " + email);
@@ -68,6 +58,7 @@ public class MemberController {
 		return "login";
 	}
 
+	// 회원 비밀번호 찾기
 	@RequestMapping(value = "find_pw", method = RequestMethod.POST)
 	public String find_pw(String userPW, String userID, String email, Model model) {
 		log.info(userPW + " : " + userID + " : " + email);
@@ -120,19 +111,22 @@ public class MemberController {
 	@GetMapping("/myPage")
 	public void mypage(Model model, Long mno) {
 		log.info("마이페이지 컨트롤러 mno" + mno);
+		
 		List<Sinchung_ListVO> unionSinchungList = service_work.sinchung_list(mno);
 		List<Sinchung_ListVO> IunionSinchungList = service_work.Isinchung_list(mno);
 		model.addAttribute("unionSinchungList", unionSinchungList);
 		model.addAttribute("IunionSinchungList", IunionSinchungList);
+		model.addAttribute("IconfirmList", service_work.IConfirmList(mno));
+		model.addAttribute("SconfirmList", service_work.SConfirmList(mno));
 		log.info("=======================mypage 컨트롤러==============================");
 
 	}
 
 	@RequestMapping(value = "moreInfo", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
 	public ResponseEntity<List<Sinchung_ListVO>> moreInfo(Long mno) {
-		service_work.sinchung_list_ajax(mno);
+		service_work.sinchung_list(mno);
 
-		return new ResponseEntity<List<Sinchung_ListVO>>(service_work.sinchung_list_ajax(mno), HttpStatus.OK);
+		return new ResponseEntity<List<Sinchung_ListVO>>(service_work.sinchung_list(mno), HttpStatus.OK);
 
 	}
 
@@ -230,13 +224,13 @@ public class MemberController {
 
 		return service.deleteFile(fileName);
 	}
-
 	
 	// member return by mno
 	@GetMapping(value = "/memberByMno", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public uni_MemberVO getMember(int mno) {
 		log.info("memberByMno: "+mno);
+		log.info("memberByMno11111111111111: "+ service.getMember(mno));
 		return service.getMember(mno);
 	}
 
