@@ -68,22 +68,9 @@ $(function() {
 					"border-radius", "50%");
 		}
 
-
-		$("#firstBestShareProfile").append("<img class='bestProfileImg' src='/display?fileName="+profileImg+"'>");
-		$(".bestProfileImg").css("width","3em").css("height","3em").css("border-radius","50%");
 		
 	}
 
-	if (secondBestShareProfileIP == "") {
-		$("#secondBestShareProfile").css("background-image",
-				"url(/resources/images/default.png)");
-	} else {	
-		var profileImg2 = $("#secondBestShareProfileIP").val();
-		
-		$("#secondBestShareProfile").append("<img class='bestProfileImg' src='/display?fileName="+ profileImg2+"'>");
-		$(".bestProfileImg").css("width","3em").css("height","3em").css("border-radius","50%");
-
-	}
 
 	if (thirdBestShareUserid.length > 20) {
 		$("#thirdBestShareProfile").append(
@@ -104,13 +91,8 @@ $(function() {
 			$(".bestProfileImg").css("width", "3em").css("height", "3em").css(
 					"border-radius", "50%");
 		}
-
-
-		var profileImg3 = $("#thirdBestShareProfileIP").val();
-	
-		$("#thirdBestShareProfile").append("<img class='bestProfileImg' src='/display?fileName="+ profileImg3+"'>");
-		$(".bestProfileImg").css("width","3em").css("height","3em").css("border-radius","50%");
-
+		
+		
 	}
 	/* 임대 등록자 프로필 사진 */
 
@@ -142,9 +124,6 @@ $(function() {
 					"border-radius", "50%");
 		}
 
-		var profileImgImde = $("#firstBestImdeProfileIP").val();		
-		$("#firstBestImdeProfile").append("<img class='bestProfileImg' src='/display?fileName="+ profileImgImde+"'>");
-		$(".bestProfileImg").css("width","3em").css("height","3em").css("border-radius","50%");
 
 
 	}
@@ -170,10 +149,6 @@ $(function() {
 		}
 
 
-		var profileImgImde2 = $("#secondBestImdeProfileIP").val();		
-		$("#secondBestImdeProfile").append("<img class='bestProfileImg' src='/display?fileName="+ profileImgImde2+"'>");
-		$(".bestProfileImg").css("width","3em").css("height","3em").css("border-radius","50%");
-
 	}
 
 	if (thirdBestImdeUserid.length > 20) {
@@ -195,11 +170,6 @@ $(function() {
 			$(".bestProfileImg").css("width", "3em").css("height", "3em").css(
 					"border-radius", "50%");
 		}
-
-
-		var profileImgImde3 = $("#thirdBestImdeProfileIP").val();		
-		$("#thirdBestImdeProfile").append("<img class='bestProfileImg' src='/display?fileName="+ profileImgImde3+"'>");
-		$(".bestProfileImg").css("width","3em").css("height","3em").css("border-radius","50%");
 
 	}
 

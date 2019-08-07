@@ -1,3 +1,16 @@
+.rowDiv {
+	margin-left: 5%;
+	margin-right: 17%;
+}
+
+.titleBlockQuote {
+	border-left: 6px solid gray;
+}
+
+.titleBlockQuote h2 {
+	margin-left: 0.5em;
+}
+
 .tab {
 	display: table;
 	background-color: inherit;
@@ -145,7 +158,6 @@ div[class*='profile-btn-div'] {
 	height: 100%;
 	margin-top: 0.5em;
 	margin-left: 1em;
-
 }
 
 .profile-container {
@@ -154,7 +166,7 @@ div[class*='profile-btn-div'] {
 	margin-right: 5em;
 	width: 30em;
 	height: 18em;
-	border : 2px solid #aaa;
+	border: 2px solid #aaa;
 	box-shadow: 1px 1px 1px;
 	border: 2px solid #aaa;
 }
@@ -200,20 +212,21 @@ div[class*='profile-btn-div'] {
 	cursor: pointer;
 }
 
-./* contact.html 부분 */
-.workplaceTitle{
+. /* contact.html 부분 */
+.workplaceTitle {
 	padding-top: 1em !important;
 }
 
-.ftco-bread{
+.ftco-bread {
 	padding-top: 1em !important;
+	padding-bottom: 0em !important;
 }
 
-.shareBody{
+/* .shareBody{
 	margin-top: 1em;
 }
 
-
+ */
 .select-info {
 	margin-top: 2em;
 	margin-bottom: 2em;
@@ -246,21 +259,18 @@ div[class*='profile-btn-div'] {
 	width: 22em;
 	height: 15em;
 	overflow: hidden;
-
 }
 
 #secondShareImg {
 	width: 22em;
 	height: 15em;
 	overflow: hidden;
-
 }
 
 #thirdShareImg {
 	width: 22em;
 	height: 15em;
 	overflow: hidden;
-
 }
 
 .starChecked {
@@ -268,19 +278,19 @@ div[class*='profile-btn-div'] {
 }
 
 #firstBestShareContext {
-	height:8em;
+	height: 8em;
 	width: 28em;
 	font-size: 0.8em;
 }
 
 #secondBestShareContext {
-	height:8em;
+	height: 8em;
 	width: 28em;
 	font-size: 0.8em;
 }
 
 #thirdBestShareContext {
-	height:8em;
+	height: 8em;
 	width: 28em;
 	font-size: 0.8em;
 }
@@ -325,25 +335,22 @@ div[class*='profile-btn-div'] {
 	width: 22em;
 	height: 15em;
 	overflow: hidden;
-
 }
 
 #secondImdeImg {
 	width: 22em;
 	height: 15em;
 	overflow: hidden;
-
 }
 
 #thirdImdeImg {
 	width: 22em;
 	height: 15em;
 	overflow: hidden;
-
 }
 
 #firstBestImdeContext {
-	height:8em;
+	height: 8em;
 	width: 28em;
 	font-size: 0.8em;
 	overflow: hidden;
@@ -352,19 +359,19 @@ div[class*='profile-btn-div'] {
 #secondBestImdeContext {
 	width: 28em;
 	font-size: 0.8em;
-	height:8em;
-	overflow:hidden;
+	height: 8em;
+	overflow: hidden;
 }
 
 #thirdBestImdeContext {
-	height:8em;
+	height: 8em;
 	width: 28em;
 	font-size: 0.8em;
-	overflow:hidden;
+	overflow: hidden;
 }
 
-.BestImdeWriterDiv{
-	height:5em;
+.BestImdeWriterDiv {
+	height: 5em;
 }
 
 #firstBestImdeProfile {
@@ -463,6 +470,20 @@ div[class*='profile-btn-div'] {
 }
 
 @media ( max-width :1623px) {
+	.insertBtn{
+		position: relative;
+		right:-100px;
+	}
+	
+	#firstShareImg, #secondShareImg, #thirdShareImg, #firstImdeImg,
+		#secondImdeImg, #thirdImdeImg {
+		width: 18em;
+	}
+	#firstBestShareContext, #secondBestShareContext, #thirdBestShareContext,
+		#firstBestImdeContext, #secondBestImdeContext, #thirdBestImdeContext {
+		width: 23em;
+	}
+	
 	.profile-table {
 		margin-right: 2em;
 	}
@@ -486,6 +507,19 @@ div[class*='profile-btn-div'] {
 }
 
 @media ( max-width :1400px) {
+	
+	#firstShareImg, #secondShareImg, #thirdShareImg, #firstImdeImg,
+		#secondImdeImg, #thirdImdeImg {
+		width: 15em;
+	}
+	#firstBestShareContext, #secondBestShareContext, #thirdBestShareContext,
+		#firstBestImdeContext, #secondBestImdeContext, #thirdBestImdeContext {
+		width: 20em;
+	}
+	
+	
+	
+	
 	#Company-Price, #Company-RName, #Company-RNumber, #Company-DName,
 		#Company-DNumber, #Company-RTime, #Company-DTime {
 		font-size: 15px;
@@ -560,6 +594,19 @@ div[class*='profile-btn-div'] {
 }
 
 @media ( max-width :1200px) {
+	
+	#firstShareImg, #secondShareImg, #thirdShareImg, #firstImdeImg,
+		#secondImdeImg, #thirdImdeImg {
+		width: 22em;
+	}
+	#firstBestShareContext, #secondBestShareContext, #thirdBestShareContext,
+		#firstBestImdeContext, #secondBestImdeContext, #thirdBestImdeContext {
+		width: 25em;
+	}
+	
+	
+	
+	
 	#Company-Price, #Company-RName, #Company-RNumber, #Company-DName,
 		#Company-DNumber, #Company-RTime, #Company-DTime, .Company-textForm {
 		font-size: 10px;
@@ -807,6 +854,11 @@ div[class*='profile-btn-div'] {
 }
 
 @media ( max-width :768px) {
+	.insertBtn{
+		position: relative;
+		right:0;
+	}
+	
 	#shareBtn, #imdeBtn {
 		margin-left: 37em;
 	}

@@ -21,7 +21,7 @@
 		<collection property="attachList" resultMap="photoMap">
 		</collection>
 	</resultMap>
-	
+
 	<resultMap type="com.uni.domain.SWorkPlaceVO" id="ShareMap">
 		<id property="sno" column="sno" />
 		<result property="title" column="title" />
@@ -39,7 +39,7 @@
 		<collection property="attachList" resultMap="photoMap">
 		</collection>
 	</resultMap>
-	
+
 	<resultMap type="com.uni.domain.uni_PhotoVO" id="photoMap">
 		<result property="pno" column="pno" />
 		<result property="path" column="path" />
@@ -48,7 +48,7 @@
 		<result property="ino" column="ino" />
 		<result property="sno" column="sno" />
 	</resultMap>
-	
+
 	<insert id="insertWorkPlace_i">
 		<selectKey keyProperty="ino" order="BEFORE" resultType="int">
 			select uni_workplace_i_seq.nextval from dual
@@ -60,13 +60,14 @@
 		#{context}, sysdate, #{mno}, 0)
 
 	</insert>
-	
+
 	<select id="readShare" resultMap="ShareMap">
-	 	select *
-		from uni_workplace_s s , uni_photo p 
+		select *
+		from uni_workplace_s s
+		, uni_photo p
 		where s.sno = p.sno and s.sno = #{sno}
 	</select>
-	
+
 	<select id="read" resultMap="leaseMap">
 		select *
 		from uni_workplace_I i ,
@@ -76,12 +77,12 @@
 
 	<insert id="insertAttach">
 		<if test="ino != 0">
-		insert into uni_photo (pno, path, uuid, filename, ino)
-		values(uni_photo_seq.nextval, #{path}, #{uuid}, #{fileName}, #{ino})
+			insert into uni_photo (pno, path, uuid, filename, ino)
+			values(uni_photo_seq.nextval, #{path}, #{uuid}, #{fileName}, #{ino})
 		</if>
-		<if test = "sno!=0">
-		insert into uni_photo (pno, path, uuid, filename, sno)
-		values(uni_photo_seq.nextval, #{path}, #{uuid}, #{fileName}, #{sno})
+		<if test="sno!=0">
+			insert into uni_photo (pno, path, uuid, filename, sno)
+			values(uni_photo_seq.nextval, #{path}, #{uuid}, #{fileName}, #{sno})
 		</if>
 	</insert>
 
@@ -96,17 +97,21 @@
 	<delete id="deletePhoto">
 		delete from uni_photo where ino =#{ino}
 	</delete>
-	
-	<delete id ="deletePhotoS">
-	delete from uni_photo where sno = #{sno}
+
+	<delete id="deletePhotoS">
+		delete from uni_photo where sno = #{sno}
 	</delete>
-	
+
 	<insert id="insertWorkplace_s">
 		<selectKey keyProperty="sno" order="BEFORE" resultType="int">
-				select uni_workplace_s_seq.nextval from dual
+			select uni_workplace_s_seq.nextval from dual
 		</selectKey>
-		insert into uni_workplace_s (sno, title, location, thumbnail, comforts, price, context, rDate, pCount, myDate, myTime,  mno, readcount)
-		values(#{sno}, #{title}, #{location}, #{thumbnail}, #{comforts}, #{price}, #{context}, sysdate, #{pCount}, #{myDate}, #{myTime}, #{mno}, 0)
+		insert into uni_workplace_s (sno, title, location, thumbnail,
+		comforts, price, context, rDate, pCount, myDate, myTime, mno,
+		readcount)
+		values(#{sno}, #{title}, #{location}, #{thumbnail},
+		#{comforts}, #{price}, #{context}, sysdate, #{pCount}, #{myDate},
+		#{myTime}, #{mno}, 0)
 	</insert>
 
 
@@ -160,15 +165,19 @@
 	<select id="readHotTopic"
 		resultType="com.uni.domain.uni_hotTopicVO">
 
-		select round(avg(r.star)) as star, w.name, w.photo, w.sno,w.userid,
+		select round(avg(r.star)) as star, w.name, w.photo,
+		w.sno,w.userid,
 		w.context, w.thumbnail, w.mno, w.readcount from
-		(select m.name,
+		(select
+		m.name,
 		m.photo, w.sno,m.userid,
-		w.context,w.thumbnail, m.mno, w.readcount from
-		uni_workplace_s w, uni_member m where w.mno = m.mno) w full outer join
-		uni_review r 
-		on w.sno is not null group by w.name, w.photo, w.sno,
-		w.context, w.thumbnail,
+		w.context,w.thumbnail, m.mno,
+		w.readcount from
+		uni_workplace_s w, uni_member m where w.mno = m.mno) w
+		full outer join
+		uni_review r
+		on w.sno = r.sno where w.sno is not null
+		group by w.name, w.photo, w.sno, w.context, w.thumbnail,
 		w.mno, w.readcount, w.userid order by w.readcount desc
 
 	</select>
@@ -186,9 +195,10 @@
 		w.readcount from
 		uni_workplace_i w, uni_member m where w.mno = m.mno) w
 		full outer join
-		uni_review r on w.ino is not null group by w.name,
-		w.photo, w.ino, w.context, w.thumbnail,
-		w.mno, w.readcount, w.userid order by w.readcount desc
+		uni_review r on w.ino = r.ino where w.ino is not null
+		group by w.name, w.photo, w.ino, w.context, w.thumbnail,
+		w.mno,
+		w.readcount, w.userid order by w.readcount desc
 
 	</select>
 
@@ -249,70 +259,98 @@
 		s.mno and m.mno = #{mno} order by s.ino
 
 	</select>
-    
-    <update id="updateWorkplace_s">
-    	update uni_workplace_s set title = #{title}, location = #{location}, thumbnail = #{thumbnail}, comforts = #{comforts}, price = #{price}, context = #{context}, pCount = #{PCount}, myTime = #{myTime}, myDate = #{myDate}   where sno = #{sno}
-    </update>
-    
-    <select id="getSinchungBySno" resultType="com.uni.domain.JoinSCMemVO">
-			select s.reservation, m.photo, m.name, m.mno, m.userID, m.phone
-			from uni_sinchung s, uni_member m 
-			where s.mno = m.mno and sno = #{sno}
-    </select>
-    
-    <select id="duplicateCheckTime" resultType="int">
+
+	<update id="updateWorkplace_s">
+		update uni_workplace_s set title = #{title}, location
+		= #{location},
+		thumbnail = #{thumbnail}, comforts = #{comforts}, price
+		= #{price},
+		context = #{context}, pCount = #{PCount}, myTime =
+		#{myTime}, myDate =
+		#{myDate} where sno = #{sno}
+	</update>
+
+	<select id="getSinchungBySno"
+		resultType="com.uni.domain.JoinSCMemVO">
+		select s.reservation, m.photo, m.name, m.mno, m.userID,
+		m.phone
+		from uni_sinchung s, uni_member m
+		where s.mno = m.mno and sno =
+		#{sno}
+	</select>
+
+	<select id="duplicateCheckTime" resultType="int">
     <![CDATA[
     	SELECT COUNT(*) cnt 
 		FROM dual 
 		WHERE #{firstTime} < #{toLastTime} 
 		AND #{lastTime} > #{toFirstTime}
 		AND ROWNUM = 1 
-    ]]> 
-      </select>
-      
-      <insert id="insertShinChungS">
-      		insert into uni_sinchung(rno, reservation, mno, sno, sDate) values (uni_sinchung_seq.nextval, #{reservation}, #{mno}, #{sno}, sysdate)
-      </insert>
-      
-      <delete id = "deleteSinchung">
-      <if test="mno != 0">
-      delete from uni_sinchung where mno = #{mno} and sno = #{sno}
-      </if>
-      delete from uni_sinchung where sno = #{sno}
-       </delete>
-    
-    <insert id="insertConfirm">
-    	<if test="sno != 0">
-    		insert into uni_confirm(cno, cName, cPhone, reservation, myTime, sno, mno)
-    		values(uni_confirm_seq.nextval, #{cName}, #{cPhone}, #{reservation}, #{myTime}, #{sno}, #{mno})
-    	</if>
-    	<if test="ino != 0">
-    		insert into uni_confirm(cno, cName, cPhone, reservation, ino, mno)
-    		values(uni_confirm_seq.nextval, #{cName}, #{cPhone}, #{reservation}, #{ino}, #{mno})
-    	</if>
-    </insert>
-    
-    <update id="updateReadCount">
-    		<if test="sno != 0">
-    			update uni_workplace_s set readcount = readcount + 1 where sno = #{sno}
-    		</if>
-    		<if test="ino != 0">
-    			update uni_workplace_i set readcount = readcount + 1 where ino = #{ino}
-    		</if>
-    </update>
-    
-    <select id="getTodayLeaseList" resultType="Integer">
-    	select distinct ino from uni_sinchung where TO_CHAR(sDate,'yy/MM/DD') = (select TO_CHAR(sysdate,'yy/MM/dd') from dual)
-    </select>
-    
-    <select id="getTodaySinchungList" resultType="com.uni.domain.uni_ShinChungVO">
-    	select * from uni_sinchung where ino = #{ino} and TO_CHAR(sDate,'yy/MM/DD') = (select TO_CHAR(sysdate,'yy/MM/dd') from dual) order by rno
-    </select>
-    
-    <delete id="deleteLeaseS">
-    	delete from uni_sinchung where ino = #{ino}
-    </delete>
-    
+    ]]>
+	</select>
+
+	<insert id="insertShinChungS">
+		insert into uni_sinchung(rno, reservation, mno, sno,
+		sDate) values
+		(uni_sinchung_seq.nextval, #{reservation}, #{mno},
+		#{sno}, sysdate)
+	</insert>
+
+	<delete id="deleteSinchung">
+		<if test="mno != 0">
+			delete from uni_sinchung where mno = #{mno} and sno =
+			#{sno}
+		</if>
+		delete from uni_sinchung where sno = #{sno}
+	</delete>
+
+	<insert id="insertConfirm">
+		<if test="sno != 0">
+			insert into uni_confirm(cno, cName, cPhone, reservation,
+			myTime, sno, mno)
+			values(uni_confirm_seq.nextval, #{cName}, #{cPhone},
+			#{reservation},
+			#{myTime}, #{sno}, #{mno})
+		</if>
+		<if test="ino != 0">
+			insert into uni_confirm(cno, cName, cPhone, reservation,
+			ino, mno)
+			values(uni_confirm_seq.nextval, #{cName}, #{cPhone},
+			#{reservation},
+			#{ino}, #{mno})
+		</if>
+	</insert>
+
+	<update id="updateReadCount">
+		<if test="sno != 0">
+			update uni_workplace_s set readcount = readcount + 1 where
+			sno = #{sno}
+		</if>
+		<if test="ino != 0">
+			update uni_workplace_i set readcount = readcount + 1 where
+			ino = #{ino}
+		</if>
+	</update>
+
+	<select id="getTodayLeaseList" resultType="Integer">
+		select distinct ino
+		from uni_sinchung where TO_CHAR(sDate,'yy/MM/DD') =
+		(select
+		TO_CHAR(sysdate,'yy/MM/dd') from dual)
+	</select>
+
+	<select id="getTodaySinchungList"
+		resultType="com.uni.domain.uni_ShinChungVO">
+		select * from uni_sinchung where ino = #{ino} and
+		TO_CHAR(sDate,'yy/MM/DD')
+		= (select TO_CHAR(sysdate,'yy/MM/dd') from
+		dual) order by rno
+	</select>
+
+	<delete id="deleteLeaseS">
+		delete from uni_sinchung where ino = #{ino}
+	</delete>
+
 
 	<!-- 로그인한 사람에 대한 작업실 신청 정보 검색 -->
 	<select id="sinchungList" resultType="com.uni.domain.SinchungVO">
