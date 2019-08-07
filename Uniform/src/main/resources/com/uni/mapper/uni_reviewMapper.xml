@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uni.mapper.uni_reviewMapper">
+
+	<!-- 리뷰 조회 -->
+	<select id="readReview"
+		resultType="com.uni.domain.uni_JoinReviewVO">
+
+		select r.hno, m.mno, m.name, m.photo,m.userid, r.regdate, r.star, r.content from
+		uni_review r, uni_member m where r.mno = m.mno and r.ino = #{ino}
+		order by r.hno
+
+	</select>
+	
+	<delete id="removeReview">
+		delete from uni_review where hno = #{hno}
+	</delete>
+	
+	<update id="updateReview">
+		update uni_review set content = #{content} and star = #{star} where hno = #{hno}
+	</update>
+
+</mapper>
+
+
+
+
+

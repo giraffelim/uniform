@@ -1,5 +1,13 @@
+<<<<<<< HEAD
+Manifest-Version: 1.0
+Built-By: 2class003
+Build-Jdk: 1.8.0_221
+Created-By: Maven Integration for Eclipse
+
+=======
 Manifest-Version: 1.0
 Built-By: hwalan
 Build-Jdk: 1.8.0_171
 Created-By: Maven Integration for Eclipse
 
+>>>>>>> 1b0407eddfec8a053d239a5654c9702398593080
