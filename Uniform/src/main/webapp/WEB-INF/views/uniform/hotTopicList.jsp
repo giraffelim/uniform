@@ -9,16 +9,23 @@
 <div id="colorlib-main">
 
 	<!--검색 조건 --------------------------------------------------------------->
-	<input type="hidden" id="currentDate" value=${currentDate }>
+	<sec:authorize access="isAuthenticated()">
+		<input type="hidden" id="currentDate" value=${currentDate }> <input
+		type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"><input
+		type="hidden" id="userid"
+		value='<sec:authentication property="principal.member.userID"/>'>
+	
+	</sec:authorize>
 
 	<section class="workplaceTitle ftco-section ftco-bread select-info">
 		<div class="container-fluid px-3 px-md-0">
-			<div	class="row no-gutters slider-text justify-content-end align-items-center">
+			<div
+				class="row no-gutters slider-text justify-content-end align-items-center">
 				<div class="col-md-10 ftco-animate">
-				<h2 >원하는 정보를 검색 해보세요</h2>
+					<h2>원하는 정보를 검색 해보세요</h2>
 					<form action="/uniform/workplaceList" method="get" id="select_form">
 						<div>
-							
+
 							<input type="text" id="inputLocation" name="location"
 								placeholder="모든위치"> <input type="text"
 								id="inputFirstDate" name="SfirstDate" placeholder="년/월/일">
@@ -64,7 +71,8 @@
 	</section>
 
 
-	<section class="workplaceTitle ftco-section ftco-bread ftco-extend-mb shareBody">
+	<section
+		class="workplaceTitle ftco-section ftco-bread ftco-extend-mb shareBody">
 		<div class="container-fluid px-3 px-md-0">
 			<div
 				class="row no-gutters slider-text justify-content-end align-items-center">
@@ -104,6 +112,8 @@
 							<div class="BestShareWriterDiv">
 								<input type="hidden" id="firstBestShareProfileIP"
 									value='<c:forEach var = "hotTopicList" items="${hotTopicList }" begin="0" end="0" >${hotTopicList.photo}</c:forEach>'>
+								<input type="hidden" id="firstBestShareUserid"
+									value='<c:forEach var = "hotTopicList" items="${hotTopicList }" begin="0" end="0" >${hotTopicList.userid}</c:forEach>'>
 
 								<div id="firstBestShareProfile"></div>
 
@@ -145,6 +155,8 @@
 
 								<input type="hidden" id="secondBestShareProfileIP"
 									value='<c:forEach var = "hotTopicList" items="${hotTopicList }" begin="1" end="1" >${hotTopicList.photo}</c:forEach>'>
+								<input type="hidden" id="secondBestShareUserid"
+									value='<c:forEach var = "hotTopicList" items="${hotTopicList }" begin="1" end="1" >${hotTopicList.userid}</c:forEach>'>
 
 								<div id="secondBestShareProfile"></div>
 								<div id="secondbestShareWriter">
@@ -186,6 +198,8 @@
 							<div class="BestShareWriterDiv">
 								<input type="hidden" id="thirdBestShareProfileIP"
 									value='<c:forEach var = "hotTopicList" items="${hotTopicList }" begin="2" end="2" >${hotTopicList.photo}</c:forEach>'>
+								<input type="hidden" id="thirdBestShareUserid"
+									value='<c:forEach var = "hotTopicList" items="${hotTopicList }" begin="2" end="2" >${hotTopicList.userid}</c:forEach>'>
 								<div id="thirdBestShareProfile"></div>
 								<div id="thirdbestShareWriter">
 									<c:forEach var="hotTopicList" items="${hotTopicList }"
@@ -265,6 +279,10 @@
 							<div class="BestImdeWriterDiv">
 								<input type="hidden" id="firstBestImdeProfileIP"
 									value='<c:forEach var = "hotTopicListImde" items="${hotTopicListImde }" begin="0" end="0" >${hotTopicListImde.photo}</c:forEach>'>
+								<input type="hidden" id="firstBestImdeUserid"
+									value='<c:forEach var = "hotTopicListImde" items="${hotTopicListImde }" begin="0" end="0" >${hotTopicListImde.userid}</c:forEach>'>
+
+
 								<div id="firstBestImdeProfile"></div>
 								<div id="firstbestImdeWriter">
 									<c:forEach var="hotTopicListImde" items="${hotTopicListImde }"
@@ -305,6 +323,10 @@
 							<div class="BestImdeWriterDiv">
 								<input type="hidden" id="secondBestImdeProfileIP"
 									value='<c:forEach var = "hotTopicListImde" items="${hotTopicListImde }" begin="1" end="1" >${hotTopicListImde.photo}</c:forEach>'>
+
+								<input type="hidden" id="secondBestImdeUserid"
+									value='<c:forEach var = "hotTopicListImde" items="${hotTopicListImde }" begin="1" end="1" >${hotTopicListImde.userid}</c:forEach>'>
+
 								<div id="secondBestImdeProfile"></div>
 								<div id="secondbestImdeWriter">
 									<c:forEach var="hotTopicListImde" items="${hotTopicListImde }"
@@ -346,7 +368,11 @@
 							<div class="BestImdeWriterDiv">
 								<input type="hidden" id="thirdBestImdeProfileIP"
 									value='<c:forEach var = "hotTopicListImde" items="${hotTopicListImde }" begin="2" end="2" >${hotTopicListImde.photo}</c:forEach>'>
-								<div id="thirdBestImdeProfile"></div>
+								<div id="thirdBestImdeProfile">
+									<input type="hidden" id="thirdBestImdeUserid"
+										value='<c:forEach var = "hotTopicListImde" items="${hotTopicListImde }" begin="2" end="2" >${hotTopicListImde.userid}</c:forEach>'>
+
+								</div>
 								<div id="thirdbestImdeWriter">
 									<c:forEach var="hotTopicListImde" items="${hotTopicListImde }"
 										begin="2" end="2">${hotTopicListImde.name}</c:forEach>

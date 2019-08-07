@@ -121,32 +121,35 @@
 	<select id="readHotTopic"
 		resultType="com.uni.domain.uni_hotTopicVO">
 
-		select round(avg(r.star)) as star, w.name, w.photo, w.sno,
+		select round(avg(r.star)) as star, w.name, w.photo, w.sno,w.userid,
 		w.context, w.thumbnail, w.mno, w.readcount from
 		(select m.name,
-		m.photo, w.sno,
+		m.photo, w.sno,m.userid,
 		w.context,w.thumbnail, m.mno, w.readcount from
 		uni_workplace_s w, uni_member m where w.mno = m.mno) w full outer join
 		uni_review r
 		on w.sno is not null group by w.name, w.photo, w.sno,
-		w.context,
-		w.thumbnail,
-		w.mno, w.readcount order by w.readcount desc
-
+		w.context, w.thumbnail,
+		w.mno, w.readcount, w.userid order by w.readcount desc
 
 	</select>
 	<!-- 임대 핫토픽 -->
 	<select id="readHotTopicImde"
 		resultType="com.uni.domain.uni_hotTopicVO">
 
-		select round(avg(r.star)) as star, w.name, w.photo, w.ino,
+		select round(avg(r.star)) as star, w.name, w.photo,
+		w.ino,w.userid,
 		w.context, w.thumbnail, w.mno, w.readcount from
-		(select m.name,
-		m.photo, w.ino,
-		w.context,w.thumbnail, m.mno, w.readcount from
-		uni_workplace_i w, uni_member m where w.mno = m.mno) w full outer join
-		uni_review r on w.ino is not null group by w.name, w.photo, w.ino,
-		w.context, w.thumbnail,	w.mno, w.readcount order by w.readcount desc
+		(select
+		m.name,
+		m.photo, w.ino,m.userid,
+		w.context,w.thumbnail, m.mno,
+		w.readcount from
+		uni_workplace_i w, uni_member m where w.mno = m.mno) w
+		full outer join
+		uni_review r on w.ino is not null group by w.name,
+		w.photo, w.ino, w.context, w.thumbnail,
+		w.mno, w.readcount, w.userid order by w.readcount desc
 
 	</select>
 

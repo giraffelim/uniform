@@ -618,6 +618,6 @@
 	</section>
 
 
-	<script src="/resources/js/taeho.js"></script>
+	<script src="/resources/js/myPageTaeho.js"></script>
 	<script src="/resources/js/review.js"></script>
 	<%@include file="../includes/footer.jsp"%>
