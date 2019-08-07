@@ -120,4 +120,8 @@ public interface uni_workplaceMapper {
 	public List<Integer> getTodayLeaseList();
 	
 	public List<uni_ShinChungVO> getTodaySinchungList(int ino);
+	
+	public int checkConfirm (int sno);
+
+	public StarAvgVO IworkplaceStar(int no);
 }

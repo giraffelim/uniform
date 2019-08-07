@@ -100,7 +100,8 @@ $(function() {
 					.each(
 							resultList,
 							function(index, item) {
-								var regDates = resultList[index].rdate.substring(0, 10);
+								var date = new Date(resultList[index].rdate);
+								var regDates = date.toISOString().slice(0,10);
 
 								if (index >= firstCount && index < lastCount) {
 									var thumbnailEncode = encodeURIComponent(resultList[index].thumbnail);

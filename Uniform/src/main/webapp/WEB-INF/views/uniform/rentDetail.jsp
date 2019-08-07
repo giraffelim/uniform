@@ -11,6 +11,8 @@
    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
    crossorigin="anonymous">
 <!--폰트어썸-->
+<link rel="stylesheet" href="/resources/css/style_lan.css">
+<link rel="stylesheet" href="/resources/css/avg_star.css">
     <style>
 #whole {
    padding-top: 10px;
@@ -294,7 +296,7 @@ scale
 
 <link rel="stylesheet" href="/resources/css/style_ino.css">
  <sec:authorize access="isAuthenticated()">
- 	<sec:authentication property="principal" var="pinfo"/>
+    <sec:authentication property="principal" var="pinfo"/>
  </sec:authorize>
 
     <script type="text/javascript"
@@ -362,7 +364,7 @@ function cdisableOption(val){
          url : "/uniform/memberByMno?mno=${workplaceVO.mno}",
          type : "get",
          success : function(result){
-        	 	console.log("getMember: "+result);
+               console.log("getMember: "+result);
             $("#addName").html("등록자명: "+result.name);
             $("#addNames").html(result.name);
             $("#addPhone").html("등록자번호: "+result.phone);
@@ -414,39 +416,7 @@ function cdisableOption(val){
       var atthachList = new Array();
       attachList = "${workplaceVO.attachList}";
       
-
       
-/*       switch(attachList.length){
-      case 1:
-         var str = ""
-         $("#reservation").val(reservations[0]);
-         break;
-      case 2:
-         $("#reservation").val(reservations[0]);
-         $("#reservation1").val(reservations[1]);
-         $(".apply_content").eq(6).css("display","block");
-         break;
-      case 3:
-         $("#reservation").val(reservations[0]);
-         $("#reservation1").val(reservations[1]);
-         $("#reservation2").val(reservations[2]);
-         $(".apply_content").eq(6).css("display","block");
-         $(".apply_content").eq(7).css("display","block");
-         break;
-      }
-      
-      
-      case
-      $("#inoPhotoNum2").append();
-      $("#inoPhotoNum3").append();
-      $("#inoPhotoNum4").append();
-      $("#inoPhotoNum5").append();
-       */
-      
-      
-      
-      
-
     //지도 생성을 위한 javascript, jquery
         var mapContainer = document.getElementById('inoResultMap'), // 지도를 표시할 div
         mapOption = {
@@ -639,104 +609,259 @@ function cdisableOption(val){
         console.log("userID"+userid);
         var smno = "${pinfo.member.mno}";
         //console.log("smno"+smno);
-        
-        //댓글 목록 구해오기!
-          function readReview(){
-           $.ajax({
-              url:"/uniform/readReview?ino=${workplaceVO.ino}",
-              type:"get",
-              success:function(result){
-                 console.log(result);
+      var starWidth;
 
-                 var BtnStr;
-                   var noBtnStr; 
-                 
-                 $.each(result,function(i,obj){
-                    //console.log(obj);
-                    var wmno = obj.mno;
-                    var wphoto = obj.photo;
-                    /* var objDate =obj.regDate; */
-                    var date = new Date(obj.regDate);
-                    var ISOdate = date.toISOString().slice(0,10)
-                    console.log("objDate :"+date.toISOString().slice(0,10));
-                    console.log("photo :"+wphoto);
-                    //console.log("wmno"+wmno); 
-                    
-                    if(smno == wmno){
-                   BtnStr ='<div style="border: 1px solid black;" class="row">'
-                   BtnStr +='<div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">'
-                   BtnStr +='<div style="border: 1px solid black;" class="col-xs-1 col-sm-1 col-md-1 col-lg-1 text-center">';
-                   
-                  if(obj.userID.length > 20){
-                     console.log("length>20 :" + obj.userID.length)
-                     BtnStr +='<img class="userPhotoS" src="'+obj.photo+'" alt="">';
-                   }else{
-                      if(wphoto !== null || wphoto !== "null" || wphoto !== ""){
-                         console.log("length<20 :" + obj.userID.length)
-                        BtnStr +='<img class="userPhotoS" src="/uniform/display?fileName='+obj.photo+'" alt="">';
-                      }else{
-                         console.log("photo == null")
-                        BtnStr +='<img class="userPhotoS" src="/resources/images/profileDefault.jpg" alt="">';
-                         }
-                      }
-                   
-                   BtnStr +='</div>';
-                   BtnStr +='<div style="border: 1px solid black;" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">';
-                   BtnStr +='<b data-hno='+obj.hno+'>'+obj.name+'</b><br>';
-                   BtnStr +='<b>'+ISOdate+'</b><br>';
-                   BtnStr +='<b id="star'+obj.hno+'>'+obj.star+'</b>';
-                   BtnStr +='<button data-btn="reviewDeleteBtn" style="margin: 5px;" class="btn btn-primary float-right">삭제</button>';
-                   BtnStr +='<button data-btn="reviewUpdataBtn" style="margin: 5px;" class="btn btn-primary float-right">수정</button>';
-                   BtnStr +='</div>';
-                   BtnStr +='</div>';
-                   BtnStr +='<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
-                   BtnStr +='<b id="content'+obj.hno+'>'+obj.content+'</b>';
-                   BtnStr +='</div>';
-                   BtnStr +='</div>';
-                   
-                }else{
-                      BtnStr ='<div style="border: 1px solid black;" class="row">'
-                       BtnStr +='<div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">'
-                       BtnStr +='<div style="border: 1px solid black;" class="col-xs-1 col-sm-1 col-md-1 col-lg-1 text-center">';
-                       
-                     if(obj.userID.length > 20){
-                        console.log("1111length>20" + obj.userID.length)
-                        BtnStr +='<img class="userPhotoS" src="'+obj.photo+'" alt="">';
-                       }else{
-                          if(wphoto !== null){
-                             console.log("1111length<20" + obj.userID.length)
-                            BtnStr +='<img class="userPhotoS" src="/uniform/display?fileName='+obj.photo+'" alt="">';
-                          }else{
-                             console.log("1111photo == null")
-                            BtnStr +='<img class="userPhotoS" src="/resources/images/profileDefault.jpg" alt="">';
-                             }
-                          }
-                       
-                       BtnStr +='</div>';
-                       BtnStr +='<div style="border: 1px solid black;" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">';
-                       BtnStr +='<b data-hno='+obj.hno+'>'+obj.name+'</b><br>';
-                       BtnStr +='<b>'+ISOdate+'</b><br>';
-                       BtnStr +='<b>'+obj.star+'</b>';
-                       BtnStr +='</div>';
-                       BtnStr +='</div>';
-                       BtnStr +='<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
-                       BtnStr +='<b>'+obj.content+'</b>';
-                       BtnStr +='</div>';
-                       BtnStr +='</div>';
-                       
-                }                 
-                    $("#reviewDiv").append(BtnStr);
-                 });//each
-              }//success
-           })//ajax
-        }//function
-          readReview();
+      //댓글 목록 구해오기!
+      function readReview() {
+         $("#reviewDiv").html("");
+         
+         $
+               .ajax({
+                  url : "/uniform/readReviewList?ino=${workplaceVO.ino}",
+                  type : "get",
+                  success : function(result) {
+                     console.log(result);
 
-    });
+                     var BtnStr;
+                     var noBtnStr;
 
+                     $
+                           .each(
+                                 result,
+                                 function(i, obj) {
+                                    //console.log(obj);
+                                    var wmno = obj.mno;
+                                    var wphoto = obj.photo;
+                                    /* var objDate =obj.regDate; */
+                                    var date = new Date(obj.regDate);
+                                    var ISOdate = date.toISOString().slice(0,10)
+                                    ///console.log("objDate :"+ date.toISOString().slice(0, 10));
+                                    //console.log("photo :" + wphoto);
+                                    //console.log("wmno"+wmno); 
+
+                                    if (smno == wmno) {
+                                       BtnStr = '<div style="border: 1px solid black;" class="row">'
+                                       BtnStr += '<div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">'
+                                       BtnStr += '<div style="border: 1px solid black;" class="col-xs-1 col-sm-1 col-md-1 col-lg-1 text-center">';
+
+                                       if (obj.userID.length > 20) {
+                                          console
+                                                .log("length>20 :"
+                                                      + obj.userID.length)
+                                          BtnStr += '<img class="userPhotoS" src="'+obj.photo+'" alt="">';
+                                       } else {
+                                          if (wphoto !== null
+                                                || wphoto !== "null"
+                                                || wphoto !== "") {
+                                             console
+                                                   .log("length<20 :"
+                                                         + obj.userID.length)
+                                             BtnStr += '<img class="userPhotoS" src="/uniform/display?fileName='
+                                                   + obj.photo
+                                                   + '" alt="">';
+                                          } else {
+                                             console
+                                                   .log("photo == null")
+                                             BtnStr += '<img class="userPhotoS" src="/resources/images/profileDefault.jpg" alt="">';
+                                          }
+                                       }
+                                       BtnStr += '</div>';
+                                       BtnStr += '<div style="border: 1px solid black;" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">';
+                                       BtnStr += '<b>' + obj.name
+                                             + '</b> <br>';
+                                       BtnStr += '<b>' + ISOdate
+                                             + '</b> <br>';
+                                       BtnStr += '<button style="margin: 5px;" class="btn btn-primary float-right delete">삭제</button>';
+                                       BtnStr += '<button style="margin: 5px;" class="btn btn-primary float-right modify">수정</button>';
+                                       BtnStr += '<input type="hidden" name="hno" value="'+obj.hno+'">';
+                                       BtnStr += '</div>';
+                                       BtnStr += '</div>';
+                                       BtnStr += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
+                                       BtnStr += '<b id="content'+obj.hno+'">'
+                                             + obj.content
+                                             + '</b>';
+                                       BtnStr += '</div>';
+                                       BtnStr += '</div>';
+                                       
+                                    } else {
+                                       BtnStr = '<div style="border: 1px solid black;" class="row">'
+                                       BtnStr += '<div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">'
+                                       BtnStr += '<div style="border: 1px solid black;" class="col-xs-1 col-sm-1 col-md-1 col-lg-1 text-center">';
+
+                                       if (obj.userID.length > 20) {
+                                          console
+                                                .log("1111length>20"
+                                                      + obj.userID.length)
+                                          BtnStr += '<img class="userPhotoS" src="'+obj.photo+'" alt="">';
+                                       } else {
+                                          if (wphoto !== null) {
+                                             console
+                                                   .log("1111length<20"
+                                                         + obj.userID.length)
+                                             BtnStr += '<img class="userPhotoS" src="/uniform/display?fileName='
+                                                   + obj.photo
+                                                   + '" alt="">';
+                                          } else {
+                                             console
+                                                   .log("1111photo == null")
+                                             BtnStr += '<img class="userPhotoS" src="/resources/images/profileDefault.jpg" alt="">';
+                                          }
+                                       }
+
+                                       BtnStr += '</div>';
+                                       BtnStr += '<div style="border: 1px solid black;" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">';
+                                       BtnStr += '<b>' + obj.name
+                                             + '</b><br>';
+                                       BtnStr += '<b>' + ISOdate
+                                             + '</b><br>';
+                                       BtnStr += '</div>';
+                                       BtnStr += '</div>';
+                                       BtnStr += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
+                                       BtnStr += '<b>'
+                                             + obj.content
+                                             + '</b>';
+                                       BtnStr += '</div>';
+                                       BtnStr += '</div>';
+
+                                    }
+                                    $("#reviewDiv").append(BtnStr);
+                                    
+                                    starWidth = obj.star * 15;
+                                    //console.log(obj.star + " : " + starWidth + " : " + obj.hno);
+                                    $(".star-input" + obj.hno + ">.input").css("background-position",
+                                    "0 bottom").css("width", starWidth + "px").css("z-index", "100");
+                              
+                                 });//each
+                           
+                  }//success
+               })//ajax
+      }//function
+      readReview();
+
+      var getStar;
+      var hno;
+      //댓글 수정모달 띄우기
+      $("#reviewDiv").on('click', ".modify", function() {
+         //console.log("modify1111");
+         hno = $(this).next('input').val();
+         //console.log("hno : " + hno);
+
+         $.ajax({
+            url : "/uniform/readReview?hno=" + hno,
+            type : "get",
+            success : function(result) {
+               console.log("content1111 : " + result.content);
+               $("#review-content").val(result.content);
+               getStar = result.star;
+               $("#review").modal("show");
+               
+               var reviewSno;
+               var reviewIno = $("#starIno").val();
+               console.log(reviewSno, reviewIno);
+               starRating(reviewSno, reviewIno);
+            }
+
+         })
+      })
+      
+      
+      function starRating(reviewSno, reviewIno) {
+         var $star = $(".star-input"), $result = $star.find("output>b");
+
+         $(document).on("focusin", ".star-input>.input", function() {
+            $(this).addClass("focus");
+         }).on("focusout", ".star-input>.input", function() {
+            var $this = $(this);
+            setTimeout(function() {
+               if ($this.find(":focus").length === 0) {
+                  $this.removeClass("focus");
+               }
+            }, 100);
+         }).on("change", ".star-input :radio", function() {
+            $result.text($(this).next().text());
+         }).on("mouseover", ".star-input label", function() {
+            $result.text($(this).text());
+         }).on("mouseleave", ".star-input>.input", function() {
+            var $checked = $star.find(":checked");
+            if ($checked.length === 0) {
+               $result.text("0");
+            } else {
+               $result.text($checked.next().text());
+               result_star = $checked.next().text();
+               
+               review_update(result_star);
+            }
+         });
+      };
+      
+      function review_update(result_star) {
+         $("#review_update").on("click", function(e) {
+            console.log("review_update click");
+            $.ajax({
+               url : "/uniform/updateReview",
+               data : {
+                  hno : hno,
+                  content : $("#review-content").val(),
+                  star : result_star
+               },
+               type : "post",
+               success : function(result) {
+                  console.log("content : " + result + $("#review-content").val() + " : " + result_star + " : " + hno);
+                  $("#review-content").val("")
+                  $("#review").modal("hide");
+                  readReview();
+               }
+            });
+         });
+      }
+         
+      
+      var csrfHeaderName = $("#csrf").attr('name');
+      var csrfTokenValue = $("#csrf").val();
+
+      // ajax csrf 토큰 전송하기!!!!!!
+      $(document).ajaxSend(
+            function(e, xhr, options) {
+               xhr.setRequestHeader(csrfHeaderName,
+                     csrfTokenValue);
+            });
+      
+
+      //댓글 삭제
+      $("#reviewDiv").on('click', ".delete", function() {
+         hno = $(this).next().next('input').val();
+         $.ajax({
+            url : "/uniform/removeReview?hno="+hno,
+            type : "get",
+            success : function(result) {
+               readReview();
+            }
+         });
+      })
+
+      var num = $("#starAvg").val();
+      var width = num * 15;
+      var starIno = $("#starIno").val();
+      console.log(num + " : " + width + " : " + starIno);
+      $(".star-input" + starIno + ">.input").css("background-position",
+            "0 bottom").css("width", width + "px").css("z-index", "100");
+      
+      console.log($("#myPageUserid").val());
+      
+      if ($("#myPageUserid").val().length < 20) {
+         if($("#myPagePhoto").val() === "") {
+            $("#reviewProfile").append("<img src='/resources/images/default.png'>");
+         } else {
+            $("#reviewProfile").append("<img src='/uniform/display?fileName="+$("#myPagePhoto").val()+"'>");
+         }
+      } else {
+         $("#reviewProfile").append("<img src='"+$("#myPagePhoto").val()+"'>");
+      }
+
+   });
 </script>
 
-
+<input id='csrf' type="hidden" name="${_csrf.headerName }" value="${_csrf.token }">
 <link rel="stylesheet" href="/resources/css/style_ino.css">
 
 <!--  shin Chung  -->
@@ -901,7 +1026,6 @@ function cdisableOption(val){
                                     <div id="reservationTap" class="reservation1">
                                         <div class="text-center">
                                             <p><b>2시간당 : ${workplaceVO.price } 원</b></p>
-                                            <p>별점공간</p>
                                             <hr>
                                         </div>
                                         <!-- 1set-->
@@ -911,7 +1035,7 @@ function cdisableOption(val){
                                                   <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
                                                   <input type="hidden" name="mno" value="${pinfo.member.mno }">
     <!-- 1set-->
-         								<sec:authorize access="isAuthenticated()">
+                                 <sec:authorize access="isAuthenticated()">
                                         <div id="iBtn">
                                             <input type="submit" class="btn btn-danger" value="예약하기">
                                             <input type="button" class="btn btn-danger" value="초 기 화" onclick="clearSelect();">
@@ -981,26 +1105,114 @@ function cdisableOption(val){
                             <!--후기 ---------------------------------------------------------------------------------------------------------->
                             <div class="row">
 
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: 1px solid black;">
-                                    <div class="row">
-                                       <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-                                           <b class="hugi">후기</b>
-                                        <b class='hugiStar'>총별점</b>
-                                        <button id="replyInsert" type="button" class="btn btn-primary float-right">후기등록</button>
-                                       </div>
-                                       <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
-                                        
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                           style="border: 1px solid black;">
+                           <div class="row">
+                              <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+                                 <b class="hugi">후기</b>
+                                 <div class='hugiStar' style="display: inline">
+                                    <input type="hidden" id="starAvg" value="${starAvg.avg }">
+                                    <input type="hidden" id="starIno" value="${workplaceVO.ino }">
+                                    <!-- 빨간 -->
+                                    <div class="star-wrap" data-ino="${workplaceVO.ino }">
+                                       <span class="star-input${workplaceVO.ino }"> <span
+                                          class="input"> </span>
+                                       </span>
                                     </div>
-                                </div>
-                            </div>
+                                    <!-- 하얀 -->
+                                    <div class="result-wrap">
+                                       <span class="star-input${workplaceVO.ino }"> <span
+                                          class="result"> </span>
+                                       </span>
+                                    </div>
+      
+                                 </div>
+                              </div>
+                              <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+      
+                           </div>
+                        </div>
+                     </div>
 
 
                                 <!--실제 댓글공간-------------------------------------------------------------------------------------------------->
-               <div id="reviewDiv">
-                  
-
+                        <div id="reviewDiv"></div>
+         
+                        <!-- 추가 모달  -->
+                        <!-- Modal -->
+                        <div class="modal fade" id="review" role="dialog">
+                           <div class="modal-dialog">
+         
+                              <!-- Modal content-->
+                              <div class="modal-content">
+                                 <div class="modal-header">
+                                    <h4 class="modal-title">후기 수정</h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                 </div>
+                                 <div class="modal-body">
+                                    <div class="row review-body">
+                                       <div class="col-md-3">
+                                          <div class="profile-image" id="reviewProfile">
+                                             <input type="hidden" id="myPageUserid"
+                                                value="${pinfo.member.userID}"> <input
+                                                type="hidden" id="myPagePhoto"
+                                                value="${pinfo.member.photo}">
+                                          </div>
+                                       </div>
+                                       <div class="col-md-9">
+                                          <form action="/uniform/updateReview" method="post" id="review_form">
+                                             <input type="hidden" name="${_csrf.parameterName }"
+                                                value="${_csrf.token }" /> <input type="hidden" id="ino"
+                                                name="ino"> <input type="hidden" id="sno"
+                                                name="sno"> <input type="hidden" id="cno"
+                                                name="cno">
+                                             <div>
+                                                <sec:authorize access="isAuthenticated()">
+                                                   <input type="hidden" id="mno" name="mno"
+                                                      value='<sec:authentication property="principal.member.mno"/>' />
+                                                   <span>이름 : ${pinfo.member.name }</span>
+         
+                                                </sec:authorize>
+                                                <sec:authorize access="isAnonymous ()">
+                                                   <span>회원정보없음</span>
+                                                </sec:authorize>
+                                                <span class="star-input"> <span class="input">
+                                                      <input type="radio" name="star-input" value="1" id="p1">
+                                                      <label for="p1">1</label> <input type="radio"
+                                                      name="star-input" value="2" id="p2"> <label
+                                                      for="p2">2</label> <input type="radio" name="star-input"
+                                                      value="3" id="p3"> <label for="p3">3</label> <input
+                                                      type="radio" name="star-input" value="4" id="p4">
+                                                      <label for="p4">4</label> <input type="radio"
+                                                      name="star-input" value="5" id="p5"> <label
+                                                      for="p5">5</label> <input type="radio" name="star-input"
+                                                      value="1" id="p6"> <label for="p6">6</label> <input
+                                                      type="radio" name="star-input" value="2" id="p7">
+                                                      <label for="p7">7</label> <input type="radio"
+                                                      name="star-input" value="3" id="p8"> <label
+                                                      for="p8">8</label> <input type="radio" name="star-input"
+                                                      value="4" id="p9"> <label for="p9">9</label> <input
+                                                      type="radio" name="star-input" value="5" id="p10">
+                                                      <label for="p10">10</label>
+                                                </span>
+                                                </span> <input type="hidden" id="review_star" name="star" value="" />
+                                             </div>
+                                             <div>
+                                                <textArea id="review-content" name="content"></textArea>
+                                             </div>
+                                          </form>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="modal-footer">
+                                    <button type="button" class="btn btn-info" id="review_update">수정</button>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
                
-               </div>
+               <!-- ///추가 모달  -->
+               
                <!--580px 이하시 예약-->
                <div id="inofooter">
                   <div id="inofooterBtn" class="text-center"
@@ -1091,6 +1303,7 @@ function cdisableOption(val){
                                 <!-- Modal footer -->
                                 <div class="modal-footer">
                                  <input type="submit" class="btn btn-danger" value="예약하기">
+                                 <input type="button" class="btn btn-danger" value="초 기 화" onclick="clearSelect();">
                                   <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                                 </div>
 
@@ -1107,7 +1320,4 @@ function cdisableOption(val){
    <!------------------------------------------------------------------------------------------------------------------------------------------------------>
 
 
-
-
-   <script src="/resources/js/main.inho.js"></script>
    <%@ include file="../includes/footer.jsp"%>
