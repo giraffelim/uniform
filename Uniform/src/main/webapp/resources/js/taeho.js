@@ -38,7 +38,7 @@ $(function() {
 	} else {
 		var profileImg = $("#firstBestImdeProfileIP").val();
 
-		$("#firstBestShareProfile").append("<img class='bestProfileImg' src='/uniform/display?fileName="+profileImg+"'>");
+		$("#firstBestShareProfile").append("<img class='bestProfileImg' src='/display?fileName="+profileImg+"'>");
 		$(".bestProfileImg").css("width","3em").css("height","3em").css("border-radius","50%");
 		
 	}
@@ -49,7 +49,7 @@ $(function() {
 	} else {	
 		var profileImg2 = $("#secondBestShareProfileIP").val();
 		
-		$("#secondBestShareProfile").append("<img class='bestProfileImg' src='/uniform/display?fileName="+ profileImg2+"'>");
+		$("#secondBestShareProfile").append("<img class='bestProfileImg' src='/display?fileName="+ profileImg2+"'>");
 		$(".bestProfileImg").css("width","3em").css("height","3em").css("border-radius","50%");
 	}
 
@@ -59,7 +59,7 @@ $(function() {
 	} else {
 		var profileImg3 = $("#thirdBestShareProfileIP").val();
 	
-		$("#thirdBestShareProfile").append("<img class='bestProfileImg' src='/uniform/display?fileName="+ profileImg3+"'>");
+		$("#thirdBestShareProfile").append("<img class='bestProfileImg' src='/display?fileName="+ profileImg3+"'>");
 		$(".bestProfileImg").css("width","3em").css("height","3em").css("border-radius","50%");
 	}
 
@@ -70,7 +70,7 @@ $(function() {
 				"url(/resources/images/default.png)");		
 	} else {
 		var profileImgImde = $("#firstBestImdeProfileIP").val();		
-		$("#firstBestImdeProfile").append("<img class='bestProfileImg' src='/uniform/display?fileName="+ profileImgImde+"'>");
+		$("#firstBestImdeProfile").append("<img class='bestProfileImg' src='/display?fileName="+ profileImgImde+"'>");
 		$(".bestProfileImg").css("width","3em").css("height","3em").css("border-radius","50%");
 
 	}
@@ -80,7 +80,7 @@ $(function() {
 				"url(/resources/images/default.png)");
 	} else {
 		var profileImgImde2 = $("#secondBestImdeProfileIP").val();		
-		$("#secondBestImdeProfile").append("<img class='bestProfileImg' src='/uniform/display?fileName="+ profileImgImde2+"'>");
+		$("#secondBestImdeProfile").append("<img class='bestProfileImg' src='/display?fileName="+ profileImgImde2+"'>");
 		$(".bestProfileImg").css("width","3em").css("height","3em").css("border-radius","50%");
 	}
 
@@ -89,7 +89,7 @@ $(function() {
 				"url(/resources/images/default.png)");
 	} else {
 		var profileImgImde3 = $("#thirdBestImdeProfileIP").val();		
-		$("#thirdBestImdeProfile").append("<img class='bestProfileImg' src='/uniform/display?fileName="+ profileImgImde3+"'>");
+		$("#thirdBestImdeProfile").append("<img class='bestProfileImg' src='/display?fileName="+ profileImgImde3+"'>");
 		$(".bestProfileImg").css("width","3em").css("height","3em").css("border-radius","50%");
 	}
 	
@@ -137,7 +137,7 @@ $(function() {
 	}
 	else{
 		
-		$(".profile-icon").append("<img src='/uniform/display?fileName="+memberPhoto+"'>");
+		$(".profile-icon").append("<img src='/display?fileName="+memberPhoto+"'>");
 		
 	}
 	
@@ -455,12 +455,12 @@ $(function() {
 
 	$("#shareBtn").on("click", function() {
 		console.log("공유 등록 버튼 클릭!!");
-		location.href = "/uniform/goShare"
+		location.href = "/uniform/shareInsert";
 	});
 
 	$("#imdeBtn").on("click", function() {
 		console.log("임대 버튼 클릭 !!");
-		location.href = "/uniform/goImde";
+		location.href = "/uniform/leaseInsert";
 	});
 
 	/*

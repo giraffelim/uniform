@@ -119,7 +119,7 @@ $(function() {
 			}
 
 			console.log("result : " + result_star + " :" + $("#review-content").val()+":");
-
+			
 			$.ajax({
 		        type:"POST",
 		        url:"/uniform/new_review",
@@ -135,8 +135,18 @@ $(function() {
 					xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
 				},
 		        dataType : "text",
-		        success: function(result) {
+		        success: function(result){
+		        	var ino = $("#review_form #ino").val();
+		        	var sno = $("#review_form #sno").val();
 		            $("#review").modal("hide");
+		            if(ino != 0){
+		            	location.href="/uniform/rentDetail?type=imde&no="+ino;
+		            	return;
+		            }
+		            if(sno != 0){
+		            	location.href="/uniform/rentDetail?type=share&no="+sno;
+		            	return;
+		            }
 		        }
 		    });
 		});
