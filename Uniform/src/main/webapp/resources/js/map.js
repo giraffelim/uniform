@@ -105,7 +105,11 @@ $(function() {
 								if (index >= firstCount && index < lastCount) {
 									var thumbnailEncode = encodeURIComponent(resultList[index].thumbnail);
 									str = '<div class="col-md-12"> <div class="blog-entry"> ';
-									str += '<a href="#" class="img img-2"> <img src="/display?fileName='+thumbnailEncode+'"> </a> ';
+									str += '<a href="/uniform/rentDetail?type='
+											+ jsonType
+											+ '&no='
+											+ resultList[index].sno
+											+ '" class="img img-2"> <img src="/display?fileName='+thumbnailEncode+'"> </a> ';
 									str += '<div class="text pt-3"> <h2 class="mb-2">'
 											+ resultList[index].title
 											+ '</h2> ';
@@ -142,7 +146,11 @@ $(function() {
 									var thumbnailEncode = encodeURIComponent(resultList[index].thumbnail);
 									console.log(thumbnailEncode);
 									str = '<div class="col-md-12"> <div class="blog-entry"> ';
-									str += '<a href="#" class="img img-2 thumbnail"> <img src="/display?fileName='+thumbnailEncode+'"> </a> ';
+									str += '<a href="/uniform/rentDetail?type='
+											+ jsonType
+											+ '&no='
+											+ resultList[index].sno
+											+ '" class="img img-2"> <img src="/display?fileName='+thumbnailEncode+'"> </a> ';
 									str += '<div class="text pt-3"> <h2 class="mb-2">'
 											+ resultList[index].title
 											+ '</h2> ';

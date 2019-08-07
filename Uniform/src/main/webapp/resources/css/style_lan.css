@@ -405,6 +405,11 @@ star-input>.input.focus {
 	height: 100%;
 }
 
+#sinchungThumbnail img {
+	width: 100%;
+	height: 100%;
+}
+
 #SThumbnail img {
 	width: 100%;
 	height: 100%;

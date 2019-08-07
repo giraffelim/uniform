@@ -13,12 +13,13 @@
 
 	<section class="workplaceTitle ftco-section ftco-bread select-info">
 		<div class="container-fluid px-3 px-md-0">
-			<div	class="row no-gutters slider-text justify-content-end align-items-center">
+			<div
+				class="row no-gutters slider-text justify-content-end align-items-center">
 				<div class="col-md-10 ftco-animate">
-				<h2 >원하는 정보를 검색 해보세요</h2>
+					<h2>원하는 정보를 검색 해보세요</h2>
 					<form action="/uniform/workplaceList" method="get" id="select_form">
 						<div>
-							
+
 							<input type="text" id="inputLocation" name="location"
 								placeholder="모든위치"> <input type="text"
 								id="inputFirstDate" name="SfirstDate" placeholder="년/월/일">
@@ -64,7 +65,8 @@
 	</section>
 
 
-	<section class="workplaceTitle ftco-section ftco-bread ftco-extend-mb shareBody">
+	<section
+		class="workplaceTitle ftco-section ftco-bread ftco-extend-mb shareBody">
 		<div class="container-fluid px-3 px-md-0">
 			<div
 				class="row no-gutters slider-text justify-content-end align-items-center">
@@ -76,6 +78,8 @@
 							<div id="firstShareImg">
 								<input type="hidden" id="firstBestShareImg"
 									value='<c:forEach var = "hotTopicList" items="${hotTopicList }" begin="0" end="0" >${hotTopicList.thumbnail}</c:forEach>'>
+								<input type="hidden" id="firstShareSno"
+									value='<c:forEach var = "hotTopicList" items="${hotTopicList }" begin="0" end="0" >${hotTopicList.sno}</c:forEach>'>
 							</div>
 
 
@@ -118,6 +122,8 @@
 							<div id="secondShareImg">
 								<input type="hidden" id="secondBestShareImg"
 									value='<c:forEach var = "hotTopicList" items="${hotTopicList }" begin="1" end="1" >${hotTopicList.thumbnail}</c:forEach>'>
+								<input type="hidden" id="secondShareSno"
+									value='<c:forEach var = "hotTopicList" items="${hotTopicList }" begin="1" end="1" >${hotTopicList.sno}</c:forEach>'>
 							</div>
 							<div class="stardiv">
 
@@ -159,6 +165,8 @@
 							<div id="thirdShareImg">
 								<input type="hidden" id="thirdBestShareImg"
 									value='<c:forEach var = "hotTopicList" items="${hotTopicList }" begin="2" end="2" >${hotTopicList.thumbnail}</c:forEach>'>
+								<input type="hidden" id="thirdShareSno"
+									value='<c:forEach var = "hotTopicList" items="${hotTopicList }" begin="2" end="2" >${hotTopicList.sno}</c:forEach>'>
 							</div>
 
 							<div class="stardiv">
@@ -237,6 +245,8 @@
 							<div id="firstImdeImg">
 								<input type="hidden" id="firstBestImg"
 									value='<c:forEach var = "hotTopicListImde" items="${hotTopicListImde }" begin="0" end="0" >${hotTopicListImde.thumbnail}</c:forEach>'>
+								<input type="hidden" id="firstBestIno"
+									value='<c:forEach var = "hotTopicListImde" items="${hotTopicListImde }" begin="0" end="0" >${hotTopicListImde.ino}</c:forEach>'>
 							</div>
 
 							<div class="stardiv">
@@ -278,6 +288,8 @@
 							<div id="secondImdeImg">
 								<input type="hidden" id="secondBestImg"
 									value='<c:forEach var = "hotTopicListImde" items="${hotTopicListImde }" begin="1" end="1" >${hotTopicListImde.thumbnail}</c:forEach>'>
+								<input type="hidden" id="secondBestIno"
+									value='<c:forEach var = "hotTopicListImde" items="${hotTopicListImde }" begin="1" end="1" >${hotTopicListImde.ino}</c:forEach>'>
 							</div>
 							<div class="stardiv">
 
@@ -318,6 +330,8 @@
 							<div id="thirdImdeImg">
 								<input type="hidden" id="thirdBestImg"
 									value='<c:forEach var = "hotTopicListImde" items="${hotTopicListImde }" begin="2" end="2" >${hotTopicListImde.thumbnail}</c:forEach>'>
+								<input type="hidden" id="thirdBestIno"
+									value='<c:forEach var = "hotTopicListImde" items="${hotTopicListImde }" begin="2" end="2" >${hotTopicListImde.ino}</c:forEach>'>
 							</div>
 
 							<div class="stardiv">

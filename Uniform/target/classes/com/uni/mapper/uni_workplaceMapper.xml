@@ -217,7 +217,7 @@
 		w.phone as hphone,
 		m.name as cname, m.phone as
 		cphone, s.ino,
-		s.reservation, m.mno
+		s.reservation, m.mno, w.thumbnail
 		from uni_sinchung s, uni_member m,
 		(select * from
 		uni_workplace_i i,
@@ -295,13 +295,13 @@
 
 	<insert id="Ireview_insert">
 		insert into uni_review(hno, content, star, cno, ino,
-		mno) values (review_seq.nextval, #{content}, #{star}, #{cno}, #{ino},
+		mno) values (uni_review_seq.nextval, #{content}, #{star}, #{cno}, #{ino},
 		#{mno})
 	</insert>
 
 	<insert id="Sreview_insert">
 		insert into uni_review(hno, content, star, cno, sno,
-		mno) values (review_seq.nextval, #{content}, #{star}, #{cno}, #{sno},
+		mno) values (uni_review_seq.nextval, #{content}, #{star}, #{cno}, #{sno},
 		#{mno})
 	</insert>
 

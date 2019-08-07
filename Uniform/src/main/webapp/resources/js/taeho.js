@@ -111,13 +111,13 @@ $(function() {
 	var thirdBestShareImgEncode = encodeURIComponent(thirdBestShareImg);
 	
 	
-	$("#firstImdeImg").append("<img src='/display?fileName="+firstBestImgEncode+"'>");
-	$("#secondImdeImg").append("<img src='/display?fileName="+secondBestImgEncode+"'>");
-	$("#thirdImdeImg").append("<img src='/display?fileName="+thirdBestImgEncode+"'>");
+	$("#firstImdeImg").append("<a href='/uniform/rentDetail?type=imde&no="+$("#firstBestIno").val()+"'> <img src='/display?fileName="+firstBestImgEncode+"'> </a>");
+	$("#secondImdeImg").append("<a href='/uniform/rentDetail?type=imde&no="+$("#secondBestIno").val()+"'> <img src='/display?fileName="+secondBestImgEncode+"'>");
+	$("#thirdImdeImg").append("<a href='/uniform/rentDetail?type=imde&no="+$("#thirdBestIno").val()+"'> <img src='/display?fileName="+thirdBestImgEncode+"'>");
 	
-	$("#firstShareImg").append("<img src='/display?fileName="+firstBestShareImgEncode+"'>");
-	$("#secondShareImg").append("<img src='/display?fileName="+secondBestShareImgEncode+"'>");
-	$("#thirdShareImg").append("<img src='/display?fileName="+thirdBestShareImgEncode+"'>");
+	$("#firstShareImg").append("<a href='/uniform/rentDetail?type=share&no="+$("#firstShareSno").val()+"'> <img src='/display?fileName="+firstBestShareImgEncode+"'>");
+	$("#secondShareImg").append("<a href='/uniform/rentDetail?type=share&no="+$("#secondShareSno").val()+"'> <img src='/display?fileName="+secondBestShareImgEncode+"'>");
+	$("#thirdShareImg").append("<a href='/uniform/rentDetail?type=share&no="+$("#thirdShareSno").val()+"'> <img src='/display?fileName="+thirdBestShareImgEncode+"'>");
 	
 	/*	마이페이지 프로필 사진*/
 	
