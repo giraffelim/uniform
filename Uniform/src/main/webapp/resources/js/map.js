@@ -8,7 +8,7 @@ var resultList = [];
 var str;
 $(function() {
 
-	/*무한 스크롤 구현 및 검색 jquery*/
+	/* 무한 스크롤 구현 및 검색 jquery */
 	var firstCount = 0;
 	var lastCount = 5;
 
@@ -76,23 +76,24 @@ $(function() {
 
 	});
 
-	/*스크롤이 하단에 닿았을 때 이벤트 발생*/
+	/* 스크롤이 하단에 닿았을 때 이벤트 발생 */
 	$(window).scroll(
 			function() {
-				if ($(document).height() - $(window).height() == $(window)
-						.scrollTop()) {
-
+				console.log("kljlkjlkjlkj");
+				console.log($(document).height() - $(window).height() + " : " +  $(window).scrollTop());
+				if ($(document).height() - $(window).height() == $(window).scrollTop()) {
+					console.log("134513452345");
 					if (resultList.length > 5) {
 						firstCount += 5;
 						lastCount += 5;
-
+						console.log("asdfasdasdf");
 						showList(resultList, firstCount, lastCount, jsonType);
 					}
 
 				}
 			});
 
-	/*작업실 정보를 검색한 만큼 append해주는 함수*/
+	/* 작업실 정보를 검색한 만큼 append해주는 함수 */
 	function showList(resultList, firstCount, lastCount, jsonType) {
 		if (jsonType === 'share') {
 
@@ -101,7 +102,7 @@ $(function() {
 							resultList,
 							function(index, item) {
 								var date = new Date(resultList[index].rdate);
-								var regDates = date.toISOString().slice(0,10);
+								var regDates = date.toISOString().slice(0, 10);
 
 								if (index >= firstCount && index < lastCount) {
 									var thumbnailEncode = encodeURIComponent(resultList[index].thumbnail);
@@ -110,7 +111,8 @@ $(function() {
 											+ jsonType
 											+ '&no='
 											+ resultList[index].sno
-											+ '" class="img img-2"> <img src="/display?fileName='+thumbnailEncode+'"> </a> ';
+											+ '" class="img img-2 workplaceImg"> <img src="/display?fileName='
+											+ thumbnailEncode + '"> </a> ';
 									str += '<div class="text pt-3"> <h2 class="mb-2">'
 											+ resultList[index].title
 											+ '</h2> ';
@@ -141,17 +143,18 @@ $(function() {
 					.each(
 							resultList,
 							function(index, item) {
-								var regDates = resultList[index].rdate
-										.substring(0, 10);
+								var date = new Date(resultList[index].rdate);
+								var regDates = date.toISOString().slice(0, 10);
 								if (index >= firstCount && index < lastCount) {
 									var thumbnailEncode = encodeURIComponent(resultList[index].thumbnail);
-									console.log(thumbnailEncode);
+									console.log(thumbnailEncode + " : " + resultList[index].sno);
 									str = '<div class="col-md-12"> <div class="blog-entry"> ';
 									str += '<a href="/uniform/rentDetail?type='
 											+ jsonType
 											+ '&no='
-											+ resultList[index].sno
-											+ '" class="img img-2"> <img src="/display?fileName='+thumbnailEncode+'"> </a> ';
+											+ resultList[index].ino
+											+ '" class="img img-2 workplaceImg"> <img src="/display?fileName='
+											+ thumbnailEncode + '"> </a> ';
 									str += '<div class="text pt-3"> <h2 class="mb-2">'
 											+ resultList[index].title
 											+ '</h2> ';
@@ -180,21 +183,21 @@ $(function() {
 		}
 	}
 
-	/*하단일 때 상단으로 올라가는 버튼*/
+	/* 하단일 때 상단으로 올라가는 버튼 */
 	$("#topBtn").on("click", function() {
 		$("html, body").animate({
 			scrollTop : 0
 		}, 300);
 	});
 
-	/*상단일 때 하단으로 내러가는 버튼*/
+	/* 상단일 때 하단으로 내러가는 버튼 */
 	$("#bottomBtn").on("click", function() {
 		$("html, body").animate({
 			scrollTop : $(document).height()
 		}, 300);
 	});
 
-	/*검색을 눌렀을 때 체크하고 submit 해줌*/
+	/* 검색을 눌렀을 때 체크하고 submit 해줌 */
 	$("#btnSearch").on("click", function(e) {
 		e.preventDefault();
 		if ($("#selectType").val() === "imde") {
@@ -209,7 +212,7 @@ $(function() {
 		}
 	})
 
-	/*검색 시 날짜 input을 선택하면 datepicker를 사용해서 캘린더를 띄워줌*/
+	/* 검색 시 날짜 input을 선택하면 datepicker를 사용해서 캘린더를 띄워줌 */
 	var dateFormat = "yy-mm-dd";
 	var from = $("input[id*='firstDate']").datepicker({
 		minDate : 0,
@@ -239,8 +242,8 @@ $(function() {
 
 		return date;
 	}
-	
-	/*스크롤 값에 따라 지도 fixed*/
+
+	/* 스크롤 값에 따라 지도 fixed */
 	$(window).scroll(function() {
 		var position = $(document).scrollTop();
 		if (position >= 418) {
@@ -256,7 +259,7 @@ $(function() {
 	var location = []; // 받아올 데이터를 저장할 배열 선언
 	var title = [];
 
-	/*지도를 띄우고 가져온 주소를 위경도화해서 마커를 찍어주는 부분*/
+	/* 지도를 띄우고 가져온 주소를 위경도화해서 마커를 찍어주는 부분 */
 	$.getJSON("/uniform/map_list.json", {
 		location : jsonLocation,
 		type : jsonType,
