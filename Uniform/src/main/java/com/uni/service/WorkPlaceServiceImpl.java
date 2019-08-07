@@ -79,7 +79,7 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 		if (SfirstDate == null || SfirstDate.equals("fail") || SfirstDate.equals("")) {
 			SfirstDate = CurrentDate();
 		}
-		if (SlastDate == null || SfirstDate.equals("fail") || SfirstDate.equals("")) {
+		if (SlastDate == null || SlastDate.equals("fail") || SlastDate.equals("")) {
 			SlastDate = CurrentDate();
 		}
 
@@ -87,12 +87,12 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 
 			// 검색한 날짜
 			Date firstDate = new SimpleDateFormat("yyyy-MM-dd").parse(SfirstDate);
-			Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse(SfirstDate);
+			Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse(SlastDate);
 
 			System.out.println("workplace_s date : " + firstDate + " : " + lastDate);
 
 			for (int j = 0; j < list.size(); j++) {
-				String[] dateList = list.get(j).getMyDate().split("~");
+				String[] dateList = list.get(j).getMyDate().split(",");
 				for (int i = 0; i < dateList.length; i++) {
 
 					Date dbDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateList[i]);
@@ -560,5 +560,16 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 		}else {
 			mapper.updateReadCount(ino, 0);
 		}
+	}
+
+	@Override
+	public int checkConfirm(int sno) {
+		// TODO Auto-generated method stub
+		return mapper.checkConfirm(sno);
+	}
+
+	@Override
+	public StarAvgVO IworkplaceStar(int no) {
+		return mapper.IworkplaceStar(no);
 	}
 }

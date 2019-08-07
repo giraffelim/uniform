@@ -170,7 +170,9 @@ public class WorkPlaceController {
 			model.addAttribute("shinChungList", shinChungList);
 			SWorkPlaceVO vo = service.readShare(no);
 			model.addAttribute("workplaceVO",vo);
-			// readCount update
+			// confirm일 경우 예약 불가 flag
+			int flag = service.checkConfirm(no);
+			model.addAttribute("flag", flag);
 			return "/uniform/shareDetail";
 		}
 		
@@ -201,6 +203,7 @@ public class WorkPlaceController {
 			log.info(thumbnail);
 			vo.setThumbnail(thumbnail);
 			model.addAttribute("workplaceVO",vo);
+			model.addAttribute("starAvg", service.IworkplaceStar(no));
 			return "/uniform/rentDetail";
 		}
 		return null;
@@ -212,7 +215,7 @@ public class WorkPlaceController {
 		//TODO 상세보기로 이동해야한다!
 		log.warn("insert Workplace s: "+vo);
 		service.insertWorkPlace_s(vo);
-		return "redirect:/uniform/shareDetail?type=share&no="+vo.getSno();
+		return "redirect:/uniform/rentDetail?type=share&no="+vo.getSno();
 	}
 	
 	@PreAuthorize("isAuthenticated()")

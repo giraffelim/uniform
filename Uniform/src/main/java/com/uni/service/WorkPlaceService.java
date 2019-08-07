@@ -81,5 +81,9 @@ public interface WorkPlaceService {
 	public boolean review_insert(uni_reviewVO vo);
 	
 	public int getWorkplaceCount();
+	
+	public int checkConfirm(int sno);
+
+	public StarAvgVO IworkplaceStar(int no);
 
 }
