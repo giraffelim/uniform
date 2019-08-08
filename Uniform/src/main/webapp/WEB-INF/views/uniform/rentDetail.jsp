@@ -372,10 +372,10 @@ function cdisableOption(val){
             if(result.userID.length > 20){
                $(".userPhotoD").attr("src", result.photo);
             }else{
-               if(result.photo == ""){
-                     $(".userPhotoID").attr("src","/resources/image/profileDefault.jpg");
+               if(result.photo == "" || result.photo == null || result.photo == 'null' ){
+                     $(".userPhotoD").attr("src","/resources/image/profileDefault.jpg");
                }else{
-                     $(".userPhotoID").attr("src","display?fileName="+resultPhoto);
+                     $(".userPhotoD").attr("src","display?fileName="+result.photo);
                }
             }
          },
@@ -971,8 +971,8 @@ function cdisableOption(val){
                                            </div>
                                        </div>
                                        <div style="border: 1px solid black; text-align: center;" class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                           <img class="userPhotoD" src="/img/pairi.jpg"><br>
-                                           <p id="addNames">파이리</p>                                           
+                                           <img class="userPhotoD" src=""><br>
+                                           <p id="addNames"></p>                                           
                                        </div>
                                        
                                    </div>
