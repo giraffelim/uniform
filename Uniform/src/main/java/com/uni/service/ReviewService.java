@@ -4,13 +4,18 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.uni.domain.Criteria;
+import com.uni.domain.ReviewPageDTO;
 import com.uni.domain.uni_JoinReviewVO;
 
 @Service
 public interface ReviewService {
 
-   //ino로 review테이블 조회
-   public List<uni_JoinReviewVO> readReviewListByino(int ino);
+   //ino로 reviewList 조회
+   public ReviewPageDTO readReviewListByino(int ino, Criteria cri);
+   
+ //ino로 reviewList 조회
+   public ReviewPageDTO readReviewListBysno(int sno, Criteria cri);
    
    public boolean removeReview(int hno);
    

@@ -2,21 +2,22 @@ package com.uni.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.uni.domain.Criteria;
+import com.uni.domain.ReviewPageDTO;
 import com.uni.domain.uni_JoinReviewVO;
 import com.uni.service.ReviewService;
 
 import lombok.AllArgsConstructor;
-import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
 @Controller
@@ -27,16 +28,35 @@ public class ReviewController {
 
    private ReviewService service;
 
-   @GetMapping(value = "/readReviewList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+   @GetMapping(value = "/readReviewListI/{ino}/{page}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
    @ResponseBody
-   public ResponseEntity<List<uni_JoinReviewVO>> readReviewList(int ino) {
-      log.info("========readReview======= 호출됨 ino = " + ino);
-
-      List<uni_JoinReviewVO> list = service.readReviewListByino(ino);
-
+   public ResponseEntity<ReviewPageDTO> readReviewListI(@PathVariable("ino") int ino,@PathVariable("page") int page) {
+      
+	  Criteria cri = new Criteria(page,5); 
+	  log.info("========readReviewListI======= 호출됨 ino = " + ino);
+      log.info("========readReviewListI======= 호출됨 ino = " + cri);
+      
+      ReviewPageDTO list = service.readReviewListByino(ino, cri);
+      
       log.info("========readReview======= 호출됨 댓글리스트 = " + list);
+      
+      return new ResponseEntity<ReviewPageDTO>(list, HttpStatus.OK);
+   }
 
-      return new ResponseEntity<List<uni_JoinReviewVO>>(list, HttpStatus.OK);
+   @GetMapping(value = "/readReviewListS/{sno}/{page}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+   @ResponseBody
+   public ResponseEntity<ReviewPageDTO> readReviewListS(@PathVariable("sno") int sno, @PathVariable("page") int page ){
+	   
+	   Criteria cri = new Criteria(page,5); 
+	   log.info("========readReviewListI======= 호출됨 sno = " + sno);
+	      log.info("========readReviewListI======= 호출됨 sno = " + cri);
+	   
+	   ReviewPageDTO list = service.readReviewListBysno(sno, cri);
+	   
+	   log.info("========readReview======= 호출됨 댓글리스트 = " + list);
+	   
+	   return new ResponseEntity<ReviewPageDTO>(list, HttpStatus.OK);
+	   
    }
    
    @PostMapping(value = "updateReview", produces = "text/plain")
