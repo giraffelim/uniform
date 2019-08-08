@@ -50,5 +50,7 @@ public interface uni_MemberMapper {
 	public List<uni_hotTopicVO> readHotTopicImde();
 
 	public uni_MemberVO readMember(int mno);
+	
+	public int getMemberCount();
 
 }

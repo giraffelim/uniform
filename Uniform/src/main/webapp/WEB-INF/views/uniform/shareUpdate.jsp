@@ -333,8 +333,16 @@ if(oauth2LoginUser == 0){
             		// checkbox
             		var comforts = '${vo.comforts}';
             		var checkList = comforts.split(",");
+            		var comfortsList = ['wifi' , 'amp' , 'mike','restroom','aircon','refrigerator','fan','airclean'];
+            		var ajaxComforts = ['WIFI','앰프','마이크','화장실','에어컨','냉장고','선풍기','공기청정기'];
             		$(checkList).each(function(i, o){
-            			$("#"+o+"").attr("checked","true");
+            			for(var i=0; i<comfortsList.length; i++){
+            				if(o == ajaxComforts[i]){
+            					o = comfortsList[i];
+            					break;
+            				}
+            			}
+            			$("#"+o).attr("checked",true);
             		});
             		
             		//date

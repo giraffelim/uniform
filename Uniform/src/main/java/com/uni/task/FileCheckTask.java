@@ -33,8 +33,7 @@ public class FileCheckTask {
 		String str = sdf.format(cal.getTime());
 		return str.replace("-", File.separator);
 	}
-
-	@Scheduled(cron = "0 0 11 * * *")
+	
 	public void checkFiles() throws Exception {
 		log.warn("File Check  Task run......................................");
 		log.warn(new Date());

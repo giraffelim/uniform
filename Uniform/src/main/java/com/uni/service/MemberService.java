@@ -40,4 +40,6 @@ public interface MemberService {
 
 	public uni_MemberVO getMember(int mno);
 	
+	public int getMemberCount();
+	
 }

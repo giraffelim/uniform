@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="/resources/css/avg_star.css">
 
 <div id="colorlib-main">
+
    <script>
       var csrfHeaderName = "${_csrf.headerName }";
       var csrfTokenValue = "${_csrf.token }";

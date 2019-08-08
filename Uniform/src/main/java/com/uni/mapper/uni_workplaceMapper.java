@@ -125,4 +125,8 @@ public interface uni_workplaceMapper {
 
 	public StarAvgVO IworkplaceStar(int no);
 	
+	public int getWorkplace_ICount();
+    
+    public int getWorkplace_SCount();
+	
 }

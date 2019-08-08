@@ -42,11 +42,11 @@ public class MemberTests {
         pstmt = con.prepareStatement(sql);
         
         pstmt.setInt(1, 1);
-        pstmt.setString(2, "admin");
-        pstmt.setString(3, pwencoder.encode("admin"));
-        pstmt.setString(4, "관리자");
-        pstmt.setString(5, "01091926062");
-        pstmt.setString(6, "admin@admin.com");
+        pstmt.setString(2, "leejieun");
+        pstmt.setString(3, pwencoder.encode("gdragon"));
+        pstmt.setString(4, "권지용");
+        pstmt.setString(5, "01014235843");
+        pstmt.setString(6, "dragonG@naver.com");
         
         pstmt.executeUpdate();
         

@@ -88,7 +88,7 @@ if(oauth2LoginUser == 0){
                                     </div>
                                     <div class="col-sm-6" style="margin-top: 20px; height:500px;" id="section2">
                                         <div style="width: 100%; height: 300px;" id="imgRes">
-                                        		<img src="/resources/images/no_img.png" id="thumbnailImg">
+                                        		<img src="/resources/images/no-img.png" id="thumbnailImg">
                                         </div>
                                     </div>
                                 </div>
@@ -184,7 +184,6 @@ if(oauth2LoginUser == 0){
             			});
             			$("#leaseSection").css("margin-left","100px");
         			}
-        		});
         		
         			var str = "";
     			
@@ -325,15 +324,21 @@ if(oauth2LoginUser == 0){
             			
             			formObj.append(str).submit();
             			
-            			
-            			
             		});
             		
             		// checkbox
             		var comforts = '${workplaceVO.comforts}';
             		var checkList = comforts.split(",");
+            		var comfortsList = ['wifi' , 'amp' , 'mike','restroom','aircon','refrigerator','fan','airclean'];
+            		var ajaxComforts = ['WIFI','앰프','마이크','화장실','에어컨','냉장고','선풍기','공기청정기'];
             		$(checkList).each(function(i, o){
-            			$("#"+o+"").attr("checked","true");
+            			for(var i=0; i<comfortsList.length; i++){
+            				if(o == ajaxComforts[i]){
+            					o = comfortsList[i];
+            					break;
+            				}
+            			}
+            			$("#"+o).attr("checked",true);
             		});
             		
             		// 썸네일 이미지 띄우기 [업데이트]
@@ -350,7 +355,10 @@ if(oauth2LoginUser == 0){
 						var csrfTokenValue = "${_csrf.token }";
             			targetLi.remove();
             		});
+            		
+            		
             	});
+            	
             </script>
 
 <%@include file="../includes/footer.jsp"%>

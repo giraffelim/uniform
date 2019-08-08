@@ -124,5 +124,9 @@
 		select * from uni_member where mno = #{mno}
 	</select>
 	
+	<select id="getMemberCount" resultType="int">
+        select count(*) from uni_member
+    </select>
+	
 
 </mapper>
