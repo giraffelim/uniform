@@ -124,4 +124,5 @@ public interface uni_workplaceMapper {
 	public int checkConfirm (int sno);
 
 	public StarAvgVO IworkplaceStar(int no);
+	
 }

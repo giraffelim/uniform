@@ -12,8 +12,8 @@
 			<div class="row justify-content-end">
 				<div class="col-md-10 mt-3">
 					<h1 class="mb-5">
-						<span id="font-red">YouTube</span> Integration PlatForm
-					</h1>
+ 						<span id="font-red">YouTube</span> Integration PlatForm
+ 					</h1>
 					<div class="row">
 						<div class="col-md-6">
 						</div>

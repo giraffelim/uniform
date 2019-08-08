@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.uni.domain.Sinchung_ListVO;
 import com.uni.domain.uni_MemberVO;
 import com.uni.mapper.uni_MemberMapper;
+import com.uni.mapper.uni_workplaceMapper;
 import com.uni.service.MemberService;
 import com.uni.service.WorkPlaceService;
 
@@ -47,6 +48,9 @@ public class MemberController {
 	
 	@Inject
 	private uni_MemberMapper mapper;
+	
+	@Inject 
+	private uni_workplaceMapper wMapper;
 
 	
 	// 회원 아이디 찾기
@@ -125,9 +129,7 @@ public class MemberController {
 	@RequestMapping(value = "moreInfo", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
 	public ResponseEntity<List<Sinchung_ListVO>> moreInfo(Long mno) {
 		service_work.sinchung_list(mno);
-
 		return new ResponseEntity<List<Sinchung_ListVO>>(service_work.sinchung_list(mno), HttpStatus.OK);
-
 	}
 
 	@RequestMapping(value = "moreInfoImde", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)

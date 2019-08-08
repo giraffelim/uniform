@@ -449,5 +449,5 @@
       uni_workplace_i i on r.ino = i.ino where i.ino = #{no}
       group by r.ino, i.location order by r.ino
    </select>
-
+   
 </mapper>

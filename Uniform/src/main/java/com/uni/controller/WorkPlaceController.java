@@ -47,8 +47,9 @@ public class WorkPlaceController {
 	private WorkPlaceService service;
 
 	@GetMapping("/leaseInsert")
-	public void leaseInsert() {
+	public void leaseInsert(Model model) {
 		log.info("leaseInsert");
+		model.addAttribute("flag","lease");
 	}
 
 	// index에서 작업실 share클릭시 핫토핏 리스트로 이동
@@ -67,6 +68,7 @@ public class WorkPlaceController {
 		}
 		model.addAttribute("hotTopicList", hotTopicList);
 		model.addAttribute("hotTopicListImde", hotTopicListImde);
+		model.addAttribute("flag","hotTopicList");
 
 	}
 
@@ -155,6 +157,7 @@ public class WorkPlaceController {
 		log.info("updateForm: "+ino);
 		log.warn("update previous: "+service.read(ino));
 		model.addAttribute("workplaceVO", service.read(ino));
+		model.addAttribute("flag","lease");
 	}
 	
 	// rentDetail get
@@ -229,14 +232,16 @@ public class WorkPlaceController {
 	}
 
 	@GetMapping("/shareInsert")
-	public void insertShare() {
+	public void insertShare(Model model) {
 		log.info("share Insert...");
+		model.addAttribute("flag","share");
 	}
 	
 	@GetMapping("/shareUpdate")
 	public void shareUpdate(@RequestParam("sno") int sno, Model model) {
 		log.warn("share update..."+service.readShare(sno).getPCount());
 		model.addAttribute("vo",service.readShare(sno));
+		model.addAttribute("flag","share");
 	}
 	
 	@PreAuthorize("isAuthenticated()")
@@ -291,6 +296,5 @@ public class WorkPlaceController {
 		}
 		return null;
 	}
-
 
 }

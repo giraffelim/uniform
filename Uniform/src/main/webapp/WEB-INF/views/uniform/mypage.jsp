@@ -116,64 +116,8 @@
                      </div>
                      <!--결제창 끝-->
                   </div>
-
-                  <!--찜 내역 시작----------------------------->
-                  <hr>
-                  <div class="profile-table">
-                     <div class="container container-table">
-
-
-                        <div class="row">
-                           <div class="col-sm-6">
-                              <h2>찜 내역</h2>
-                           </div>
-                           <div class="col-sm-6 more" id="moreZzim">
-                              <a class="moreInfoBtn">더보기</a>
-                           </div>
-
-                        </div>
-                        <table class="table table-bordered table-choice">
-                           <thead>
-                              <tr>
-                                 <th>번호</th>
-                                 <th>제목</th>
-                                 <th>작성자</th>
-                                 <th>연락처</th>
-                                 <th>날짜</th>
-                                 <th>시간</th>
-                              </tr>
-                           </thead>
-                           <tbody>
-                              <tr>
-                                 <td>1</td>
-                                 <td>forest room</td>
-                                 <td>cavin</td>
-                                 <td>010-1111-5885</td>
-                                 <td>2019-07-19</td>
-                                 <td>18:00~20:00</td>
-                              </tr>
-                              <tr>
-                                 <td>2</td>
-                                 <td>forest room</td>
-                                 <td>ive</td>
-                                 <td>010-1251-5885</td>
-                                 <td>2019-07-19</td>
-                                 <td>15:00~17:00</td>
-                              </tr>
-                              <tr>
-                                 <td>3</td>
-                                 <td>forest room</td>
-                                 <td>john</td>
-                                 <td>010-1111-5885</td>
-                                 <td>2019-07-19</td>
-                                 <td>08:00~10:00</td>
-                              </tr>
-                           </tbody>
-                        </table>
-                     </div>
-                  </div>
-                  <br>
-                  <hr>
+                  
+                  	<hr>
 
                   <!-- 신청 내역 시작  -------------------------------------->
 

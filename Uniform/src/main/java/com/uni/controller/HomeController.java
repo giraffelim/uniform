@@ -43,6 +43,8 @@ public class HomeController {
 		
 		int workplaceCount = service.getWorkplaceCount();
 		
+		model.addAttribute("flag","index");
+		
 		model.addAttribute("workplaceCount", workplaceCount);
 		
 		return "uniform/index";

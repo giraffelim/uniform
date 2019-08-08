@@ -54,20 +54,12 @@
 			<!-- navigation --------------------- -->
 			<nav id="colorlib-main-menu" role="navigation">
 				<ul>
-					<li class="colorlib-active"><a href="/">Home</a></li>
-					<li><a href="/uniform/hotTopicList">작업실 Share</a>
-						<ul class="side_ul">
-							<li><a href="/uniform/leaseInsert">임대</a></li>
-							<li><a href="/uniform/shareInsert">공유</a></li>
+					<li id="Home"><a href="/">Home</a></li>
+					<li><a href="/uniform/hotTopicList" id="headerShare">작업실 Share</a>
+						<ul class="side_ul" id="headerSide">
+							<li id = "lease"><a href="/uniform/leaseInsert">임대</a></li>
+							<li id = "share"><a href="/uniform/shareInsert">공유</a></li>
 						</ul></li>
-					<li><a href="about.html">인력풀</a>
-						<ul class="side_ul">
-							<li><a href="about.html">구인</a></li>
-							<li><a href="services.html">구직</a></li>
-						</ul></li>
-					<!--<li><a href="services.html">Services</a></li>
-                    <li><a href="blog.html">Blog</a></li>
-                    <li><a href="contact.html">Contact</a></li>-->
 				</ul>
 				<p class="social">
 					<sec:authorize access="isAnonymous()">
@@ -113,9 +105,27 @@
 
 
 			<div class="colorlib-footer">
-				<h1 id="colorlib-logo">
-					<a href="/">Uniform</a>
-				</h1>
+						<img src="/resources/images/uniform_logos.png" style="position:relative; left:-200px; bottom:-250px;">
 			</div>
 		</aside>
+		
+		<script>
+			$(function(){
+				var flag = "${flag}";
+				switch(flag){
+				case "index" :
+					$("#Home").addClass("colorlib-active");
+					break;
+				case "hotTopicList" :
+					$("#headerShare").addClass("colorlib-active");
+					break;
+				case "lease" :
+					$("#lease").addClass("colorlib-active");
+					break;
+				case "share" :
+					$("#share").addClass("colorlib-active");
+					break;
+				}
+			});
+		</script>
 		<!-- END COLORLIB-ASIDE -->
