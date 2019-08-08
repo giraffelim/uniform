@@ -7,6 +7,16 @@
 <%@include file="../includes/header.jsp"%>
 
 <div id="colorlib-main">
+   <section class="ftco-section ftco-bread ftco-extend-mb">
+      <div class="container-fluid px-3 px-md-0">
+         <div
+            class="row no-gutters slider-text justify-content-end align-items-center">
+            <div class="col-md-10 ftco-animate">
+               <h1 class="bread">핫토픽 리스트</h1>
+            </div>
+         </div>
+      </div>
+   </section>
 
    <!--검색 조건 --------------------------------------------------------------->
    <sec:authorize access="isAuthenticated()">
@@ -17,7 +27,7 @@
    
    </sec:authorize>
 
-   <section class="workplaceTitle ftco-section ftco-bread select-info">
+   <section class="workplaceTitle ftco-section ftco-bread select-info rowDiv">
       <div class="container-fluid px-3 px-md-0">
          <div
             class="row no-gutters slider-text justify-content-end align-items-center">
@@ -49,13 +59,13 @@
 
    <!--작업실 공유 핫토픽 시작--------------------------------------------------->
 
-   <section class="workplaceTitle ftco-section ftco-bread ">
+   <section class="workplaceTitle ftco-section ftco-bread rowDiv">
       <div class="container-fluid px-3 px-md-0 shareTitle">
          <div
             class="row no-gutters slider-text justify-content-end align-items-center">
             <div class="col-md-10 ftco-animate">
 
-               <h2>작업실 공유</h2>
+               <blockquote class="titleBlockQuote"><h2>작업실 공유</h2></blockquote>
                <div class="row">
                   <div class="col-md-10"></div>
                   <div class="col-md-2">
@@ -77,7 +87,7 @@
          <div
             class="row no-gutters slider-text justify-content-end align-items-center">
             <div class="col-md-10 ftco-animate">
-               <div class="row">
+               <div class="row rowDiv">
 
                   <div class="col-sm-4" id="firstShareDiv">
 
@@ -217,13 +227,13 @@
    <!--작업실 공유 핫토픽 끝-->
 
    <!--작업실 임대 핫토픽 시작--------------------------------------------------------------->
-   <section class="workplaceTitle ftco-section ftco-bread imde">
+   <section class="workplaceTitle ftco-section ftco-bread imde rowDiv">
       <div class="container-fluid px-3 px-md-0">
          <div
             class="row no-gutters slider-text justify-content-end align-items-center">
             <div class="col-md-10 ftco-animate">
 
-               <h2>작업실 임대</h2>
+                  <blockquote class="titleBlockQuote"><h2>작업실 임대</h2></blockquote>
                <div class="row">
                   <div class="col-md-10"></div>
                   <div class="col-md-2">
@@ -244,7 +254,7 @@
          <div
             class="row no-gutters slider-text justify-content-end align-items-center">
             <div class="col-md-10 ftco-animate">
-               <div class="row">
+               <div class="row rowDiv" >
 
                   <div class="col-sm-4" id="firstImdeDiv">
 
