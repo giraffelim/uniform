@@ -202,7 +202,6 @@ $(function() {
 	        "<a href='/uniform/rentDetail?type=share&no="+$("#secondBestShareNo").val()+"'> <img src='/display?fileName=" + secondBestShareImgEncode + "'>");
 	  $("#thirdShareImg").append(
 	        "<a href='/uniform/rentDetail?type=share&no="+$("#thirdBestShareNo").val()+"'> <img src='/display?fileName=" + thirdBestShareImgEncode + "'>");
-
    
 
    $("#shareBtn").on("click", function() {

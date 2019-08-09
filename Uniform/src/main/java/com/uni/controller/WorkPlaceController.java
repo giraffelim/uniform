@@ -170,6 +170,7 @@ public class WorkPlaceController {
 			model.addAttribute("shinChungList", shinChungList);
 			SWorkPlaceVO vo = service.readShare(no);
 			model.addAttribute("workplaceVO",vo);
+			model.addAttribute("starAvg", service.SworkplaceStar(no));
 			// confirm일 경우 예약 불가 flag
 			int flag = service.checkConfirm(no);
 			model.addAttribute("flag", flag);

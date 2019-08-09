@@ -5,9 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.uni.domain.Criteria;
+import com.uni.domain.ReviewPageDTO;
 import com.uni.domain.uni_JoinReviewVO;
 import com.uni.mapper.uni_reviewMapper;
-import com.uni.mapper.uni_workplaceMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Setter;
@@ -22,9 +23,9 @@ public class ReviewServiceImpl implements ReviewService {
    private uni_reviewMapper mapper;
 
    @Override
-   public List<uni_JoinReviewVO> readReviewListByino(int ino) {
-      System.out.println(mapper.readReviewList(ino));
-      return mapper.readReviewList(ino);
+   public ReviewPageDTO readReviewListByino(int ino, Criteria cri) {
+      System.out.println(mapper.getListWithPagingI(ino,cri));
+      return new ReviewPageDTO(mapper.getCountByIno(ino), mapper.getListWithPagingI(ino, cri));
    }
 
    @Override
@@ -42,5 +43,12 @@ public class ReviewServiceImpl implements ReviewService {
       
       return mapper.readReview(hno);
    }
+
+@Override
+public ReviewPageDTO readReviewListBysno(int sno, Criteria cri) {
+	// TODO Auto-generated method stub
+	return new ReviewPageDTO(mapper.getCountBySno(sno), mapper.getListWithPagingS(sno, cri));
+}
+
 
 }

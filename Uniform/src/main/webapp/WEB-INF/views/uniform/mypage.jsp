@@ -264,6 +264,10 @@
 
                            <div class="col-sm-6 more">
                               <a class="moreInfoBtn" id="moreShare">더보기 ></a>
+                              <div class="float-right">
+                                 <span class="carousel-control-prev-icon" id="confirm_prev"></span>
+                                 <span class="carousel-control-next-icon" id="confirm_next"></span>
+                              </div>
                            </div>
 
                         </div>

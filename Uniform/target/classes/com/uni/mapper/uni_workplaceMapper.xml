@@ -491,6 +491,15 @@
 		uni_workplace_i i on r.ino = i.ino where i.ino = #{no}
 		group by r.ino, i.location order by r.ino
 	</select>
+	
+	<select id="SworkplaceStar"
+		resultType="com.uni.domain.StarAvgVO">
+		select round(avg(star)) as avg, r.sno from uni_review r
+		full outer join
+		uni_workplace_s s on r.sno = s.sno where s.sno = #{no}
+		group by r.sno, s.location order by r.sno
+	</select>
+	
 
 	<select id="getTimeList"
 		resultType="com.uni.domain.Sinchung_ListVO">

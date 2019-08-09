@@ -23,6 +23,7 @@
 		<property name="username" value="ora_user"></property>
 		<property name="password" value="1234"></property>
 
+
 	</bean>
 
 	<!--HikariCP Configration -->

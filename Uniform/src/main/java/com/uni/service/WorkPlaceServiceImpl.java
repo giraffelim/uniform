@@ -594,4 +594,10 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 	public List<Sinchung_ListVO> getTimeList(int ino) {
 		return mapper.getTimeList(ino);
 	}
+		
+	@Override
+	public StarAvgVO SworkplaceStar(int no) {
+		// TODO Auto-generated method stub
+		return mapper.SworkplaceStar(no);
+	}
 }

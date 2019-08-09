@@ -46,6 +46,14 @@
 	display: none;
 }
 
+#mywrite_prev {
+	margin-right: 1em;
+}
+
+#mywrite_next {
+	margin-left: 1em;
+}
+
 #sinchung_share, #confirm_share, #myShare {
 	position: absolute;
 	display: block;

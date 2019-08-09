@@ -31,8 +31,8 @@ $(function() {
 	console.log(mymno);
 
 	$("#moremywrite").on("click",function(){
-		$("#mywrite_prev").css("display","block");
-		$("#mywrite_next").css("display","block");
+		$("#mywrite_prev").css("display","inline-block");
+		$("#mywrite_next").css("display","inline-block");
 		if(moreFlag==1){
 			if(sclickcheck==false){
 			$.getJSON(

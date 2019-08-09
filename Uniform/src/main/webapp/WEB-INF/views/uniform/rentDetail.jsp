@@ -18,32 +18,26 @@
    padding-top: 10px;
 }
 
-.row {
-   margin-bottom:
-}
-
 .inobox {
    height: 38em;
-   border: 1px solid black;
+   border: 1px solid darkgray;
    box-sizing: border-box;
 }
 
 .inobox1 {
    height: 19em;
-   border: 1px solid black;
-   box-sizing: border-box;
+   border: 1px solid darkgray;
 }
 
 .inobox2 {
    height: 19em;
-   border: 1px solid black;
-   box-sizing: border-box;
+   border: 1px solid darkgray;
 }
 
 .reservation1 {
    width: 350px;
    height: 350px;
-   border: 1px solid red;
+   border: 1px solid darkgray;
    margin-top: 10px;
    top: 0px;
    display: block;
@@ -123,6 +117,7 @@
 
 #inoPhotoNum1 {
    position: relative;
+   border: 1px solid darkgray;
 }
 
 .num1 {
@@ -372,10 +367,10 @@ function cdisableOption(val){
             if(result.userID.length > 20){
                $(".userPhotoD").attr("src", result.photo);
             }else{
-               if(result.photo == ""){
-                     $(".userPhotoID").attr("src","/resources/image/profileDefault.jpg");
+               if(result.photo == "" || result.photo == null || result.photo == 'null' ){
+                     $(".userPhotoD").attr("src","/resources/image/profileDefault.jpg");
                }else{
-                     $(".userPhotoID").attr("src","display?fileName="+resultPhoto);
+                     $(".userPhotoD").attr("src","display?fileName="+result.photo);
                }
             }
          },
@@ -474,12 +469,12 @@ function cdisableOption(val){
         
         $(".reservation1").stop();
             
-        if(1520> scrollTop && scrollTop > 900){
+        if(1735> scrollTop && scrollTop > 900){
             $(".reservation1").animate( { "top" : scrollTop-880 });
         }
             
-        if(1520 < scrollTop){
-            scrollTop = 1520;
+        if(1735 < scrollTop){
+            scrollTop = 1735;
             $(".reservation1").animate( { "top" : scrollTop-880 });
             }    
         });
@@ -612,134 +607,141 @@ function cdisableOption(val){
       var starWidth;
 
       //댓글 목록 구해오기!
-      function readReview() {
+      function readReview(page) {
+    	  
          $("#reviewDiv").html("");
+         
          
          $
                .ajax({
-                  url : "/uniform/readReviewList?ino=${workplaceVO.ino}",
+                  url : "/uniform/readReviewListI/"+${workplaceVO.ino}+"/"+page,
                   type : "get",
                   success : function(result) {
-                     console.log(result);
+                     console.log(result.replyCnt);
+                     console.log(result.list);
 
                      var BtnStr;
                      var noBtnStr;
 
-                     $
-                           .each(
-                                 result,
-                                 function(i, obj) {
-                                    //console.log(obj);
-                                    var wmno = obj.mno;
-                                    var wphoto = obj.photo;
-                                    /* var objDate =obj.regDate; */
-                                    var date = new Date(obj.regDate);
-                                    var ISOdate = date.toISOString().slice(0,10)
-                                    ///console.log("objDate :"+ date.toISOString().slice(0, 10));
-                                    //console.log("photo :" + wphoto);
-                                    //console.log("wmno"+wmno); 
+                     if(page == -1){
+                    	 pageNum = Math.ceil(result.replyCnt/5.0);
+                    	 readReview(pageNum);
+                    	 return;
+                     }
+                     
+                     if(result.list == null || result.list.length == 0){
+                    	$("#reviewDiv").html("");
+ 						return;
+ 					}
+                     
+                     for(var i = 0, len = result.list.length || 0; i < len; i++){
+                    	 var wmno = result.list[i].mno;
+                    	 console.log("wmno : " + wmno);
+                    	 var wphoto = result.list[i].photo;
+                    	 console.log("wphoto : " + wphoto);
+                    	 var date = new Date(result.list[i].regDate);
+                         var ISOdate = date.toISOString().slice(0,10);
+                         console.log("ISOdate : " + ISOdate);
+                         
+                         if (smno == wmno) {
+                             BtnStr = '<div style="" class="row">'
+                             BtnStr += '<div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">'
+                             BtnStr += '<div style="" class="col-xs-1 col-sm-1 col-md-1 col-lg-1 text-center">';
 
-                                    if (smno == wmno) {
-                                       BtnStr = '<div style="border: 1px solid black;" class="row">'
-                                       BtnStr += '<div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">'
-                                       BtnStr += '<div style="border: 1px solid black;" class="col-xs-1 col-sm-1 col-md-1 col-lg-1 text-center">';
+                             if (result.list[i].userID.length > 20) {
+                                console
+                                      .log("length>20 :"
+                                            + result.list[i].userID.length)
+                                BtnStr += '<img class="userPhotoS" src="'+result.list[i].photo+'" alt="">';
+                             } else {
+                                if (wphoto !== null
+                                      || wphoto !== "null"
+                                      || wphoto !== "") {
+                                   console
+                                         .log("length<20 :"
+                                               + result.list[i].userID.length)
+                                   BtnStr += '<img class="userPhotoS" src="/uniform/display?fileName='
+                                         + result.list[i].photo
+                                         + '" alt="">';
+                                } else {
+                                   console
+                                         .log("photo == null")
+                                   BtnStr += '<img class="userPhotoS" src="/resources/images/profileDefault.jpg" alt="">';
+                                }
+                             }
+                             BtnStr += '</div>';
+                             BtnStr += '<div style="height:100px;" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">';
+                             BtnStr += '<b style="font-size: 30px;">' + result.list[i].name
+                                   + '</b> <br>';
+                             BtnStr += '<b>' + ISOdate
+                                   + '</b> <br>';
+                             BtnStr += '<button style="position: absolute; top:1em; right: 10px;" class="btn btn-primary float-right delete">삭제</button>';
+                             BtnStr += '<button style="position: absolute; top:1em; right: 75px;" class="btn btn-primary float-right modify">수정</button>';
+                             BtnStr += '<input type="hidden" name="hno" value="'+result.list[i].hno+'">';
+                             BtnStr += '</div>';
+                             BtnStr += '</div>';
+                             BtnStr += '<div style="margin-left: 15px;" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
+                             BtnStr += '<b id="content'+result.list[i].hno+'">'
+                                   + result.list[i].content
+                                   + '</b>';
+                             BtnStr += '</div>';
+                             BtnStr += '</div>';
+                             BtnStr += '</div><br><hr>';
+                             
+                          } else {
+                             BtnStr = '<div style="" class="row">'
+                             BtnStr += '<div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">'
+                             BtnStr += '<div style="" class="col-xs-1 col-sm-1 col-md-1 col-lg-1 text-center">';
 
-                                       if (obj.userID.length > 20) {
-                                          console
-                                                .log("length>20 :"
-                                                      + obj.userID.length)
-                                          BtnStr += '<img class="userPhotoS" src="'+obj.photo+'" alt="">';
-                                       } else {
-                                          if (wphoto !== null
-                                                || wphoto !== "null"
-                                                || wphoto !== "") {
-                                             console
-                                                   .log("length<20 :"
-                                                         + obj.userID.length)
-                                             BtnStr += '<img class="userPhotoS" src="/uniform/display?fileName='
-                                                   + obj.photo
-                                                   + '" alt="">';
-                                          } else {
-                                             console
-                                                   .log("photo == null")
-                                             BtnStr += '<img class="userPhotoS" src="/resources/images/profileDefault.jpg" alt="">';
-                                          }
-                                       }
-                                       BtnStr += '</div>';
-                                       BtnStr += '<div style="border: 1px solid black;" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">';
-                                       BtnStr += '<b>' + obj.name
-                                             + '</b> <br>';
-                                       BtnStr += '<b>' + ISOdate
-                                             + '</b> <br>';
-                                       BtnStr += '<button style="margin: 5px;" class="btn btn-primary float-right delete">삭제</button>';
-                                       BtnStr += '<button style="margin: 5px;" class="btn btn-primary float-right modify">수정</button>';
-                                       BtnStr += '<input type="hidden" name="hno" value="'+obj.hno+'">';
-                                       BtnStr += '</div>';
-                                       BtnStr += '</div>';
-                                       BtnStr += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
-                                       BtnStr += '<b id="content'+obj.hno+'">'
-                                             + obj.content
-                                             + '</b>';
-                                       BtnStr += '</div>';
-                                       BtnStr += '</div>';
-                                       
-                                    } else {
-                                       BtnStr = '<div style="border: 1px solid black;" class="row">'
-                                       BtnStr += '<div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">'
-                                       BtnStr += '<div style="border: 1px solid black;" class="col-xs-1 col-sm-1 col-md-1 col-lg-1 text-center">';
+                             if (result.list[i].userID.length > 20) {
+                                console
+                                      .log("1111length>20"
+                                            + result.list[i].userID.length)
+                                BtnStr += '<img class="userPhotoS" src="'+result.list[i].photo+'" alt="">';
+                             } else {
+                                if (wphoto !== null) {
+                                   console
+                                         .log("1111length<20"
+                                               + result.list[i].userID.length)
+                                   BtnStr += '<img class="userPhotoS" src="/uniform/display?fileName='
+                                         + result.list[i].photo
+                                         + '" alt="">';
+                                } else {
+                                   console
+                                         .log("1111photo == null")
+                                   BtnStr += '<img class="userPhotoS" src="/resources/images/profileDefault.jpg" alt="">';
+                                }
+                             }
 
-                                       if (obj.userID.length > 20) {
-                                          console
-                                                .log("1111length>20"
-                                                      + obj.userID.length)
-                                          BtnStr += '<img class="userPhotoS" src="'+obj.photo+'" alt="">';
-                                       } else {
-                                          if (wphoto !== null) {
-                                             console
-                                                   .log("1111length<20"
-                                                         + obj.userID.length)
-                                             BtnStr += '<img class="userPhotoS" src="/uniform/display?fileName='
-                                                   + obj.photo
-                                                   + '" alt="">';
-                                          } else {
-                                             console
-                                                   .log("1111photo == null")
-                                             BtnStr += '<img class="userPhotoS" src="/resources/images/profileDefault.jpg" alt="">';
-                                          }
-                                       }
+                             BtnStr += '</div>';
+                             BtnStr += '<div style="height:100px;" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">';
+                             BtnStr += '<b style="font-size: 30px;">' + result.list[i].name
+                                   + '</b><br>';
+                             BtnStr += '<b>' + ISOdate
+                                   + '</b><br>';
+                             BtnStr += '</div>';
+                             BtnStr += '</div>';
+                             BtnStr += '<div style="margin-left: 15px;" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
+                             BtnStr += '<b>'
+                                   + result.list[i].content
+                                   + '</b>';
+                             BtnStr += '</div>';
+                             BtnStr += '</div><br><hr>';
 
-                                       BtnStr += '</div>';
-                                       BtnStr += '<div style="border: 1px solid black;" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">';
-                                       BtnStr += '<b>' + obj.name
-                                             + '</b><br>';
-                                       BtnStr += '<b>' + ISOdate
-                                             + '</b><br>';
-                                       BtnStr += '</div>';
-                                       BtnStr += '</div>';
-                                       BtnStr += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
-                                       BtnStr += '<b>'
-                                             + obj.content
-                                             + '</b>';
-                                       BtnStr += '</div>';
-                                       BtnStr += '</div>';
-
-                                    }
-                                    $("#reviewDiv").append(BtnStr);
-                                    
-                                    starWidth = obj.star * 15;
-                                    //console.log(obj.star + " : " + starWidth + " : " + obj.hno);
-                                    $(".star-input" + obj.hno + ">.input").css("background-position",
-                                    "0 bottom").css("width", starWidth + "px").css("z-index", "100");
-                              
-                                 });//each
+                          }
+                         $("#reviewDiv").append(BtnStr);
+                         
+                     }
+                     showReplyPage(result.replyCnt); 
                            
                   }//success
                })//ajax
       }//function
-      readReview();
+      readReview(-1);
 
       var getStar;
       var hno;
+      var result_star = 0;
       //댓글 수정모달 띄우기
       $("#reviewDiv").on('click', ".modify", function() {
          //console.log("modify1111");
@@ -789,14 +791,16 @@ function cdisableOption(val){
                $result.text($checked.next().text());
                result_star = $checked.next().text();
                
-               review_update(result_star);
             }
          });
       };
       
-      function review_update(result_star) {
          $("#review_update").on("click", function(e) {
-            console.log("review_update click");
+        	 if (result_star == 0) {
+        		 alert("별점을 설정해주세요.");
+        		 return;
+        	 }
+            console.log("review_update click" + result_star);
             $.ajax({
                url : "/uniform/updateReview",
                data : {
@@ -809,11 +813,11 @@ function cdisableOption(val){
                   console.log("content : " + result + $("#review-content").val() + " : " + result_star + " : " + hno);
                   $("#review-content").val("")
                   $("#review").modal("hide");
-                  readReview();
+                  readReview(-1);
                }
             });
          });
-      }
+      
          
       
       var csrfHeaderName = $("#csrf").attr('name');
@@ -834,7 +838,7 @@ function cdisableOption(val){
             url : "/uniform/removeReview?hno="+hno,
             type : "get",
             success : function(result) {
-               readReview();
+               readReview(-1);
             }
          });
       })
@@ -857,7 +861,112 @@ function cdisableOption(val){
       } else {
          $("#reviewProfile").append("<img src='"+$("#myPagePhoto").val()+"'>");
       }
-
+      
+   		// 댓글 페이징
+		var pageNum = 1;
+		var replyPageFooter = $(".card-footer");
+		
+		function showReplyPage(replyCnt) {
+			
+			var endNum = Math.ceil(pageNum / 5.0) * 5;
+			var startNum = endNum - 4;
+			
+			var prev = startNum != 1;
+			var next = false;
+			
+			
+			if(endNum * 5 >= replyCnt){
+				endNum = Math.ceil(replyCnt/5.0);
+			}
+			// 다음페이지가 있으면 
+			if(endNum * 5 < replyCnt){
+				next = true;
+			}
+			
+			var str ="<ul style='position: absolute; top:2em; left:25em;' class='pagination float-right'>";
+			
+			if(prev){
+				str += "<li class = 'page-item'><a class = 'page-link' href='"+(startNum -1)+"'>Previous</a></li>";
+				
+			}
+			
+			for(var i = startNum; i<=endNum; i++){
+				var active = pageNum ==i? "active":"";
+				
+				str += "<li class='page-item "+active+"'><a class='page-link' href='"+i+"'>"+i+"</a></li>";
+				
+			}
+			if(next){
+				str += "<li class = 'page-item'><a class = 'page-link' href='"+(endNum -1)+"'>Next</a></li>";
+			}
+			
+			str += "</ul></div>";
+			
+			console.log(str);
+			
+			replyPageFooter.html(str);
+		}
+		
+		// 댓글페이징 페이지번호 이벤트 처리
+		replyPageFooter.on("click","li a", function(e){
+			e.preventDefault();
+			console.log("page click");
+			
+			var targetPageNum = $(this).attr("href");
+			
+			console.log("targetPageNum : " + targetPageNum); // 1,2,3 페이지
+			
+			pageNum = targetPageNum;
+			
+			readReview(pageNum);
+		});
+		
+		var comforts= "${workplaceVO.comforts}";
+		var arrayC = comforts.split(",");
+		console.log(arrayC);
+		var imageC;
+		for(var i = 1; i<arrayC.length+1; i++){
+			console.log("arrayC[i-1] : "+arrayC[i-1]);
+			verifyComforts(arrayC[i-1])
+			if(i%2 == 0){
+				$("#liNum2").append(imageC);
+				
+			}else{
+				$("#liNum1").append(imageC);
+				
+			}
+		
+			
+		}
+		function verifyComforts(comforts){
+				console.log("comforts : "+comforts);
+				switch (comforts){
+			    case "WIFI" :
+			    	imageC ='<li><img style="width:30px; height:30px; margin-right:10px; margin-bottom:10px;" src="/resources/images/wifi.png">WIFI</li>';
+			        break;
+			    case "앰프" :
+			    	imageC ='<li><img style="width:30px; height:30px; margin-right:10px; margin-bottom:10px;" src="/resources/images/amp.png">앰프</li>';
+			        break;
+			    case "마이크" :
+			    	imageC ='<li><img style="width:30px; height:30px; margin-right:10px; margin-bottom:10px;" src="/resources/images/mic.png">마이크</li>';
+			        break;
+			    case "화장실" :
+			    	imageC ='<li><img style="width:30px; height:30px; margin-right:10px; margin-bottom:10px;" src="/resources/images/toilet.png">화장실</li>';
+			        break;
+			    case "에어컨":
+			    	imageC ='<li><img style="width:30px; height:30px; margin-right:10px; margin-bottom:10px;" src="/resources/images/conditioner.png">에어컨</li>';
+			        break;
+			    case "냉장고":
+			    	imageC ='<li><img style="width:30px; height:30px; margin-right:10px; margin-bottom:10px;" src="/resources/images/refrigerator.png">냉장고</li>';
+			        break;
+			    case "선풍기":
+			    	imageC ='<li><img style="width:30px; height:30px; margin-right:10px; margin-bottom:10px;" src="/resources/images/fan.png">선풍기</li>';
+			        break;
+			    case "공기청정기":
+			    	imageC ='<li><img style="width:30px; height:30px; margin-right:10px; margin-bottom:10px;" src="/resources/images/cleaner.png">공기청정기</li>';
+			        break;
+				}
+		}
    });
 </script>
 
@@ -961,21 +1070,22 @@ function cdisableOption(val){
 
 
                                 <!--타이틀 및 상세제목, 등록자 프사와 이름-->
-                                <div style="border: 1px solid black;" class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                <div style="margin-left: 100px; background-color: #F6F6F6; box-shadow: 1px 2px 4px rgba(0, 0, 0, .5); padding: 0 2em; margin-top:1em;" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                    <div class="row">
                                     <input type="hidden" id="thumbnailImg"
                            value="${workplaceVO.thumbnail }">
-                                       <div style="border: 1px solid black;" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                       <div style="margin-top:10px;" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                            <div class="text-center">
-                                                <h2><b>${workplaceVO.title }</b></h2>
+                                                <br><h2><b>${workplaceVO.title }</b></h2>
                                            </div>
                                        </div>
-                                       <div style="border: 1px solid black; text-align: center;" class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                           <img class="userPhotoD" src="/img/pairi.jpg"><br>
-                                           <p id="addNames">파이리</p>                                           
+                                       <div style="text-align: center; margin-top:10px;" class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                           <br><img class="userPhotoD" src=""><br>
+                                           <p id="addNames"></p>                                           
                                        </div>
                                        
                                    </div>
+                                   <hr>
                                     
                                     <!--상세내용-->
                                     <div>
@@ -983,23 +1093,29 @@ function cdisableOption(val){
                                             <b><i class="far fa-comment-dots"></i> 상세설명</b>
                                             <p>${workplaceVO.context }</p>
                                         </div>
-
+										<hr>
                                         <div class="comforts">
-                                            <b><i class="far fa-building"></i> 편의시설</b>
+                                            <b><i class="far fa-building"></i>편의시설</b>
+                                            <br>
                                             <div class="row">
-                                                <div style="border: 1px solid black;" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                                    <c:forEach items="${workplaceVO.comforts } " var="comforts">
-                                                       <li>${comforts }</li>
-                                                    </c:forEach>
+                                                <div id="liNum1" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                    
                                                 </div>
+                                                <div id="liNum2" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                    
+                                                </div>
+                                                
+                                                <%-- <c:forEach items="${workplaceVO.comforts } " var="comforts">
+                                                       <li>${comforts }</li>
+                                                    </c:forEach> --%>
                                                     
                                             </div>
                                         </div>
-                                        
+                                        <hr>
                                         <div class="comforts">
                                             <b><i class="far fa-building"></i> 등록자 정보</b>
                                             <div class="row">
-                                                <div style="border: 1px solid black;" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <div style="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                     <li id="addName">등록자명</li>
                                                     <li id="addPhone">등록자 번호</li>
                                                     <li id="addEmail">등록자 email</li>
@@ -1007,23 +1123,23 @@ function cdisableOption(val){
                                                     
                                             </div>
                                         </div>
-
+										<hr>
                                         <div class="comforts">
                                             <b><i class="far fa-compass"></i> 주소</b>
 
                                         </div>
-
+										 <br>
                                         <div>
-                                            <div id="inoResultMap" style='box-sizing:border-box; width: 100%; height: 500px; overflow: hidden;'>
+                                            <div id="inoResultMap" style='box-sizing:border-box; width: 80%; height: 500px; overflow: hidden; margin:auto;'>
                                             </div>
                                         </div>
-
+										<br>
                                     </div>
                                 </div>
                                 <!--예약 스크롤------------------------------------------------>
-                                <div id="boxReservationI" style="border: 1px solid black" class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                <div id="boxReservationI" style="" class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                     <!--예약 탭-->
-                                    <div id="reservationTap" class="reservation1">
+                                    <div id="reservationTap" style="box-shadow: 1px 2px 4px rgba(0, 0, 0, .5); margin-top: 1em; background-color:#F6F6F6;" class="reservation1">
                                         <div class="text-center">
                                             <p><b>2시간당 : ${workplaceVO.price } 원</b></p>
                                             <hr>
@@ -1103,41 +1219,55 @@ function cdisableOption(val){
                             </div>
 
                             <!--후기 ---------------------------------------------------------------------------------------------------------->
-                            <div class="row">
-
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
-                           style="border: 1px solid black;">
-                           <div class="row">
-                              <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-                                 <b class="hugi">후기</b>
-                                 <div class='hugiStar' style="display: inline">
-                                    <input type="hidden" id="starAvg" value="${starAvg.avg }">
-                                    <input type="hidden" id="starIno" value="${workplaceVO.ino }">
-                                    <!-- 빨간 -->
-                                    <div class="star-wrap" data-ino="${workplaceVO.ino }">
-                                       <span class="star-input${workplaceVO.ino }"> <span
-                                          class="input"> </span>
-                                       </span>
-                                    </div>
-                                    <!-- 하얀 -->
-                                    <div class="result-wrap">
-                                       <span class="star-input${workplaceVO.ino }"> <span
-                                          class="result"> </span>
-                                       </span>
-                                    </div>
-      
-                                 </div>
-                              </div>
-                              <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
-      
-                           </div>
+                        <br>
+                        <div class="row" style="margin-left: 100px;">
+                        	<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+		                        <div class="row">
+		                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+		                           style="">
+		                           <div class="row">
+		                              <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+		                                 <b class="hugi" >후기</b>
+		                                 <div class='hugiStar' style="display: inline; position: absolute; top:0;">
+		                                    <input type="hidden" id="starAvg" value="${starAvg.avg }">
+		                                    <input type="hidden" id="starIno" value="${workplaceVO.ino }">
+		                                    <!-- 빨간 -->
+		                                    <div class="star-wrap" data-ino="${workplaceVO.ino }">
+		                                       <span class="star-input${workplaceVO.ino }"> <span
+		                                          class="input"> </span>
+		                                       </span>
+		                                    </div>
+		                                    <!-- 하얀 -->
+		                                    <div class="result-wrap">
+		                                       <span class="star-input${workplaceVO.ino }"> <span
+		                                          class="result"> </span>
+		                                       </span>
+		                                    </div>
+		      
+			                                 </div>
+			                              </div>
+			                              <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+			      
+			                           </div>
+			                        </div>
+			                     </div>
+		                     <br><hr>
+                     		</div>
                         </div>
-                     </div>
 
 
                                 <!--실제 댓글공간-------------------------------------------------------------------------------------------------->
-                        <div id="reviewDiv"></div>
-         
+                        <div class="row" style="margin-left: 100px;">
+                        	<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        		<div id="reviewDiv"></div>
+                        		<div style="position: relative;" class="card-footer"></div>
+                        	</div>
+                        </div>
+                        
+                        <!-- last추가 -->
+                        <c:if test="${pinfo.member.mno == workplaceVO.mno }">
+                        <button style="position:absolute; right:300px;" class="btn btn-danger float-right" onclick="location.href='/uniform/leaseUpdate?ino=${workplaceVO.ino}'">글 수정하기</button>
+         				</c:if>
                         <!-- 추가 모달  -->
                         <!-- Modal -->
                         <div class="modal fade" id="review" role="dialog">

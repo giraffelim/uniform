@@ -130,4 +130,6 @@ public interface uni_workplaceMapper {
 	public List<uni_workplace_iVO> mywriteImde(Long mno);
 
 	public List<Sinchung_ListVO> getTimeList(int ino);
+
+	public StarAvgVO SworkplaceStar(int no);
 }
