@@ -354,7 +354,8 @@
 		uni_sinchung where ino is not null and
 		TO_CHAR(sDate,'yy/MM/DD') =
 		(select TO_CHAR(sysdate,'yy/MM/dd') from
-		dual)	</select>
+		dual)
+	</select>
 
 	<select id="getTodaySinchungList"
 		resultType="com.uni.domain.uni_ShinChungVO">
@@ -490,5 +491,27 @@
 		uni_workplace_i i on r.ino = i.ino where i.ino = #{no}
 		group by r.ino, i.location order by r.ino
 	</select>
+
+	<select id="getTimeList"
+		resultType="com.uni.domain.Sinchung_ListVO">
+		select s.reservation, s.ino, m.name, m.phone from
+		uni_sinchung s, uni_member m where s.mno = m.mno and ino = #{ino}
+
+	</select>
+
+	<select id="mywriteshare"
+		resultType="com.uni.domain.SWorkPlaceVO">
+		select sno, title, rDate from uni_workplace_s where
+		mno=#{mno}
+
+	</select>
+
+	<select id="mywriteImde"
+		resultType="com.uni.domain.uni_workplace_iVO">
+		select ino, title, rDate from uni_workplace_i where
+		mno=#{mno}
+
+	</select>
+
 
 </mapper>

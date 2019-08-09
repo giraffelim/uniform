@@ -579,4 +579,19 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 	public StarAvgVO IworkplaceStar(int no) {
 		return mapper.IworkplaceStar(no);
 	}
+
+	@Override
+	public List<SWorkPlaceVO> mywriteshare(Long mno) {
+		return mapper.mywriteshare(mno);
+	}
+
+	@Override
+	public List<uni_workplace_iVO> mywriteImde(Long mno) {
+		return mapper.mywriteImde(mno);
+	}
+
+	@Override
+	public List<Sinchung_ListVO> getTimeList(int ino) {
+		return mapper.getTimeList(ino);
+	}
 }

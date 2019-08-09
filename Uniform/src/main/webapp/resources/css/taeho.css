@@ -42,12 +42,16 @@
 	height: 20em;
 }
 
-#sinchung_share, #confirm_share {
+#mywrite_prev, #mywrite_next {
+	display: none;
+}
+
+#sinchung_share, #confirm_share, #myShare {
 	position: absolute;
 	display: block;
 }
 
-#sinchung_imde, #confirm_imde {
+#sinchung_imde, #confirm_imde, #myImde {
 	position: absolute;
 	display: none;
 }
@@ -469,11 +473,10 @@ div[class*='profile-btn-div'] {
 }
 
 @media ( max-width :1623px) {
-	.insertBtn{
+	.insertBtn {
 		position: relative;
-		right:-100px;
+		right: -100px;
 	}
-	
 	#firstShareImg, #secondShareImg, #thirdShareImg, #firstImdeImg,
 		#secondImdeImg, #thirdImdeImg {
 		width: 18em;
@@ -482,7 +485,6 @@ div[class*='profile-btn-div'] {
 		#firstBestImdeContext, #secondBestImdeContext, #thirdBestImdeContext {
 		width: 23em;
 	}
-	
 	.profile-table {
 		margin-right: 2em;
 	}
@@ -503,7 +505,6 @@ div[class*='profile-btn-div'] {
 }
 
 @media ( max-width :1400px) {
-	
 	#firstShareImg, #secondShareImg, #thirdShareImg, #firstImdeImg,
 		#secondImdeImg, #thirdImdeImg {
 		width: 15em;
@@ -512,10 +513,6 @@ div[class*='profile-btn-div'] {
 		#firstBestImdeContext, #secondBestImdeContext, #thirdBestImdeContext {
 		width: 20em;
 	}
-	
-	
-	
-	
 	#Company-Price, #Company-RName, #Company-RNumber, #Company-DName,
 		#Company-DNumber, #Company-RTime, #Company-DTime {
 		font-size: 15px;
@@ -590,7 +587,6 @@ div[class*='profile-btn-div'] {
 }
 
 @media ( max-width :1200px) {
-	
 	#firstShareImg, #secondShareImg, #thirdShareImg, #firstImdeImg,
 		#secondImdeImg, #thirdImdeImg {
 		width: 22em;
@@ -599,10 +595,6 @@ div[class*='profile-btn-div'] {
 		#firstBestImdeContext, #secondBestImdeContext, #thirdBestImdeContext {
 		width: 25em;
 	}
-	
-	
-	
-	
 	#Company-Price, #Company-RName, #Company-RNumber, #Company-DName,
 		#Company-DNumber, #Company-RTime, #Company-DTime, .Company-textForm {
 		font-size: 10px;
@@ -851,11 +843,10 @@ div[class*='profile-btn-div'] {
 }
 
 @media ( max-width :768px) {
-	.insertBtn{
+	.insertBtn {
 		position: relative;
-		right:0;
+		right: 0;
 	}
-	
 	#shareBtn, #imdeBtn {
 		margin-left: 37em;
 	}

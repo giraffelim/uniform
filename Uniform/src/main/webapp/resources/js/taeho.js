@@ -191,18 +191,17 @@ $(function() {
 
 
    $("#firstImdeImg").append(
-         "<img src='/display?fileName=" + firstBestImgEncode + "'>");
-   $("#secondImdeImg").append(
-         "<img src='/display?fileName=" + secondBestImgEncode + "'>");
-   $("#thirdImdeImg").append(
-         "<img src='/display?fileName=" + thirdBestImgEncode + "'>");
-
-   $("#firstShareImg").append(
-         "<img src='/display?fileName=" + firstBestShareImgEncode + "'>");
-   $("#secondShareImg").append(
-         "<img src='/display?fileName=" + secondBestShareImgEncode + "'>");
-   $("#thirdShareImg").append(
-         "<img src='/display?fileName=" + thirdBestShareImgEncode + "'>");
+	        "<a href='/uniform/rentDetail?type=imde&no="+$("#firstBestImdeNo").val()+"'> <img src='/display?fileName=" + firstBestImgEncode + "'> </a>");
+	  $("#secondImdeImg").append(
+	        "<a href='/uniform/rentDetail?type=imde&no="+$("#secondeBestImdeNo").val()+"'><img src='/display?fileName=" + secondBestImgEncode + "'> </a>");
+	  $("#thirdImdeImg").append(
+	        "<a href='/uniform/rentDetail?type=imde&no="+$("#thirdBestImdeNo").val()+"'><img src='/display?fileName=" + thirdBestImgEncode + "'> </a>");
+	  $("#firstShareImg").append(
+	        "<a href='/uniform/rentDetail?type=share&no="+$("#firstBestShareNo").val()+"'> <img src='/display?fileName=" + firstBestShareImgEncode + "'>");
+	  $("#secondShareImg").append(
+	        "<a href='/uniform/rentDetail?type=share&no="+$("#secondBestShareNo").val()+"'> <img src='/display?fileName=" + secondBestShareImgEncode + "'>");
+	  $("#thirdShareImg").append(
+	        "<a href='/uniform/rentDetail?type=share&no="+$("#thirdBestShareNo").val()+"'> <img src='/display?fileName=" + thirdBestShareImgEncode + "'>");
 
    
 

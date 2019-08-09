@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uni.domain.IWorkPlaceVO;
-import com.uni.domain.SWorkPlaceVO;
-import com.uni.domain.StarAvgVO;
 import com.uni.domain.Join_ConfirmVO;
+import com.uni.domain.SWorkPlaceVO;
+import com.uni.domain.Sinchung_ListVO;
+import com.uni.domain.StarAvgVO;
 import com.uni.domain.uni_reviewVO;
 import com.uni.service.WorkPlaceService;
 
@@ -96,4 +97,11 @@ public class MapController {
 
 	}
 
+	@RequestMapping(value = "getTimeList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
+	public ResponseEntity<List<Sinchung_ListVO>> getTimeList(int ino) {
+		log.info("service getTImeList : " + service.getTimeList(ino));
+		return new ResponseEntity<List<Sinchung_ListVO>>(service.getTimeList(ino), HttpStatus.OK);
+
+	}
+	
 }

@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.uni.domain.SWorkPlaceVO;
 import com.uni.domain.Sinchung_ListVO;
 import com.uni.domain.uni_MemberVO;
+import com.uni.domain.uni_workplace_iVO;
 import com.uni.mapper.uni_MemberMapper;
 import com.uni.service.MemberService;
 import com.uni.service.WorkPlaceService;
@@ -44,11 +46,10 @@ public class MemberController {
 
 	@Autowired
 	private PasswordEncoder pwencoder;
-	
+
 	@Inject
 	private uni_MemberMapper mapper;
 
-	
 	// 회원 아이디 찾기
 	@RequestMapping(value = "find_id", method = RequestMethod.POST)
 	public String find_id(String name, String email, Model model) {
@@ -75,15 +76,15 @@ public class MemberController {
 	public String join(uni_MemberVO member) {
 		log.info("join");
 		log.info(member);
-		if(member.getUserPW() == null) {
+		if (member.getUserPW() == null) {
 			// 임의의 ID, PW 지정
 			member.setUserID(pwencoder.encode("uniform"));
 			member.setUserPW(pwencoder.encode("uniform"));
-			log.warn("addInfo ======"+member);
+			log.warn("addInfo ======" + member);
 			service.insertInfoMember(member);
 			return "redirect:/dummy";
-		}else {
-			 member.setUserPW(pwencoder.encode(member.getUserPW()));
+		} else {
+			member.setUserPW(pwencoder.encode(member.getUserPW()));
 			service.insertSelectKey(member);
 		}
 		log.info("==========================이것은인코딩후패스워드:" + member.getUserPW());
@@ -111,7 +112,13 @@ public class MemberController {
 	@GetMapping("/myPage")
 	public void mypage(Model model, Long mno) {
 		log.info("마이페이지 컨트롤러 mno" + mno);
-		
+
+		List<SWorkPlaceVO> mywriteshareList = service_work.mywriteshare(mno);
+		List<uni_workplace_iVO> mywriteImde = service_work.mywriteImde(mno);
+
+		model.addAttribute("mywriteshareList", mywriteshareList);
+		model.addAttribute("mywriteImde", mywriteImde);
+
 		List<Sinchung_ListVO> unionSinchungList = service_work.sinchung_list(mno);
 		List<Sinchung_ListVO> IunionSinchungList = service_work.Isinchung_list(mno);
 		model.addAttribute("unionSinchungList", unionSinchungList);
@@ -133,9 +140,7 @@ public class MemberController {
 	@RequestMapping(value = "moreInfoImde", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
 	public ResponseEntity<List<Sinchung_ListVO>> moreInfoImde(Long mno) {
 		service_work.Isinchung_list_ajax(mno);
-		
 
-		
 		return new ResponseEntity<List<Sinchung_ListVO>>(service_work.Isinchung_list_ajax(mno), HttpStatus.OK);
 
 	}
@@ -152,56 +157,54 @@ public class MemberController {
 		return "login";
 	}
 
-	//회원정보수정으로 이동
+	// 회원정보수정으로 이동
 	@GetMapping("/uniform/updateMember")
 	public void memberUpdate() {
 		log.info("==get!!!! updateMember 호출됨=========================");
 	}
-	//회원정보수정
-	
+	// 회원정보수정
+
 	@PostMapping("/uniform/updateMember")
 	public String memberUpdate(RedirectAttributes rttr, uni_MemberVO vo) {
 		log.info("==post!!!! updateMember 호출됨=========================" + vo);
-		
+
 		vo.setUserPW(pwencoder.encode(vo.getUserPW()));
 		service.updateMember(vo);
 
 		return "redirect:/";
 	}
-	
-    
- // end user가 로그인화면에서 input id에 아이디를 입력했을 경우
-    // 아이디의 존재 유무를 확인해주는 컨트롤러
-    @GetMapping(value = "/confirm/{name}/{phone}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
-    public uni_MemberVO confirmSnsID(@PathVariable("name") String name, @PathVariable("phone") String phone){
-    	log.warn(name+","+phone);
-        uni_MemberVO vo = service.confirm(name,phone);
-        log.info("uni_Membr: "+ vo);
-        return vo;
-        
-    }
-    
-    @PutMapping(value="/mergeMember", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
+
+	// end user가 로그인화면에서 input id에 아이디를 입력했을 경우
+	// 아이디의 존재 유무를 확인해주는 컨트롤러
+	@GetMapping(value = "/confirm/{name}/{phone}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public uni_MemberVO confirmSnsID(@PathVariable("name") String name, @PathVariable("phone") String phone) {
+		log.warn(name + "," + phone);
+		uni_MemberVO vo = service.confirm(name, phone);
+		log.info("uni_Membr: " + vo);
+		return vo;
+
+	}
+
+	@PutMapping(value = "/mergeMember", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
 	public uni_MemberVO mergeMember(@RequestBody uni_MemberVO vo) {
-    	log.warn("mergeMember ==== VO ==>"+ vo);
-    	uni_MemberVO returnVO = null;
-		if(vo.getGoogleId() != null) {
+		log.warn("mergeMember ==== VO ==>" + vo);
+		uni_MemberVO returnVO = null;
+		if (vo.getGoogleId() != null) {
 			// vo 넘겨서 update
 			log.info("googleId Merge");
 			service.mergeGoogle(vo);
 			returnVO = mapper.getByGoogle(vo.getGoogleId());
-		}else {
+		} else {
 			log.info("naver Merge");
 			service.mergeNaver(vo);
 			returnVO = mapper.getByNaver(vo.getNaverId());
 		}
-		
+
 		return returnVO;
-    }
-		
-	
+	}
+
 	// 프로필사진 업로드
 	@PostMapping(value = "/uploadProfile", produces = "text/plain; charset=utf-8")
 	public ResponseEntity<String> uploadProfile(MultipartFile[] uploadFile) {
@@ -224,14 +227,29 @@ public class MemberController {
 
 		return service.deleteFile(fileName);
 	}
-	
+
 	// member return by mno
 	@GetMapping(value = "/memberByMno", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public uni_MemberVO getMember(int mno) {
-		log.info("memberByMno: "+mno);
-		log.info("memberByMno11111111111111: "+ service.getMember(mno));
+		log.info("memberByMno: " + mno);
+		log.info("memberByMno11111111111111: " + service.getMember(mno));
 		return service.getMember(mno);
+	}
+
+	@RequestMapping(value = "moremyshare", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
+	public ResponseEntity<List<SWorkPlaceVO>> moremyshare(Long mno) {
+		List<SWorkPlaceVO> list1 = service_work.mywriteshare(mno);
+		return new ResponseEntity<List<SWorkPlaceVO>>(list1, HttpStatus.OK);
+
+	}
+
+	@RequestMapping(value = "moremyImde", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
+	public ResponseEntity<List<uni_workplace_iVO>> moremyImde(Long mno) {
+
+		List<uni_workplace_iVO> list2 = service_work.mywriteImde(mno);
+		return new ResponseEntity<List<uni_workplace_iVO>>(list2, HttpStatus.OK);
+
 	}
 
 }

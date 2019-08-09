@@ -118,61 +118,131 @@
                      <!--결제창 끝-->
                   </div>
 
-                  <!--찜 내역 시작----------------------------->
-                  <hr>
-                  <div class="profile-table">
-                     <div class="container container-table">
+                 <!--내가쓴 글 시작----------------------------->
+					<hr>
+					<div class="profile-table">
+						<div class="container">
 
 
-                        <div class="row">
-                           <div class="col-sm-6">
-                              <h2>찜 내역</h2>
-                           </div>
-                           <div class="col-sm-6 more" id="moreZzim">
-                              <a class="moreInfoBtn">더보기</a>
-                           </div>
+							<div class="row">
+								<div class="col-sm-6">
+									<h2>내가 쓴글</h2>
+									<div class="tab">
+										<button class="myShareTab">공유</button>
+										<button class="myImdeTab">임대</button>
+									</div>
+								</div>
 
-                        </div>
-                        <table class="table table-bordered table-choice">
-                           <thead>
-                              <tr>
-                                 <th>번호</th>
-                                 <th>제목</th>
-                                 <th>작성자</th>
-                                 <th>연락처</th>
-                                 <th>날짜</th>
-                                 <th>시간</th>
-                              </tr>
-                           </thead>
-                           <tbody>
-                              <tr>
-                                 <td>1</td>
-                                 <td>forest room</td>
-                                 <td>cavin</td>
-                                 <td>010-1111-5885</td>
-                                 <td>2019-07-19</td>
-                                 <td>18:00~20:00</td>
-                              </tr>
-                              <tr>
-                                 <td>2</td>
-                                 <td>forest room</td>
-                                 <td>ive</td>
-                                 <td>010-1251-5885</td>
-                                 <td>2019-07-19</td>
-                                 <td>15:00~17:00</td>
-                              </tr>
-                              <tr>
-                                 <td>3</td>
-                                 <td>forest room</td>
-                                 <td>john</td>
-                                 <td>010-1111-5885</td>
-                                 <td>2019-07-19</td>
-                                 <td>08:00~10:00</td>
-                              </tr>
-                           </tbody>
-                        </table>
-                     </div>
-                  </div>
+
+								<div class="col-sm-6 more">
+									<a class="moreInfoBtn" id="moremywrite">더보기 ></a><br> <br>
+									<div class="float-right">
+										<span class="carousel-control-prev-icon" id="mywrite_prev"></span>
+										<span class="carousel-control-next-icon" id="mywrite_next"></span>
+									</div>
+								</div>
+
+							</div>
+
+
+							<div class="row table-wrap">
+								<div class="col-md-12" id="myShare">
+									<table class="table table-bordered table-choice ">
+										<thead>
+											<tr>
+												<th>번호</th>
+												<th>제목</th>
+												<th>작성일</th>
+
+											</tr>
+										</thead>
+										<tbody class="myshare_tbody">
+											<c:forEach var="mywriteshareVO" items="${mywriteshareList }"
+												begin="0" end="2" varStatus="status">
+												<tr>
+													<td>${status.count }</td>
+													<td><a
+														href='/uniform/rentDetail?type=share&no=${mywriteshareVO.sno}'>
+															${mywriteshareVO.title} </a></td>
+
+													<td><fmt:formatDate value="${mywriteshareVO.RDate}"
+															pattern="yyyy-MM-dd" /></td>
+
+												</tr>
+
+											</c:forEach>
+
+
+										</tbody>
+
+									</table>
+									<div id="mysharewrite_PagingBtn">
+										<span></span> <span></span>
+									</div>
+								</div>
+
+
+								<div class="col-md-12" id="myImde">
+									<table class="table table-bordered table-choice">
+
+										<thead>
+											<tr>
+												<th>번호</th>
+												<th>제목</th>
+												<th>작성일</th>
+											</tr>
+										</thead>
+										<tbody class="myImde_tbody">
+											<c:forEach var="mywriteImdeVO" items="${mywriteImde }"
+												begin="0" end="2" varStatus="status">
+												<tr>
+													<td>${status.count }</td>
+													<td><a class="rentSinchungList"
+														data-ino="${mywriteImdeVO.ino }">
+															${mywriteImdeVO.title }</a></td>
+													<td><fmt:formatDate value="${mywriteImdeVO.RDate}"
+															pattern="yyyy-mm-dd" /></td>
+
+												</tr>
+											</c:forEach>
+
+
+
+										</tbody>
+									</table>
+
+									<div id="mywriteImed_PagingBtn">
+										<span></span> <span></span>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+					<div class="modal fade sinchung_modal" id="rendDetailModal"
+						role="dialog">
+						<div class="modal-dialog modal-lg">
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title">실시간 예약 현황</h4>
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+								</div>
+								<div class="modal-body left-context">
+									<div class="row">
+										<div class="col-md-12 apply_info rentSinchungList_modal"></div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary"
+										id="rentDetailImde">상세 보기</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- 내가쓴글끝 -->
                   <br>
                   <hr>
 
