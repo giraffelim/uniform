@@ -55,7 +55,7 @@
 			<nav id="colorlib-main-menu" role="navigation">
 				<ul>
 					<li id="Home"><a href="/">Home</a></li>
-					<li><a href="/uniform/hotTopicList" id="headerShare">작업실 Share</a>
+					<li><a href="/uniform/hotTopicList" id="headerShare">WorkPlace</a>
 						<ul class="side_ul" id="headerSide">
 							<li id = "lease"><a href="/uniform/leaseInsert">임대</a></li>
 							<li id = "share"><a href="/uniform/shareInsert">공유</a></li>

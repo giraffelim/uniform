@@ -63,19 +63,12 @@ $(function() {
 		starRating(reviewSno, reviewIno);
 	});
 	
-	$("#review_insert").on("click", function(e) {
-		e.preventDefault();
-		if (result_star == 0) {
-			alert("별점을 등록해주세요.");
-			return;
-		}
-	});
-
 	function starRating(reviewSno, reviewIno) {
 		var $star = $(".star-input"), $result = $star.find("output>b");
 
 		$(document).on("focusin", ".star-input>.input", function() {
 			$(this).addClass("focus");
+			
 		}).on("focusout", ".star-input>.input", function() {
 			var $this = $(this);
 			setTimeout(function() {
@@ -94,17 +87,15 @@ $(function() {
 			} else {
 				$result.text($checked.next().text());
 				result_star = $checked.next().text();
-				reviewInsert(result_star);
 			}
 		});
 	};
 	
-	function reviewInsert(result_star) {
 		$("#review_insert").on("click", function(e) {
 			e.preventDefault();
 			$("#review_star").attr("value", result_star);
 			if ($("#review-content").val() == null || $("#review-content").val() == "") {
-				alert("내용을 입력해주세요.");
+				alert("별점 및 내용을 입력해주세요.");
 				return;
 			}
 			$("#review_form #cno").val(cNo);
@@ -150,7 +141,6 @@ $(function() {
 		        }
 		    });
 		});
-	}
 	
 	console.log($("#myPageUserid").val());
 	

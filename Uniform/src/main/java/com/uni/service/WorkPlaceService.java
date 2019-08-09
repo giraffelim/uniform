@@ -89,5 +89,7 @@ public interface WorkPlaceService {
 	public int getWorkplace_ICount();
     
     public int getWorkplace_SCount();
+    
+	public StarAvgVO SworkplaceStar(int no);
 
 }

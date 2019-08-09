@@ -4,14 +4,25 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.uni.mapper.uni_reviewMapper">
 
-   <!-- 리뷰리스트 조회 -->
-   <select id="readReviewList"
+   <!-- 임대리뷰리스트 조회 -->
+   <select id="readReviewListI"
       resultType="com.uni.domain.uni_JoinReviewVO">
 
       select r.hno, m.mno, m.name, m.photo,m.userid, r.regdate, r.star, r.content from
       uni_review r, uni_member m where r.mno = m.mno and r.ino = #{ino}
       order by r.hno
 
+   </select>
+   
+   <!-- 공유리뷰리스트 조회 -->
+   
+   <select id="readReviewListS"
+      resultType="com.uni.domain.uni_JoinReviewVO">
+
+      select r.hno, m.mno, m.name, m.photo,m.userid, r.regdate, r.star, r.content from
+      uni_review r, uni_member m where r.mno = m.mno and r.sno = #{sno}
+      order by r.hno
+      
    </select>
    
    <!-- 리뷰 한개 조회 -->
@@ -28,6 +39,44 @@
    <update id="updateReview">
       update uni_review set content = #{content}, star = #{star} where hno = #{hno}
    </update>
+   
+   <!-- 임대 리뷰 페이징 -->
+   <select id="getListWithPagingI" resultType="com.uni.domain.uni_JoinReviewVO">
+   		<![CDATA[
+   		select hno, mno, name, photo, userid, regdate, star, content from
+	    (
+		    select rownum rn,r.hno, m.mno, m.name, m.photo, m.userid, r.regdate, r.star, r.content
+		    from uni_review r, uni_member m where r.mno = m.mno and r.ino = #{ino} and rownum <= #{cri.pageNum} * #{cri.amount} order by hno
+	    )
+		where rn > (#{cri.pageNum}-1) * #{cri.amount}
+		]]>
+   </select>
+   
+   <!-- ino로 총댓글 갯수 가져오기 -->
+   <select id="getCountByIno" resultType="int">
+   	<![CDATA[
+   	  select count(hno) from uni_review r, uni_member m where r.mno = m.mno and r.ino = #{ino}
+   	]]>
+   </select>
+   
+      <!-- 공유 리뷰 페이징 -->
+   <select id="getListWithPagingS" resultType="com.uni.domain.uni_JoinReviewVO">
+   		<![CDATA[
+   		select hno, mno, name, photo, userid, regdate, star, content from
+	    (
+		    select rownum rn,r.hno, m.mno, m.name, m.photo, m.userid, r.regdate, r.star, r.content
+		    from uni_review r, uni_member m where r.mno = m.mno and r.sno = #{sno} and rownum <= #{cri.pageNum} * #{cri.amount} order by hno
+	    )
+		where rn > (#{cri.pageNum}-1) * #{cri.amount}
+		]]>
+   </select>
+   
+   <!-- sno로 총댓글 갯수 가져오기 -->
+   <select id="getCountBySno" resultType="int">
+   	<![CDATA[
+   	  select count(hno) from uni_review r, uni_member m where r.mno = m.mno and r.sno = #{sno}
+   	]]>
+   </select>
 
 </mapper>
 

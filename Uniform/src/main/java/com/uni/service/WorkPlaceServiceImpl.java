@@ -588,4 +588,10 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
     public int getWorkplace_SCount() {
         return mapper.getWorkplace_SCount();
     }
+
+	@Override
+	public StarAvgVO SworkplaceStar(int no) {
+		// TODO Auto-generated method stub
+		return mapper.SworkplaceStar(no);
+	}
 }
