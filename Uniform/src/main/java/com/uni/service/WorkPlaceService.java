@@ -92,4 +92,9 @@ public interface WorkPlaceService {
     
 	public StarAvgVO SworkplaceStar(int no);
 
+	public List<SWorkPlaceVO> mywriteshare(Long mno);
+
+	public List<uni_workplace_iVO> mywriteImde(Long mno);
+
+	public List<Sinchung_ListVO> getTimeList(int ino);
 }

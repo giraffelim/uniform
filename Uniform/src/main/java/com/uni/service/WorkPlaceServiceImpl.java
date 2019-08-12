@@ -77,47 +77,45 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 		System.out.println("workplaceList_s list : " + list);
 
 		if (SfirstDate == null || SfirstDate.equals("fail") || SfirstDate.equals("")) {
-			SfirstDate = CurrentDate();
-		}
-		if (SlastDate == null || SlastDate.equals("fail") || SlastDate.equals("")) {
-			SlastDate = CurrentDate();
-		}
+			return list;
+		} else if (SlastDate == null || SlastDate.equals("fail") || SlastDate.equals("")) {
+			return list;
+		} else {
+			try {
 
-		try {
+				// 검색한 날짜
+				Date firstDate = new SimpleDateFormat("yyyy-MM-dd").parse(SfirstDate);
+				Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse(SlastDate);
 
-			// 검색한 날짜
-			Date firstDate = new SimpleDateFormat("yyyy-MM-dd").parse(SfirstDate);
-			Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse(SlastDate);
+				System.out.println("workplace_s date : " + firstDate + " : " + lastDate);
 
-			System.out.println("workplace_s date : " + firstDate + " : " + lastDate);
+				for (int j = 0; j < list.size(); j++) {
+					String[] dateList = list.get(j).getMyDate().split(",");
+					for (int i = 0; i < dateList.length; i++) {
 
-			for (int j = 0; j < list.size(); j++) {
-				String[] dateList = list.get(j).getMyDate().split(",");
-				for (int i = 0; i < dateList.length; i++) {
+						Date dbDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateList[i]);
 
-					Date dbDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateList[i]);
-
-					int result = firstDate.compareTo(dbDate);
-					if (result >= 0) {
-						i++;
-						dbDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateList[i]);
-						result = lastDate.compareTo(dbDate);
-						if (result <= 0) {
-							resultList.add(list.get(j));
-							System.out.println("workplace_s list.get : " + list.get(j));
+						int result = firstDate.compareTo(dbDate);
+						if (result >= 0) {
+							i++;
+							dbDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateList[i]);
+							result = lastDate.compareTo(dbDate);
+							if (result <= 0) {
+								resultList.add(list.get(j));
+								System.out.println("workplace_s list.get : " + list.get(j));
+							}
+						} else {
+							break;
 						}
-					} else {
-						break;
 					}
 				}
+
+				System.out.println("str : " + resultList);
+
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-
-			System.out.println("str : " + resultList);
-
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-
 		return resultList;
 	}
 
@@ -579,15 +577,31 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
 	public StarAvgVO IworkplaceStar(int no) {
 		return mapper.IworkplaceStar(no);
 	}
-	
+
 	@Override
-    public int getWorkplace_ICount() {
-        return mapper.getWorkplace_ICount();
-    }
-    @Override
-    public int getWorkplace_SCount() {
-        return mapper.getWorkplace_SCount();
-    }
+	public int getWorkplace_ICount() {
+		return mapper.getWorkplace_ICount();
+	}
+
+	@Override
+	public int getWorkplace_SCount() {
+		return mapper.getWorkplace_SCount();
+	}
+
+	@Override
+	public List<SWorkPlaceVO> mywriteshare(Long mno) {
+		return mapper.mywriteshare(mno);
+	}
+
+	@Override
+	public List<uni_workplace_iVO> mywriteImde(Long mno) {
+		return mapper.mywriteImde(mno);
+	}
+
+	@Override
+	public List<Sinchung_ListVO> getTimeList(int ino) {
+		return mapper.getTimeList(ino);
+	}
 
 	@Override
 	public StarAvgVO SworkplaceStar(int no) {

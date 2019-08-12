@@ -36,7 +36,7 @@ $(function() {
    } else {
       if (firstBestShareProfileIP == "") {
          $("#firstBestShareProfile").css("background-image",
-               "url(/resources/images/profileDefault.jpg)");
+               "url(/resources/images/profileDefault.jpg)").css("background-size","cover");
       } else {
 
          $("#firstBestShareProfile").append(
@@ -59,7 +59,7 @@ $(function() {
    } else {
       if (secondBestShareProfileIP == "") {
          $("#secondBestShareProfile").css("background-image",
-               "url(/resources/images/profileDefault.jpg)");
+               "url(/resources/images/profileDefault.jpg)").css("background-size","cover");
       } else {
          $("#secondBestShareProfile").append(
                "<img class='bestProfileImg' src='/uniform/display?fileName="
@@ -83,7 +83,7 @@ $(function() {
 
       if (thirdBestShareProfileIP == "") {
          $("#thirdBestShareProfile").css("background-image",
-               "url(/resources/images/profileDefault.jpg)");
+               "url(/resources/images/profileDefault.jpg)").css("background-size","cover");
       } else {
          $("#thirdBestShareProfile").append(
                "<img class='bestProfileImg' src='/uniform/display?fileName="
@@ -115,7 +115,7 @@ $(function() {
 
       if (firstBestImdeProfileIP == "") {
          $("#firstBestImdeProfile").css("background-image",
-               "url(/resources/images/profileDefault.jpg)");
+               "url(/resources/images/profileDefault.jpg)").css("background-size","cover");
       } else {
          $("#firstBestImdeProfile").append(
                "<img class='bestProfileImg' src='/uniform/display?fileName="
@@ -139,7 +139,7 @@ $(function() {
 
       if (secondBestImdeProfileIP == "") {
          $("#secondBestImdeProfile").css("background-image",
-               "url(/resources/images/profileDefault.jpg)");
+               "url(/resources/images/profileDefault.jpg)").css("background-size","cover");
       } else {
          $("#secondBestImdeProfile").append(
                "<img class='bestProfileImg' src='/uniform/display?fileName="
@@ -162,7 +162,7 @@ $(function() {
 
       if (thirdBestImdeProfileIP == "") {
          $("#thirdBestImdeProfile").css("background-image",
-               "url(/resources/images/profileDefault.jpg)");
+               "url(/resources/images/profileDefault.jpg)").css("background-size","cover");
       } else {
          $("#thirdBestImdeProfile").append(
                "<img class='bestProfileImg' src='/uniform/display?fileName="
@@ -191,19 +191,17 @@ $(function() {
 
 
    $("#firstImdeImg").append(
-         "<a href='/uniform/rentDetail?type=imde&no="+$("#firstBestImdeNo").val()+"'> <img src='/display?fileName=" + firstBestImgEncode + "'> </a>");
-   $("#secondImdeImg").append(
-         "<a href='/uniform/rentDetail?type=imde&no="+$("#secondeBestImdeNo").val()+"'><img src='/display?fileName=" + secondBestImgEncode + "'> </a>");
-   $("#thirdImdeImg").append(
-         "<a href='/uniform/rentDetail?type=imde&no="+$("#thirdBestImdeNo").val()+"'><img src='/display?fileName=" + thirdBestImgEncode + "'> </a>");
-
-   $("#firstShareImg").append(
-         "<a href='/uniform/rentDetail?type=share&no="+$("#firstBestShareNo").val()+"'> <img src='/display?fileName=" + firstBestShareImgEncode + "'>");
-   $("#secondShareImg").append(
-         "<a href='/uniform/rentDetail?type=share&no="+$("#secondBestShareNo").val()+"'> <img src='/display?fileName=" + secondBestShareImgEncode + "'>");
-   $("#thirdShareImg").append(
-         "<a href='/uniform/rentDetail?type=share&no="+$("#thirdBestShareNo").val()+"'> <img src='/display?fileName=" + thirdBestShareImgEncode + "'>");
-
+	        "<a href='/uniform/rentDetail?type=imde&no="+$("#firstBestImdeNo").val()+"'> <img src='/display?fileName=" + firstBestImgEncode + "'> </a>");
+	  $("#secondImdeImg").append(
+	        "<a href='/uniform/rentDetail?type=imde&no="+$("#secondBestImdeNo").val()+"'><img src='/display?fileName=" + secondBestImgEncode + "'> </a>");
+	  $("#thirdImdeImg").append(
+	        "<a href='/uniform/rentDetail?type=imde&no="+$("#thirdBestImdeNo").val()+"'><img src='/display?fileName=" + thirdBestImgEncode + "'> </a>");
+	  $("#firstShareImg").append(
+	        "<a href='/uniform/rentDetail?type=share&no="+$("#firstBestShareNo").val()+"'> <img src='/display?fileName=" + firstBestShareImgEncode + "'>");
+	  $("#secondShareImg").append(
+	        "<a href='/uniform/rentDetail?type=share&no="+$("#secondBestShareNo").val()+"'> <img src='/display?fileName=" + secondBestShareImgEncode + "'>");
+	  $("#thirdShareImg").append(
+	        "<a href='/uniform/rentDetail?type=share&no="+$("#thirdBestShareNo").val()+"'> <img src='/display?fileName=" + thirdBestShareImgEncode + "'>");
    
 
    $("#shareBtn").on("click", function() {

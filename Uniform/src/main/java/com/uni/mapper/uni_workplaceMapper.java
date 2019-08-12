@@ -129,5 +129,11 @@ public interface uni_workplaceMapper {
     
     public int getWorkplace_SCount();
 	
+	public List<SWorkPlaceVO> mywriteshare(Long mno);
+
+	public List<uni_workplace_iVO> mywriteImde(Long mno);
+
+	public List<Sinchung_ListVO> getTimeList(int ino);
+
 	public StarAvgVO SworkplaceStar(int no);
 }

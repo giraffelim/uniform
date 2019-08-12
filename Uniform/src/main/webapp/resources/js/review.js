@@ -178,6 +178,7 @@ $(function() {
 				$("#reservation").val(item.reservation);
 				thumbnailEncode = encodeURIComponent(item.thumbnail);
 				console.log(item.thumbnail + " : " + thumbnailEncode);
+				$(".img_div .author-image").html("<img src='/display?fileName=" + thumbnailEncode + "' style='width: 100%; height: 100%;'>");
 				
 				var reservations = item.reservation.split(",");
 

@@ -631,6 +631,7 @@ function cdisableOption(val){
                      
                      if(result.list == null || result.list.length == 0){
                     	$("#reviewDiv").html("");
+                    	$(".card-footer").html("");
  						return;
  					}
                      
@@ -675,7 +676,7 @@ function cdisableOption(val){
                                    + '</b> <br>';
                              BtnStr += '<b>' + ISOdate
                                    + '</b> <br>';
-                             BtnStr += '<button style="position: absolute; top:1em; right: 10px;" class="btn btn-primary float-right delete">삭제</button>';
+                             BtnStr += '<button style="position: absolute; top:1em; right: 10px;" class="btn btn-primary float-right delete" onclick="return confirm(\'정말삭제하시겠습니까?\')">삭제</button>';
                              BtnStr += '<button style="position: absolute; top:1em; right: 75px;" class="btn btn-primary float-right modify">수정</button>';
                              BtnStr += '<input type="hidden" name="hno" value="'+result.list[i].hno+'">';
                              BtnStr += '</div>';
@@ -839,6 +840,7 @@ function cdisableOption(val){
             type : "get",
             success : function(result) {
                readReview(-1);
+               location.reload();
             }
          });
       })

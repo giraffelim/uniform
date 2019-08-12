@@ -22,7 +22,7 @@
 						<span class="mr-2"><a href="index.html">Home</a></span> <span>작업실
 							Share</span>
 					</p>
-					<h1 class="bread">작업실 Share</h1>
+					<h1 class="bread" style="margin-bottom: 0.5em">작업실</h1>
 				</div>
 			</div>
 		</div>

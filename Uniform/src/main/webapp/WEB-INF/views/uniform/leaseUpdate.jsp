@@ -25,10 +25,10 @@ if(oauth2LoginUser == 0){
                             <div style="width: 100%; height: 1100px; margin-top: 50px;" id="totalDiv">
                                 <div class="row" id="divRows" style="height:1000px;">
                                     <div class="col-sm-6" id="section1">
-                                    <form action="/uniform/updateWorkplaceS" method="post">
+                                    <form action="/uniform/updateWorkplace" method="post">
                                     <input type="hidden" name="${_csrf.parameterName }"
 						value="${_csrf.token }" />
-									<input type="hidden" name="sno" value="${vo.ino }">
+									<input type="hidden" name="ino" value="${workplaceVO.ino }">
                                         <label for="leaseTitle">
                                             <b>제목</b>
                                             <div style="width: 100%; height: 1.5px; background-color: black; position: relative; top: -5px;" ></div>

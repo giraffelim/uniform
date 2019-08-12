@@ -43,6 +43,7 @@ public class LeaseConfirmTest {
 			int count = 0;
 			List<uni_ShinChungVO> sinchungList = workplace.getTodaySinchungList(ino);
 			for (uni_ShinChungVO sinchung : sinchungList) {
+				System.out.println("sinchung: "+sinchung);
 				String[] sinArray = sinchung.getReservation().split(",");
 				for(int i=0; i<sinArray.length; i++) {
 					reservationSB.append(sinArray[i]);

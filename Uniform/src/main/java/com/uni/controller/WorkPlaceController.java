@@ -74,8 +74,8 @@ public class WorkPlaceController {
 
 	// hottopicList에서 검색했을때 가져온 값들을 검색해서 가져오는 get
 	@Transactional
-	@RequestMapping(value = "workplaceList", method = RequestMethod.GET)
-	public void listG(@RequestParam("location") String location, @RequestParam("SfirstDate") String SfirstDate,
+	@RequestMapping(value = {"workplaceList","getLeaseAll","getShareAll"}, method = RequestMethod.GET)
+	public String listG(@RequestParam("location") String location, @RequestParam("SfirstDate") String SfirstDate,
 			@RequestParam("SlastDate") String SlastDate, @RequestParam("selectChoice") String type, Model model) {
 		log.info("get : " + type + " : " + location + " : " + SfirstDate + " : " + SlastDate);
 		if (SfirstDate == null && SlastDate == null) {
@@ -97,6 +97,8 @@ public class WorkPlaceController {
 		model.addAttribute("location", location);
 		model.addAttribute("SfirstDate", SfirstDate);
 		model.addAttribute("SlastDate", SlastDate);
+		
+		return "/uniform/workplaceList";
 	}
 	// workplaceList에서 검색했을 때 가져오는 post
 	@Transactional
@@ -147,7 +149,7 @@ public class WorkPlaceController {
 	public String updateWorkSpace(uni_workplace_iVO vo) {
 		log.warn("workplaceI update"+vo);
 		service.updateWorkPlace_i(vo);
-		return null;
+		return "redirect:/uniform/rentDetail?type=imde&no="+vo.getIno();
 	}
 	
 	// 작업실 수정 Form
@@ -247,11 +249,12 @@ public class WorkPlaceController {
 	
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/updateWorkplaceS")
-	public void shareUpdates(SWorkPlaceVO vo) {
+	public String shareUpdates(SWorkPlaceVO vo) {
 		log.warn("share updates..."+vo);
 		
 		//TODO update workplace_s
 		service.updateWorkplace_s(vo);
+		return "redirect:/uniform/rentDetail?type=share&no="+vo.getSno();
 	}
 	
 	@GetMapping(value = "/getSinchungBySno", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -297,5 +300,6 @@ public class WorkPlaceController {
 		}
 		return null;
 	}
+	
 
 }

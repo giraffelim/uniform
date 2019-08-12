@@ -1,20 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-   pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/security/tags"
-   prefix="sec"%>
+	prefix="sec"%>
 <%@ include file="../includes/header.jsp"%>
 <!--  로그인 했을 경우만  -->
- <sec:authorize access="isAuthenticated()">
- 	<sec:authentication property="principal" var="pinfo"/>
- </sec:authorize>
+<sec:authorize access="isAuthenticated()">
+	<sec:authentication property="principal" var="pinfo" />
+</sec:authorize>
 
 <!--폰트어썸---------------------------------------------------------------------------->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+	integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+	crossorigin="anonymous">
 <!--폰트어썸-->
 <!--풀캘린더----------------------------------------------------------->
 <link href="/resources/fullcalendar/fullcalendar.css" rel="stylesheet" />
-<link href="/resources/fullcalendar/fullcalendar.print.css" rel='stylesheet' media="print" />
+<link href="/resources/fullcalendar/fullcalendar.print.css"
+	rel='stylesheet' media="print" />
 <script src="/resources/fullcalendar/lib/moment.min.js"></script>
 <script src="/resources/fullcalendar/fullcalendar.js"></script>
 <!--풀캘린더----------------------------------------------------------->
@@ -25,289 +29,291 @@
 
 <!--지도 api-->
 <script type="text/javascript"
-src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&libraries=services"></script>
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&libraries=services"></script>
 
 
-    <style>
-        #whole {
-            padding-top: 10px;
-        }
-        
-        .inobox {
-		   height: 38em;
-		   border: 1px solid darkgray;
-		   box-sizing: border-box;
-		}
-		
-		.inobox1 {
-		   height: 19em;
-		   border: 1px solid darkgray;
-		}
-		
-		.inobox2 {
-		   height: 19em;
-		   border: 1px solid darkgray;
-		}
-		
-		.reservation1 {
-		   width: 350px;
-		   height: 350px;
-		   border: 1px solid darkgray;
-		   margin-top: 10px;
-		   top: 0px;
-		   display: block;
-		   position: relative;
-		}
+<style>
+#whole {
+	padding-top: 10px;
+}
 
-        #heart {
-            color: red;
-        }
+.inobox {
+	height: 38em;
+	border: 1px solid darkgray;
+	box-sizing: border-box;
+}
 
-        #inoplus {
-            margin-top: 15px;
-            cursor: pointer;
-        }
+.inobox1 {
+	height: 19em;
+	border: 1px solid darkgray;
+}
 
-        #inoMinus {
-            margin-top: 15px;
-            cursor: pointer;
-        }
+.inobox2 {
+	height: 19em;
+	border: 1px solid darkgray;
+}
 
-        #inoplus2 {
-            margin-top: 15px;
-            cursor: pointer;
-        }
+.reservation1 {
+	width: 350px;
+	height: 350px;
+	border: 1px solid darkgray;
+	margin-top: 10px;
+	top: 0px;
+	display: block;
+	position: relative;
+}
 
-        #inoMinus2 {
-            margin-top: 15px;
-            cursor: pointer;
-        }
+#heart {
+	color: red;
+}
 
-        .selectBox {
-            margin-bottom: 15px;
-        }
+#inoplus {
+	margin-top: 15px;
+	cursor: pointer;
+}
 
-        .selectBox2 {
-            margin-bottom: 10px;
-        }
+#inoMinus {
+	margin-top: 15px;
+	cursor: pointer;
+}
 
-        #iBtn {
-            position: absolute;
-            bottom: 15px;
-            padding-left: 5.5em;
-        }
+#inoplus2 {
+	margin-top: 15px;
+	cursor: pointer;
+}
 
-        .userPhotoD {
-            margin-top: 0px;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-        }
+#inoMinus2 {
+	margin-top: 15px;
+	cursor: pointer;
+}
 
-        .userPhotoS {
-            margin-top: 10px;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-        }
+.selectBox {
+	margin-bottom: 15px;
+}
 
-        .hrLine {
-            border-bottom: 1px solid lightcoral;
-        }
+.selectBox2 {
+	margin-bottom: 10px;
+}
 
-        .comforts {
-            font-size: 25px;
-        }
+#iBtn {
+	position: absolute;
+	bottom: 15px;
+	padding-left: 5.5em;
+}
 
-        .comforts li,
-        p {
-            font-size: 15px;
-            color: black;
-            list-style: none;
-        }
+.userPhotoD {
+	margin-top: 0px;
+	width: 70px;
+	height: 70px;
+	border-radius: 50%;
+}
 
-        #maps {
-            width: 500px;
-            height: 500px;
+.userPhotoS {
+	margin-top: 10px;
+	width: 70px;
+	height: 70px;
+	border-radius: 50%;
+}
 
-        }
+.hrLine {
+	border-bottom: 1px solid lightcoral;
+}
 
-		#inoPhotoNum1 {
-		   position: relative;
-		   border: 1px solid darkgray;
-		}
-		
-		.num1 {
-		   /*background-image: url(/img/.jpg);
+.comforts {
+	font-size: 25px;
+}
+
+.comforts li, p {
+	font-size: 15px;
+	color: black;
+	list-style: none;
+}
+
+#maps {
+	width: 500px;
+	height: 500px;
+}
+
+#inoPhotoNum1 {
+	position: relative;
+	border: 1px solid darkgray;
+}
+
+.num1 {
+	/*background-image: url(/img/.jpg);
 		            background-repeat: no-repeat;
 		            background-size: cover;
 		            background-position: center;*/
-		   /*overflow: hidden;*/
-		   width: 100%;
-		   height: 100%;
-		   display: block;
-		   position: absolute;
-		   top: 0;
-		   left: 0;
-		}
-		
-		#carouselExampleIndicators {
-		   width: 100%;
-		   height: 80%;
-		   display: block;
-		   position: absolute;
-		   top: 0;
-		   left: 0;
-		   visibility: hidden;
-		}
+	/*overflow: hidden;*/
+	width: 100%;
+	height: 100%;
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
 
-        #inoPhotoNum2 {
-            /*background-image: url(/img/2.jpg);
+#carouselExampleIndicators {
+	width: 100%;
+	height: 80%;
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	visibility: hidden;
+}
+
+#inoPhotoNum2 {
+	/*background-image: url(/img/2.jpg);
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;*/
-            overflow: hidden;
-        }
+	overflow: hidden;
+}
 
-        #inoPhotoNum3 {
-            /*background-image: url(/img/3.jpg);
+#inoPhotoNum3 {
+	/*background-image: url(/img/3.jpg);
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;*/
-            overflow: hidden;
-        }
+	overflow: hidden;
+}
 
-        #inoPhotoNum4 {
-            /*background-image: url(/img/4.jpg);
+#inoPhotoNum4 {
+	/*background-image: url(/img/4.jpg);
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;*/
-            overflow: hidden;
-        }
+	overflow: hidden;
+}
 
-        #inoPhotoNum5 {
-            /*background-image: url(/img/5.jpg);
+#inoPhotoNum5 {
+	/*background-image: url(/img/5.jpg);
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;*/
-            overflow: hidden;
-        }
+	overflow: hidden;
+}
 
-        #inoplus {
-            animation-name: ani;
-            animation-duration: 1.2s;
-            animation-iteration-count: infinite;
-            animation-delay: 0s;
-        }
+#inoplus {
+	animation-name: ani;
+	animation-duration: 1.2s;
+	animation-iteration-count: infinite;
+	animation-delay: 0s;
+}
 
-        #inoMinus {
-            animation-name: ani;
-            animation-duration: 1.5s;
-            animation-iteration-count: infinite;
-            animation-delay: 0s;
-        }
+#inoMinus {
+	animation-name: ani;
+	animation-duration: 1.5s;
+	animation-iteration-count: infinite;
+	animation-delay: 0s;
+}
 
-        #inofooter {
-            display: none;
-            border-top: 1px solid gray;
-            background-color: white;
-            width: 100%;
-            height: 5rem;
-            position: fixed;
-            bottom: 0;
-        }
+#inofooter {
+	display: none;
+	border-top: 1px solid gray;
+	background-color: white;
+	width: 100%;
+	height: 5rem;
+	position: fixed;
+	bottom: 0;
+}
 
-        #carouselExampleIndicators {
-		   width: 100%;
-		   height: 80%;
-		   display: block;
-		   position: absolute;
-		   top: 0;
-		   left: 0;
-		   visibility: hidden;
-		}
+#carouselExampleIndicators {
+	width: 100%;
+	height: 80%;
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	visibility: hidden;
+}
 
-        .hugi {
-            margin-left: 15px;
-            font-size: 30px;
-        }
+.hugi {
+	margin-left: 15px;
+	font-size: 30px;
+}
 
-        .hugiStar {
-            margin-left: 15px;
-            margin-top: 15px;
-        }
+.hugiStar {
+	margin-left: 15px;
+	margin-top: 15px;
+}
 
-        #replyInsert {
-            margin-top: 7px;
-            margin-right: 50px;
-        }
-        #calendar {
-            max-width: 700px;
-            margin: 15px auto;
-            background-color: white;
-       }
+#replyInsert {
+	margin-top: 7px;
+	margin-right: 50px;
+}
 
-        @keyframes ani {
-            0% {
-                opacity: 0.3;
-                transform: scale(1);
-            }
+#calendar {
+	max-width: 700px;
+	margin: 15px auto;
+	background-color: white;
+}
 
-            100% {
-                opacity: 1;
-                transform: scale(1.2);
-            }
-        }
+@
+keyframes ani { 0% {
+	opacity: 0.3;
+	transform: scale(1);
+}
 
+100%
+{
+opacity
+:
+ 
+1;
+transform
+:
+ 
+scale
+(1
+.2
+);
 
-        @media screen and (max-width: 800px) {
-            .inobox2 {
-                display: none;
-            }
+            
+}
+}
+@media screen and (max-width: 800px) {
+	.inobox2 {
+		display: none;
+	}
+	.reservation1 {
+		width: 200px;
+	}
+	#iBtn {
+		padding-left: 1em;
+	}
+}
 
-            .reservation1 {
-                width: 200px;
-            }
+@media screen and (max-width: 576px) {
+	.inobox1 {
+		display: none;
+	}
+	.boxx {
+		display: none;
+	}
+	#inoPhotoNum1 {
+		height: 20em;
+	}
+}
 
-            #iBtn {
-                padding-left: 1em;
-            }
-        }
+@media screen and (max-width: 450px) {
+	.inobox1 {
+		display: none;
+	}
+	.boxx {
+		display: none;
+	}
+	#inoPhotoNum1 {
+		height: 17em;
+	}
+}
+</style>
 
-        @media screen and (max-width: 576px) {
-            .inobox1 {
-                display: none;
-            }
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&libraries=services"></script>
 
-            .boxx {
-                display: none;
-            }
-
-            #inoPhotoNum1 {
-                height: 20em;
-            }
-        }
-
-        @media screen and (max-width: 450px) {
-            .inobox1 {
-                display: none;
-            }
-
-            .boxx {
-                display: none;
-            }
-
-            #inoPhotoNum1 {
-                height: 17em;
-            }
-        }
-
-    </style>
-   
-    <script type="text/javascript"
-    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&libraries=services"></script>
-
-    <script>
+<script>
     var csrfHeaderName = "${_csrf.headerName }";
 	var csrfTokenValue = "${_csrf.token }";
 
@@ -320,19 +326,29 @@ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&lib
         			type : "get",
         			success : function(result){
         				sinChungCount = result.length;
+        				
         				$(result).each(function(i,obj){
-        					if(obj.userID.length > 20){
-        						$(".sName").eq(i).html(obj.name);
-							$(".sReservation").eq(i).html(obj.reservation);
-							$(".photoS").eq(i).attr("src",obj.photo);
-							$(".sName").eq(i).data("mno", obj.mno);
-        					}else{
-        						$(".sName").eq(i).html(obj.name);
-        						$(".sReservation").eq(i).html(obj.reservation);
-        						$(".photoS").eq(i).attr("src","/display?fileName="+obj.photo);
-        						$(".sName").eq(i).data("mno", obj.mno);
-        					}
-        				});
+                            if(obj.userID.length > 20){
+                               $(".sName").eq(i).html(obj.name);
+                          $(".sReservation").eq(i).html(obj.reservation);
+                          $(".photoS").eq(i).attr("src",obj.photo);
+                          $(".sName").eq(i).data("mno", obj.mno);
+                            }else{
+                               if(obj.photo==null || obj.photo == 'null' || obj.photo ==''){
+                                  $(".sName").eq(i).html(obj.name);
+                                   $(".sReservation").eq(i).html(obj.reservation);
+                                  $(".photoS").eq(i).attr("src","/resources/images/profileDefault.jpg");
+                                  $(".sName").eq(i).data("mno", obj.mno);
+                              }else{
+                                 $(".sName").eq(i).html(obj.name);
+                                   $(".sReservation").eq(i).html(obj.reservation);
+                                   $(".photoS").eq(i).attr("src","/display?fileName="+obj.photo);
+                                   $(".sName").eq(i).data("mno", obj.mno);
+                              }
+                               
+                            }
+                         });
+        				
         			}
         		});
         	}
@@ -498,7 +514,7 @@ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&lib
                        $(".userPhotoD").attr("src", result.photo);
                     }else{
                        if(result.photo == "" || result.photo == null || result.photo == 'null' ){
-                             $(".userPhotoD").attr("src","/resources/image/profileDefault.jpg");
+                             $(".userPhotoD").attr("src","/resources/images/profileDefault.jpg");
                        }else{
                              $(".userPhotoD").attr("src","display?fileName="+result.photo);
                        }
@@ -644,7 +660,7 @@ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&lib
             			sno : sno
             		},
             		success : function(result){
-            			location.href='uniform/myPage?mno=${pinfo.member.mno}';
+            			location.href='/uniform/myPage?mno=${pinfo.member.mno}';
             		}
             	});
             });
@@ -708,7 +724,7 @@ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&lib
              
              $
                    .ajax({
-                      url : "/uniform/readReviewListS/"+${workplaceVO.sno}+"/"+page,
+                	   url : "/uniform/readReviewListS/"+${workplaceVO.sno}+"/"+page,
                       type : "get",
                       success : function(result) {
                          console.log(result.replyCnt);
@@ -725,6 +741,7 @@ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&lib
                          
                          if(result.list == null || result.list.length == 0){
                         	$("#reviewDiv").html("");
+                        	$(".card-footer").html("");
      						return;
      					}
                          
@@ -743,33 +760,32 @@ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&lib
                                  BtnStr += '<div style="" class="col-xs-1 col-sm-1 col-md-1 col-lg-1 text-center">';
 
                                  if (result.list[i].userID.length > 20) {
-                                    console
-                                          .log("length>20 :"
-                                                + result.list[i].userID.length)
-                                    BtnStr += '<img class="userPhotoS" src="'+result.list[i].photo+'" alt="">';
-                                 } else {
-                                    if (wphoto !== null
-                                          || wphoto !== "null"
-                                          || wphoto !== "") {
-                                       console
-                                             .log("length<20 :"
-                                                   + result.list[i].userID.length)
-                                       BtnStr += '<img class="userPhotoS" src="/uniform/display?fileName='
-                                             + result.list[i].photo
-                                             + '" alt="">';
-                                    } else {
-                                       console
-                                             .log("photo == null")
-                                       BtnStr += '<img class="userPhotoS" src="/resources/images/profileDefault.jpg" alt="">';
-                                    }
-                                 }
+                                     console
+                                           .log("1111length>20"
+                                                 + result.list[i].userID.length)
+                                     BtnStr += '<img class="userPhotoS" src="'+result.list[i].photo+'" alt="">';
+                                  } else {
+                                     if (wphoto !== null) {
+                                        console
+                                              .log("1111length<20"
+                                                    + result.list[i].userID.length)
+                                        BtnStr += '<img class="userPhotoS" src="/uniform/display?fileName='
+                                              + result.list[i].photo
+                                              + '" alt="">';
+                                     } else {
+                                        console
+                                              .log("1111photo == null")
+                                        BtnStr += '<img class="userPhotoS" src="/resources/images/profileDefault.jpg" alt="">';
+                                     }
+                                  }
+                                 
                                  BtnStr += '</div>';
                                  BtnStr += '<div style="height:100px;" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">';
                                  BtnStr += '<b style="font-size: 30px;">' + result.list[i].name
                                        + '</b> <br>';
                                  BtnStr += '<b>' + ISOdate
                                        + '</b> <br>';
-                                 BtnStr += '<button style="position: absolute; top:1em; right: 10px;" class="btn btn-primary float-right delete">삭제</button>';
+                                 BtnStr += '<button style="position: absolute; top:1em; right: 10px;" class="btn btn-primary float-right delete" onclick="return confirm(\'정말삭제하시겠습니까?\')">삭제</button>';
                                  BtnStr += '<button style="position: absolute; top:1em; right: 75px;" class="btn btn-primary float-right modify">수정</button>';
                                  BtnStr += '<input type="hidden" name="hno" value="'+result.list[i].hno+'">';
                                  BtnStr += '</div>';
@@ -933,6 +949,7 @@ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&lib
                 type : "get",
                 success : function(result) {
                    readReview(-1);
+                   location.reload();
                 }
              });
           })
@@ -1063,197 +1080,213 @@ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&lib
 		}
    });
 </script>
-<!-- 토큰 -->    
-<input id='csrf' type="hidden" name="${_csrf.headerName }" value="${_csrf.token }">    
+<!-- 토큰 -->
+<input id='csrf' type="hidden" name="${_csrf.headerName }"
+	value="${_csrf.token }">
 <!-- photo -->
 <c:forEach var="attach" items="${workplaceVO.attachList}">
-   <input type="hidden" name="inoCarousel"
-      value="${attach.path}/${attach.uuid}_${attach.fileName}">
+	<input type="hidden" name="inoCarousel"
+		value="${attach.path}/${attach.uuid}_${attach.fileName}">
 </c:forEach>
 
-        <!--시작-->
-        <div id="colorlib-main">
+<!--시작-->
+<div id="colorlib-main">
 
-            <section class="ftco-section ftco-bread ftco-extend-mb">
-                <div class="container-fluid px-3 px-md-0">
-                    <div class="row no-gutters slider-text justify-content-end align-items-center">
-                        <div class="col-md-10 ftco-animate">
-                            <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Contact</span></p>
-                            <h1 class="bread">상세페이지 공유</h1>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!---------------------------메인----------------------------------------------------->
-            <div class="row">
-                <div class="col-md-2"></div>
-                <section class="ftco-section contact-section ftco-no-pt col-md-10">
-                 <!-- 사진 출력위치-------------------------------------->
-		         <div class="container-fluid">
-		
-		            <div class="row">
-			               <div id="inoPhotoNum1"
-			                  class="inobox col-xs-12 col-sm-6 col-md-6 col-lg-6">
-			                  <img id="mainthumbnail" class="num1" src="">
-			
-			                  <!--캐러셀------------------------------------------------------------------------------------>
-			                  <div id="carouselExampleIndicators" class="carousel slide"
-			                     data-ride="carousel">
-			
-			                     <div class="carousel-inner" id="carouselImg"></div>
-			                     <a class="carousel-control-prev"
-			                        href="#carouselExampleIndicators" role="button"
-			                        data-slide="prev"> <span class="carousel-control-prev-icon"
-			                        aria-hidden="true"></span> <span class="sr-only">Previous</span>
-			                     </a> <a class="carousel-control-next"
-			                        href="#carouselExampleIndicators" role="button"
-			                        data-slide="next"> <span class="carousel-control-next-icon"
-			                        aria-hidden="true"></span> <span class="sr-only">Next</span>
-			                     </a>
-			                  </div>
-			                  <!--캐러셀------------------------------------------------------------------------------------>
-			
-			               </div>
-			
-			               <div class="inobox boxx col-xs-12 col-sm-6 col-md-6 col-lg-6">
-			                  <div class="row">
-			                     <div id="inoPhotoNum2"
-			                        class="inobox1 col-xs-12 col-sm-12 col-md-6 col-lg-6">
-			                        <img id="img1" class="num1" src="">
-			                     </div>
-			                     <div id="inoPhotoNum3"
-			                        class="inobox2 col-xs-12 col-sm-12 col-md-3 col-lg-6">
-			                        <img id="img2" class="num1" src="">
-			                     </div>
-			
-			                  </div>
-			                  <div class="row">
-			                     <div id="inoPhotoNum4"
-			                        class="inobox1 col-xs-12 col-sm-12 col-md-6 col-lg-6">
-			                        <img id="img3" class="num1" src="">
-			                     </div>
-			                     <div id="inoPhotoNum5"
-			                        class="inobox2 col-xs-12 col-sm-12 col-md-3 col-lg-6">
-			                        <img id="img4" class="num1" src="">
-			                     </div>
-			
-			                  </div>
-			               </div>
-            		</div>
-            		<!-- // 사진 출력 -->
-                        <!--상세정보 및 기타-->
-                        <div id="whole">
-                            <!--찜하기-->
-                            <div class="row" style="margin-left: 0px;">
+	<section class="ftco-section ftco-bread ftco-extend-mb">
+		<div class="container-fluid px-3 px-md-0">
+			<div
+				class="row no-gutters slider-text justify-content-end align-items-center">
+				<div class="col-md-10 ftco-animate">
+					<p class="breadcrumbs">
+						<span class="mr-2"><a href="index.html">Home</a></span> <span>Contact</span>
+					</p>
+					<h1 class="bread">상세페이지 공유</h1>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!---------------------------메인----------------------------------------------------->
+	<div class="row">
+		<div class="col-md-2"></div>
+		<section class="ftco-section contact-section ftco-no-pt col-md-10">
+			<!-- 사진 출력위치-------------------------------------->
+			<div class="container-fluid">
+
+				<div class="row">
+					<div id="inoPhotoNum1"
+						class="inobox col-xs-12 col-sm-6 col-md-6 col-lg-6">
+						<img id="mainthumbnail" class="num1" src="">
+
+						<!--캐러셀------------------------------------------------------------------------------------>
+						<div id="carouselExampleIndicators" class="carousel slide"
+							data-ride="carousel">
+
+							<div class="carousel-inner" id="carouselImg"></div>
+							<a class="carousel-control-prev"
+								href="#carouselExampleIndicators" role="button"
+								data-slide="prev"> <span class="carousel-control-prev-icon"
+								aria-hidden="true"></span> <span class="sr-only">Previous</span>
+							</a> <a class="carousel-control-next"
+								href="#carouselExampleIndicators" role="button"
+								data-slide="next"> <span class="carousel-control-next-icon"
+								aria-hidden="true"></span> <span class="sr-only">Next</span>
+							</a>
+						</div>
+						<!--캐러셀------------------------------------------------------------------------------------>
+
+					</div>
+
+					<div class="inobox boxx col-xs-12 col-sm-6 col-md-6 col-lg-6">
+						<div class="row">
+							<div id="inoPhotoNum2"
+								class="inobox1 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+								<img id="img1" class="num1" src="">
+							</div>
+							<div id="inoPhotoNum3"
+								class="inobox2 col-xs-12 col-sm-12 col-md-3 col-lg-6">
+								<img id="img2" class="num1" src="">
+							</div>
+
+						</div>
+						<div class="row">
+							<div id="inoPhotoNum4"
+								class="inobox1 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+								<img id="img3" class="num1" src="">
+							</div>
+							<div id="inoPhotoNum5"
+								class="inobox2 col-xs-12 col-sm-12 col-md-3 col-lg-6">
+								<img id="img4" class="num1" src="">
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- // 사진 출력 -->
+				<!--상세정보 및 기타-->
+				<div id="whole">
+					<!--찜하기-->
+					<div class="row" style="margin-left: 0px;">
 
 
-                                <!--타이틀 및 상세제목, 등록자 프사와 이름-->
-                                <div style="margin-left: 100px; background-color: #F6F6F6; box-shadow: 1px 2px 4px rgba(0, 0, 0, .5); padding: 0 2em; margin-top:1em;" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                    <div class="row">
-                                    <input type="hidden" id="thumbnailImg" value="${workplaceVO.thumbnail }">
-                                        <div style="margin-top:10px;" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                                            <div class="text-center">
-                                                <br><h2><b>${workplaceVO.title }</b></h2>
-                                            </div>
-                                        </div>
-                                        <div style="text-align: center; margin-top:10px;" class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                            <br><img class="userPhotoD" src=""><br>
-                                            <p id="addNames"></p>
-                                        </div>
-
-                                    </div>
-                                    <hr>
-
-                                    <!--상세설명---------------------------------------------------------------------------->
-                                    <div>
-                                        <div class="comforts">
-                                            <b><i class="far fa-comment-dots"></i> 상세설명</b>
-                                            <p>${workplaceVO.context }</p>
-                                        </div>
-										<hr>
-                                    <!--편의시설---------------------------------------------------------------------------->
-                                        <div class="comforts">
-                                            <b><i class="far fa-building"></i>편의시설</b>
-                                            <br>
-                                            <div class="row">
-                                                <div id="liNum1" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                                    
-                                                </div>
-                                                <div id="liNum2" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                                    
-                                                </div>
-                                                    
-                                            </div>
-                                        </div>
-                                        <hr>
-                                    <!--등록자 정보---------------------------------------------------------------------------->
-                                        <div class="comforts">
-                                            <b><i class="far fa-building"></i> 등록자 정보</b>
-                                            <div class="row">
-                                                <div style="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                                    <li id="addName">등록자명</li>
-                                                    <li id="addPhone">등록자 번호</li>
-                                                    <li id="addEmail">등록자 email</li>
-                                                </div>
-                                                    
-                                            </div>
-                                        </div>
-										<hr>
-                                    <!--주소---------------------------------------------------------------------------->
-                                        <div class="comforts">
-                                            <b><i class="far fa-compass"></i> 주소</b>
-
-                                        </div>
-										 <br>
-                                        <div>
-                                            <div id="inoResultMap" style='box-sizing:border-box; width: 80%; height: 500px; overflow: hidden; margin:auto;'>
-                                            </div>
-                                        </div>
+						<!--타이틀 및 상세제목, 등록자 프사와 이름-->
+						<div
+							style="margin-left: 100px; background-color: #F6F6F6; box-shadow: 1px 2px 4px rgba(0, 0, 0, .5); padding: 0 2em; margin-top: 1em;"
+							class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+							<div class="row">
+								<input type="hidden" id="thumbnailImg"
+									value="${workplaceVO.thumbnail }">
+								<div style="margin-top: 10px;"
+									class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+									<div class="text-center">
 										<br>
-										<hr>
-                                        <!--지도-->
-                                    <!--//주소---------------------------------------------------------------------------->
-                                        <!--캘린더-->
-                                        <div class="comforts">
-                                            <b><i class="far fa-calendar"></i> 공유기간</b>
+										<h2>
+											<b>${workplaceVO.title }</b>
+										</h2>
+									</div>
+								</div>
+								<div style="text-align: center; margin-top: 10px;"
+									class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+									<br>
+									<img class="userPhotoD" src=""><br>
+									<p id="addNames"></p>
+								</div>
 
-                                        </div>
-                                        <div style="width: 80%; height: 500px;" id="calendar">
+							</div>
+							<hr>
 
-                                        </div>
-                                        <br>
-                                        <hr>
-                                        
-                                        <div class="comforts">
-                                            <b><i class="fas fa-users"></i> 신청 List</b>
-                                            	<c:if test="${pinfo.member.mno == workplaceVO.mno }">
-                                            <button style="margin:5px;" class="btn btn-primary confirmPeople">확정</button>
-											</c:if>
-                                        </div>	
-                                        	  <div style="margin-bottom: 5px;" class="row col-xs-12 col-sm-12 col-md-12 col-lg-12" id="refuseParent">
-                                        	<c:forEach begin = "1"  end ="${workplaceVO.PCount }" >
-                                        <!--신청인원 1명-->
-                                            <div style="border: 1px solid darkgray;" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-center">
-                                                <img class="userPhotoS photoS" src="" alt="">
-                                            </div>
-                                            <div style="border: 1px solid darkgray;" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                                                <b class="sName"style="font-size: 20px;" >이름</b>
-                                                <br>
-                                                <b class="sReservation" style="font-size: 20px;">시간</b>
-												<c:if test="${pinfo.member.mno == workplaceVO.mno }">
-	                                            <input type="button" style="margin-right: 5px;" class="btn btn-danger float-right refusePeople" value="거부">
-												</c:if>
-                                            </div>
-                                        <!--신청인원 1명-->
-										</c:forEach>
+							<!--상세설명---------------------------------------------------------------------------->
+							<div>
+								<div class="comforts">
+									<b><i class="far fa-comment-dots"></i> 상세설명</b>
+									<p>${workplaceVO.context }</p>
+								</div>
+								<hr>
+								<!--편의시설---------------------------------------------------------------------------->
+								<div class="comforts">
+									<b><i class="far fa-building"></i>편의시설</b> <br>
+									<div class="row">
+										<div id="liNum1" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
 										</div>
-										<hr>
-                                    </div>
-                                   
-                                    
-                                    
-                                    
-                                </div>
+										<div id="liNum2" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+										</div>
+
+									</div>
+								</div>
+								<hr>
+								<!--등록자 정보---------------------------------------------------------------------------->
+								<div class="comforts">
+									<b><i class="far fa-building"></i> 등록자 정보</b>
+									<div class="row">
+										<div style="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+											<li id="addName">등록자명</li>
+											<li id="addPhone">등록자 번호</li>
+											<li id="addEmail">등록자 email</li>
+										</div>
+
+									</div>
+								</div>
+								<hr>
+								<!--주소---------------------------------------------------------------------------->
+								<div class="comforts">
+									<b><i class="far fa-compass"></i> 주소</b>
+
+								</div>
+								<br>
+								<div>
+									<div id="inoResultMap"
+										style='box-sizing: border-box; width: 80%; height: 500px; overflow: hidden; margin: auto;'>
+									</div>
+								</div>
+								<br>
+								<hr>
+								<!--지도-->
+								<!--//주소---------------------------------------------------------------------------->
+								<!--캘린더-->
+								<div class="comforts">
+									<b><i class="far fa-calendar"></i> 공유기간</b>
+
+								</div>
+								<div style="width: 80%; height: 500px;" id="calendar"></div>
+								<br>
+								<hr>
+
+								<div class="comforts">
+									<b><i class="fas fa-users"></i> 신청 List</b>
+									<c:if test="${pinfo.member.mno == workplaceVO.mno }">
+										<button style="margin: 5px;"
+											class="btn btn-primary confirmPeople">확정</button>
+									</c:if>
+								</div>
+								<div style="margin-bottom: 5px;"
+									class="row col-xs-12 col-sm-12 col-md-12 col-lg-12"
+									id="refuseParent">
+									<c:forEach begin="1" end="${workplaceVO.PCount }">
+										<!--신청인원 1명-->
+										<div style="border: 1px solid darkgray;"
+											class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-center">
+											<img class="userPhotoS photoS" src="" alt="">
+										</div>
+										<div style="border: 1px solid darkgray;"
+											class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+											<b class="sName" style="font-size: 20px;">이름</b> <br> <b
+												class="sReservation" style="font-size: 20px;">시간</b>
+											<c:if test="${pinfo.member.mno == workplaceVO.mno }">
+												<input type="button" style="margin-right: 5px;"
+													class="btn btn-danger float-right refusePeople" value="거부">
+											</c:if>
+										</div>
+										<!--신청인원 1명-->
+									</c:forEach>
+								</div>
+								<hr>
+							</div>
+
+
+
+
+						</div>
 
 
 
@@ -1262,229 +1295,264 @@ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=78b4abe6de9ef13e1faed34fe08afb6d&lib
 
 
 
-                                <!--예약 스크롤------------------------------------------------>
-                                <div id="boxReservationI" class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                    <!--예약 탭-->
-                                    <div id="reservationTap" class="reservation1" style="box-shadow: 1px 2px 4px rgba(0, 0, 0, .5); margin-top: 1em; background-color:#F6F6F6;">
-                                        <div class="text-center">
-                                           <p><b>사용할 시간을 HH 형식으로 입력해주세요</b></p>
-                                            <p><b>등록자 사용시간 : ${workplaceVO.myTime }</b></p>
-                                            <p>${workplaceVO.price } 원</p>
-                                            <hr>
-                                        </div>
-                                        <!-- 1set-->
-                                        <div>
-                                            <form action="login.jsp" method="post" id="timeSelect">
-                                                
-                                                <div class="text-center">
-                                                <input style="width: 100px; text-align: center;" type="text" name="reservation" placeholder="8"> ~ <input style="width: 100px; text-align: center;" type="text" name="reservation" placeholder="19">
-                                                </div>
-                                                
-                                            </form>
-                                        </div>
-                                        <!-- 1set-->
-                                         <sec:authorize access="isAuthenticated()">
-                                         	<c:if test="${flag != 1 }">
-                                              	<div id="iBtn">
-	                                            		<button type="button" class="btn btn-danger" id="resBtn">예약하기</button>
-	                                            		<button type="button" class="btn btn-danger">찜 하 기</button>
-                                       		 	</div>
-                                       		 </c:if>
- 										</sec:authorize>
-                                    </div>
-                                </div>
-                                <!--//예약 스크롤---->
+						<!--예약 스크롤------------------------------------------------>
+						<div id="boxReservationI"
+							class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+							<!--예약 탭-->
+							<div id="reservationTap" class="reservation1"
+								style="box-shadow: 1px 2px 4px rgba(0, 0, 0, .5); margin-top: 1em; background-color: #F6F6F6;">
+								<div class="text-center">
+									<p>
+										<b>사용할 시간을 HH 형식으로 입력해주세요</b>
+									</p>
+									<p>
+										<b>등록자 사용시간 : ${workplaceVO.myTime }</b>
+									</p>
+									<p>${workplaceVO.price }원</p>
+									<hr>
+								</div>
+								<!-- 1set-->
+								<div>
+									<form action="login.jsp" method="post" id="timeSelect">
+
+										<div class="text-center">
+											<input style="width: 100px; text-align: center;" type="text"
+												name="reservation" placeholder="8"> ~ <input
+												style="width: 100px; text-align: center;" type="text"
+												name="reservation" placeholder="19">
+										</div>
+
+									</form>
+								</div>
+								<!-- 1set-->
+								<sec:authorize access="isAuthenticated()">
+									<c:if test="${flag != 1 }">
+										<div id="iBtn">
+											<button type="button" class="btn btn-danger" id="resBtn">예약하기</button>
+											<button type="button" class="btn btn-danger">찜 하 기</button>
+										</div>
+									</c:if>
+
+									<c:if test="${flag == 1 }">
+										<br>
+										<br>
+										<div style='' class="text-center">
+											<b>이미 예약이 끝난 작업실입니다!! :)</b>
+										</div>
+									</c:if>
+
+								</sec:authorize>
+							</div>
+						</div>
+						<!--//예약 스크롤---->
 
 
 
-                            </div>
+					</div>
 
-							<!--후기 ---------------------------------------------------------------------------------------------------------->
-                            <br>
-                        	<div class="row" style="margin-left: 100px;">
+					<!--후기 ---------------------------------------------------------------------------------------------------------->
+					<br>
+					<div class="row" style="margin-left: 100px;">
 
-		                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
-		                           style="">
-		                           <div class="row">
-		                              <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-		                                 <b class="hugi">후기</b>
-		                                 <div class='hugiStar' style="display: inline; position: absolute; top:0;">
-		                                    <input type="hidden" id="starAvg" value="${starAvg.avg }">
-		                                    <input type="hidden" id="starSno" value="${workplaceVO.sno }">
-		                                    <!-- 빨간 -->
-		                                    <div class="star-wrap" data-sno="${workplaceVO.sno }">
-		                                       <span class="star-input${workplaceVO.sno }"> <span
-		                                          class="input"> </span>
-		                                       </span>
-		                                    </div>
-		                                    <!-- 하얀 -->
-		                                    <div class="result-wrap">
-		                                       <span class="star-input${workplaceVO.sno }"> <span
-		                                          class="result"> </span>
-		                                       </span>
-		                                    </div>
-		      
-		                                 </div>
-		                              </div>
-		                              <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
-		      
-		                           </div>
-		                        </div>
-                     		</div>
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="">
+							<div class="row">
+								<div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+									<b class="hugi">후기</b>
+									<div class='hugiStar'
+										style="display: inline; position: absolute; top: 0;">
+										<input type="hidden" id="starAvg" value="${starAvg.avg }">
+										<input type="hidden" id="starSno" value="${workplaceVO.sno }">
+										<!-- 빨간 -->
+										<div class="star-wrap" data-sno="${workplaceVO.sno }">
+											<span class="star-input${workplaceVO.sno }"> <span
+												class="input"> </span>
+											</span>
+										</div>
+										<!-- 하얀 -->
+										<div class="result-wrap">
+											<span class="star-input${workplaceVO.sno }"> <span
+												class="result"> </span>
+											</span>
+										</div>
 
+									</div>
+								</div>
+								<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
 
-
-                            <!--실제 댓글공간-------------------------------------------------------------------------------------------------->
-                            <div class="row" style="margin-left: 100px;">
-	                        	<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-	                        		<div id="reviewDiv"></div>
-	                        		<div style="position: relative;" class="card-footer"></div>
-	                        	</div>
-                        	</div>
-                        	
-                        	<!-- last추가 -->
-                       		<c:if test="${pinfo.member.mno == workplaceVO.mno }">
-                        		<button style="position:absolute; right:300px;" class="btn btn-danger float-right" onclick="location.href='/uniform/shareUpdate?sno=${workplaceVO.sno}'">글 수정하기</button>
-         					</c:if>
-                            
-                            <!-- 추가 모달  -->
-                        <!-- Modal -->
-                        <div class="modal fade" id="review" role="dialog">
-                           <div class="modal-dialog">
-         
-                              <!-- Modal content-->
-                              <div class="modal-content">
-                                 <div class="modal-header">
-                                    <h4 class="modal-title">후기 수정</h4>
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                 </div>
-                                 <div class="modal-body">
-                                    <div class="row review-body">
-                                       <div class="col-md-3">
-                                          <div class="profile-image" id="reviewProfile">
-                                             <input type="hidden" id="myPageUserid"
-                                                value="${pinfo.member.userID}"> <input
-                                                type="hidden" id="myPagePhoto"
-                                                value="${pinfo.member.photo}">
-                                          </div>
-                                       </div>
-                                       <div class="col-md-9">
-                                          <form action="/uniform/updateReview" method="post" id="review_form">
-                                             <input type="hidden" name="${_csrf.parameterName }"
-                                                value="${_csrf.token }" /> <input type="hidden" id="ino"
-                                                name="ino"> <input type="hidden" id="sno"
-                                                name="sno"> <input type="hidden" id="cno"
-                                                name="cno">
-                                             <div>
-                                                <sec:authorize access="isAuthenticated()">
-                                                   <input type="hidden" id="mno" name="mno"
-                                                      value='<sec:authentication property="principal.member.mno"/>' />
-                                                   <span>이름 : ${pinfo.member.name }</span>
-         
-                                                </sec:authorize>
-                                                <sec:authorize access="isAnonymous ()">
-                                                   <span>회원정보없음</span>
-                                                </sec:authorize>
-                                                <span class="star-input"> <span class="input">
-                                                      <input type="radio" name="star-input" value="1" id="p1">
-                                                      <label for="p1">1</label> <input type="radio"
-                                                      name="star-input" value="2" id="p2"> <label
-                                                      for="p2">2</label> <input type="radio" name="star-input"
-                                                      value="3" id="p3"> <label for="p3">3</label> <input
-                                                      type="radio" name="star-input" value="4" id="p4">
-                                                      <label for="p4">4</label> <input type="radio"
-                                                      name="star-input" value="5" id="p5"> <label
-                                                      for="p5">5</label> <input type="radio" name="star-input"
-                                                      value="1" id="p6"> <label for="p6">6</label> <input
-                                                      type="radio" name="star-input" value="2" id="p7">
-                                                      <label for="p7">7</label> <input type="radio"
-                                                      name="star-input" value="3" id="p8"> <label
-                                                      for="p8">8</label> <input type="radio" name="star-input"
-                                                      value="4" id="p9"> <label for="p9">9</label> <input
-                                                      type="radio" name="star-input" value="5" id="p10">
-                                                      <label for="p10">10</label>
-                                                </span>
-                                                </span> <input type="hidden" id="review_star" name="star" value="" />
-                                             </div>
-                                             <div>
-                                                <textArea id="review-content" name="content"></textArea>
-                                             </div>
-                                          </form>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 
-                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-info" id="review_update">수정</button>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-               
-               <!-- ///추가 모달  -->
-
-                            <!--580px 이하시 예약-->
-                               <sec:authorize access="isAuthenticated()">
-                                         	<c:if test="${flag != 1 }">
-                            <div id="inofooter">
-                                <div id="inofooterBtn" class="text-center" style="margin-top: 20px;">
-                                    <b style="font-size: 15px">당신의 작업실을 예약하세요!</b>
-                                    <button class="btn btn-danger btn-sm float-right" data-toggle="modal" data-target="#myModal">예약하기</button>
-                                </div>
-                            </div>
-                            </c:if>
-                            </sec:authorize>
+							</div>
+						</div>
+					</div>
 
 
 
+					<!--실제 댓글공간-------------------------------------------------------------------------------------------------->
+					<div class="row" style="margin-left: 100px;">
+						<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+							<div id="reviewDiv"></div>
+							<div style="position: relative;" class="card-footer"></div>
+						</div>
+					</div>
+
+					<!-- last추가 -->
+					<c:if test="${pinfo.member.mno == workplaceVO.mno }">
+						<button style="position: absolute; right: 300px;"
+							class="btn btn-danger float-right"
+							onclick="location.href='/uniform/shareUpdate?sno=${workplaceVO.sno}'">글
+							수정하기</button>
+					</c:if>
+
+					<!-- 추가 모달  -->
+					<!-- Modal -->
+					<div class="modal fade" id="review" role="dialog">
+						<div class="modal-dialog">
+
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title">후기 수정</h4>
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+								</div>
+								<div class="modal-body">
+									<div class="row review-body">
+										<div class="col-md-3">
+											<div class="profile-image" id="reviewProfile">
+												<input type="hidden" id="myPageUserid"
+													value="${pinfo.member.userID}"> <input
+													type="hidden" id="myPagePhoto"
+													value="${pinfo.member.photo}">
+											</div>
+										</div>
+										<div class="col-md-9">
+											<form action="/uniform/updateReview" method="post"
+												id="review_form">
+												<input type="hidden" name="${_csrf.parameterName }"
+													value="${_csrf.token }" /> <input type="hidden" id="ino"
+													name="ino"> <input type="hidden" id="sno"
+													name="sno"> <input type="hidden" id="cno"
+													name="cno">
+												<div>
+													<sec:authorize access="isAuthenticated()">
+														<input type="hidden" id="mno" name="mno"
+															value='<sec:authentication property="principal.member.mno"/>' />
+														<span>이름 : ${pinfo.member.name }</span>
+
+													</sec:authorize>
+													<sec:authorize access="isAnonymous ()">
+														<span>회원정보없음</span>
+													</sec:authorize>
+													<span class="star-input"> <span class="input">
+															<input type="radio" name="star-input" value="1" id="p1">
+															<label for="p1">1</label> <input type="radio"
+															name="star-input" value="2" id="p2"> <label
+															for="p2">2</label> <input type="radio" name="star-input"
+															value="3" id="p3"> <label for="p3">3</label> <input
+															type="radio" name="star-input" value="4" id="p4">
+															<label for="p4">4</label> <input type="radio"
+															name="star-input" value="5" id="p5"> <label
+															for="p5">5</label> <input type="radio" name="star-input"
+															value="1" id="p6"> <label for="p6">6</label> <input
+															type="radio" name="star-input" value="2" id="p7">
+															<label for="p7">7</label> <input type="radio"
+															name="star-input" value="3" id="p8"> <label
+															for="p8">8</label> <input type="radio" name="star-input"
+															value="4" id="p9"> <label for="p9">9</label> <input
+															type="radio" name="star-input" value="5" id="p10">
+															<label for="p10">10</label>
+													</span>
+													</span> <input type="hidden" id="review_star" name="star" value="" />
+												</div>
+												<div>
+													<textArea id="review-content" name="content"></textArea>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+
+								<div class="modal-footer">
+									<button type="button" class="btn btn-info" id="review_update">수정</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- ///추가 모달  -->
+
+					<!--580px 이하시 예약-->
+					<sec:authorize access="isAuthenticated()">
+						<c:if test="${flag != 1 }">
+							<div id="inofooter">
+								<div id="inofooterBtn" class="text-center"
+									style="margin-top: 20px;">
+									<b style="font-size: 15px">당신의 작업실을 예약하세요!</b>
+									<button class="btn btn-danger btn-sm float-right"
+										data-toggle="modal" data-target="#myModal">예약하기</button>
+								</div>
+							</div>
+						</c:if>
+					</sec:authorize>
 
 
 
-                        </div>
-                    </div>
-                    <!--//container-fluid-->
 
-                    <!-- The Modal ---------------------------------------------------------------------------------------------------------->
-                    <div class="modal" id="myModal">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
 
-                                <!-- Modal Header -->
-                                <div class="modal-header">
-                                    <h4 class="modal-title">사용할 시간을 HH형식으로 입력해주세요</h4>
-                                </div>
 
-                                <!-- Modal body -->
-                                <div class="modal-body">
-                                    <div>
-                                        <form action="login.jsp" method="post" id="timeSelect2">
-                                           <div class="text-center">
-                                                <input style="width: 100px; text-align: center;" type="text" name="reservation" placeholder="8"> ~ <input style="width: 100px; text-align: center;" type="text" name="reservation" placeholder="18">
-                                                	
-                                            </div>
-                                            
-                                        
+				</div>
+			</div>
+			<!--//container-fluid-->
 
-                                        </form>
-                                    </div>
-                                </div>
+			<!-- The Modal ---------------------------------------------------------------------------------------------------------->
+			<div class="modal" id="myModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
 
-                                <!-- Modal footer -->
-                                   <sec:authorize access="isAuthenticated()">
-                                         	<c:if test="${flag != 1 }">
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" >예약하기</button>
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                </div>
-                                </c:if>
-                                </sec:authorize>
+						<!-- Modal Header -->
+						<div class="modal-header">
+							<h4 class="modal-title">사용할 시간을 HH형식으로 입력해주세요</h4>
+						</div>
 
-                            </div>
-                        </div>
-                    </div>
-                    <!-- The Modal ---------------------------------------------------------------------------------------------------------->
+						<!-- Modal body -->
+						<div class="modal-body">
+							<div>
+								<form action="login.jsp" method="post" id="timeSelect2">
+									<div class="text-center">
+										<input style="width: 100px; text-align: center;" type="text"
+											name="reservation" placeholder="8"> ~ <input
+											style="width: 100px; text-align: center;" type="text"
+											name="reservation" placeholder="18">
 
-                </section>
-            </div>
+									</div>
 
-   <%@ include file="../includes/footer.jsp"%> 
+
+
+								</form>
+							</div>
+						</div>
+
+						<!-- Modal footer -->
+						<sec:authorize access="isAuthenticated()">
+							<c:if test="${flag == 1 }">
+								<div class="modal-footer">
+									<b>예약이 끝난 작업실입니다. :)</b>
+								</div>
+							</c:if>
+						</sec:authorize>
+						<sec:authorize access="isAuthenticated()">
+							<c:if test="${flag != 1 }">
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger">예약하기</button>
+									<button type="button" class="btn btn-danger"
+										data-dismiss="modal">Close</button>
+								</div>
+							</c:if>
+						</sec:authorize>
+
+					</div>
+				</div>
+			</div>
+			<!-- The Modal ---------------------------------------------------------------------------------------------------------->
+
+		</section>
+	</div>
+
+	<%@ include file="../includes/footer.jsp"%>

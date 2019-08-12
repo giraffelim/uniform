@@ -28,8 +28,7 @@
 				<div class="ftco-footer-widget mb-4 pl-lg-5">
 					<h2 class="ftco-heading-2">Links</h2>
 					<ul class="list-unstyled categories">
-						<li><a href="#">작업실 Share</a></li>
-						<li><a href="#">인력풀</a></li>
+						<li><a href="/uniform/hotTopicList">작업실 Share</a></li>
 						<!--<li><a href="#">Services</a></li>
                                     <li><a href="#">Blog</a></li>
                                     <li><a href="#">Contact</a></li>-->

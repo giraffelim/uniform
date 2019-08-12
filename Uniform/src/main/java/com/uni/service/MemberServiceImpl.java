@@ -145,7 +145,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public ResponseEntity<String> uploadProfile(MultipartFile[] uploadFile) {
 		String all = "";
-		String uploadFolder = "C:\\upload";
+		String uploadFolder = "/Users/admin/upload/";
 		String uploadFolderPath = getFolder();
 		// 저장 폴더 경로 설정하기 (저장 경로,날짜 세퍼레이터)
 		File uploadPath = new File(uploadFolder, getFolder());
@@ -191,7 +191,7 @@ public class MemberServiceImpl implements MemberService {
 					// 썸네일레이터 사용하여 실제 적용
 					Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 100, 100);
 
-					all = all + "\\s_" + uploadFileName;
+					all = all + "/s_" + uploadFileName;
 					log.info("all===========================================" + all);
 					thumbnail.close();
 
@@ -211,7 +211,7 @@ public class MemberServiceImpl implements MemberService {
 	public ResponseEntity<byte[]> getFile(String fileName) {
 		// String rootDirectory = "c:\\upload\";
 		log.info("display fileName=============================" + fileName);
-		File file = new File("c:\\upload\\" + fileName);
+		File file = new File("/Users/admin/upload/" + fileName);
 		log.info("display file================" + file);
 
 		ResponseEntity<byte[]> result = null;
@@ -239,7 +239,7 @@ public class MemberServiceImpl implements MemberService {
 			// 썸네일 파일 삭제. file 디코드 상태로 만들기
 			// file = new File("c:\\upload\\" + URLDecoder.decode(fileName, "UTF-8"));
 
-			file = new File("c:\\upload\\" + URLDecoder.decode(fileName, "UTF-8"));
+			file = new File("/Users/admin/upload" + URLDecoder.decode(fileName, "UTF-8"));
 
 			file.delete();
 			// 원본파일 삭제하기 위한 replace

@@ -294,6 +294,12 @@ if(oauth2LoginUser == 0){
             				$("#leasePrice").focus();
             				return false;
             			}
+            			
+            			if($("textarea").val().length == 0){
+            				alert("내용을 입력해주세요.");
+            				$("textarea").focus();
+            				return;
+            			} 
 
             			var str = "";
             			

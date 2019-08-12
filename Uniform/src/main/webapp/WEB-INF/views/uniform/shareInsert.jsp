@@ -63,8 +63,8 @@ if(oauth2LoginUser == 0){
                                         </label>
                                         	<div class="row">
                                         	<div class="col-sm-12">
-                                        		<input type="date" class="form-control form-group" name="myDate" style="display: inline; margin-left: 15px; width:45%"> ~
-                                        		 <input type="date" class="form-control form-group" name="myDate" style="display: inline; width:45%">
+                                        		<input type="date" class="form-control form-group" name="myDate" style="display: inline; margin-left: 15px; width:45%" id="myDate1"> ~
+                                        		 <input type="date" class="form-control form-group" name="myDate" style="display: inline; width:45%" id="myDate2">
                                         	</div>
 										</div>
 										<label><b>내가 사용할 시간</b>
@@ -81,13 +81,13 @@ if(oauth2LoginUser == 0){
                                         	<div class="row">
 										<div class="col-sm-12">
 											        <input type="text" class="form-control form-group" name="price" style="display: inline; margin-left: 15px; width : 40%" id="leasePrice" placeholder="가격"> 원 
-											        <input type="text" class="form-control form-group" name="pCount" style="display: inline; margin-left:10px; width : 40%" id="leasePrice" placeholder="인원"> 명 
+											        <input type="text" class="form-control form-group" name="pCount" style="display: inline; margin-left:10px; width : 40%" id="pCount" placeholder="인원" > 명 
 										</div>
 										</div>
                                          <label><b>상세설명</b>
                                             <div style="width: 100%; height: 2px; background-color: black; position: relative; top: -5px;"></div>
                                         </label>
-                                         <textarea name="context" id="" cols="50" rows="10" style="width: 100%; margin-left: 15px;" id="leaseContext"></textarea>
+                                         <textarea name="context" id="" cols="50" rows="10" style="width: 100%; margin-left: 15px;"></textarea>
                                         </form>
                                         	<div id="thumbnailDiv" style="margin-top:10px;">
                                         	<b>썸네일 이미지</b>
@@ -281,6 +281,7 @@ if(oauth2LoginUser == 0){
             		$("input[type='submit']").on("click",function(e){
             			
             			e.preventDefault();
+            			
             			if($("#leaseTitle").val().length == 0){
             				alert("제목은 필수 입력 사항입니다.");
             				$("#leaseTitle").focus();
@@ -290,6 +291,18 @@ if(oauth2LoginUser == 0){
             				alert("위치는 필수 입력 사항입니다.");
             				$("#leaseLocation").focus();
             				return false;
+            			}
+            			
+            			var inputDate1 = $("#myDate1").val();
+            			var inputDate2 = $("#myDate2").val();
+            			if(inputDate1 > inputDate2){
+            				alert("날짜 선택이 잘못되었습니다. 다시 입력해주세요.");
+            				return;
+            			}
+            			
+            			if($("#timeSelect").val().length == 0){
+            				alert("사용할 시간을 입력해주세요.");
+            				return;
             			}
             			
             			if($("#leasePrice").val().length == 0){
@@ -304,6 +317,22 @@ if(oauth2LoginUser == 0){
             				$("#leasePrice").focus();
             				return false;
             			}
+            			
+            			var pCount = $("#pCount").val();
+            			if(pCount > 3){
+            				alert("공유할 수 있는 인원은 나 포함 최대 3명까지 입니다.");
+            				$("#pCount").focus();
+            				return;
+            			} 
+            			
+            			console.log($("textarea").val().length);
+            			
+            		 	if($("textarea").val().length == 0){
+            				alert("내용을 입력해주세요.");
+            				$("textarea").focus();
+            				return;
+            			} 
+            			
 
             			var str = "";
             			

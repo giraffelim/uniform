@@ -89,7 +89,7 @@
 		update uni_workplace_i set title = #{title}, location
 		= #{location},
 		thumbnail = #{thumbnail}, comforts = #{comforts}, price
-		= #{price}
+		= #{price}, context = #{context}
 		where ino = #{ino}
 	</update>
 
@@ -354,7 +354,8 @@
 		uni_sinchung where ino is not null and
 		TO_CHAR(sDate,'yy/MM/DD') =
 		(select TO_CHAR(sysdate,'yy/MM/dd') from
-		dual)	</select>
+		dual)
+	</select>
 
 	<select id="getTodaySinchungList"
 		resultType="com.uni.domain.uni_ShinChungVO">
@@ -506,5 +507,27 @@
 		group by r.sno, s.location order by r.sno
 	</select>
 	
+
+	<select id="getTimeList"
+		resultType="com.uni.domain.Sinchung_ListVO">
+		select s.reservation, s.ino, m.name, m.phone from
+		uni_sinchung s, uni_member m where s.mno = m.mno and ino = #{ino}
+
+	</select>
+
+	<select id="mywriteshare"
+		resultType="com.uni.domain.SWorkPlaceVO">
+		select sno, title, rDate from uni_workplace_s where
+		mno=#{mno}
+
+	</select>
+
+	<select id="mywriteImde"
+		resultType="com.uni.domain.uni_workplace_iVO">
+		select ino, title, rDate from uni_workplace_i where
+		mno=#{mno}
+
+	</select>
+
 
 </mapper>

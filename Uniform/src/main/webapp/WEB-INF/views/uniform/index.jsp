@@ -12,10 +12,13 @@
 			<div class="row justify-content-end">
 				<div class="col-md-10 mt-3">
 					<h1 class="mb-5">
- 						<span id="font-red">YouTube</span> Integration PlatForm
+ 						<span id="font-red">All Of Workplace</span>
+ 						SHARE PLACE<br>
+ 						LEASE PLACE
  					</h1>
 					<div class="row">
 						<div class="col-md-6">
+							
 						</div>
 					</div>
 				</div>
@@ -106,9 +109,9 @@
                                 <div class="media-body p-2 mt-3">
                                     <h3 class="heading">UNIFORM</h3>
                                     <p>
-                                        저희 <b>UNIFORM</b>은 유튜브 니도 폼나게 할 수 있어라는 뜻으로 노련한 유튜버뿐만 아니라 초보
-                                        유튜버들에게 작업 공간을 임대해주고 여러 유튜버들이 작업 공간을 공유하여 사용할 수 있도록 소개시켜주는
-                                        플랫폼입니다.
+                                        저희 <b>UNIFORM</b>은 유튜브 니도 폼나게 할 수 있어라는 뜻으로 노련한 크리에이터뿐만 아니라 초보
+                                        크리에이터들에게 작업 공간을 임대해주고 여러 유튜버들이 작업 공간을 공유하여 사용할 수 있도록 해주어
+                                        	경제적인 부담 및 시간 제한을 덜어주고자 시작한 플랫폼 입니다.
                                     </p>
                                 </div>
                             </div>
@@ -122,9 +125,9 @@
                                 <div class="media-body p-2 mt-3">
                                     <h3 class="heading">Share WorkPlace</h3>
                                     <p>
-                                        <b>UNIFORM</b>에서 소개시켜주는 공유 작업실은 작업실을 가지고 있는 한 유튜버가 다른 유튜버와 작업
-                                        공간을 공유하여 사용하기 위해 작업 공간의 정보를 등록합니다. 이 작업실을 사용하고 싶은 다른 유튜버가 신청을
-                                        할 수 있습니다.
+                                        <b>UNIFORM</b>에서는 혼자가 아닌 여러 사람과 함께 하나의 작업실을 공유할 수 있는 시스템이 준비되어 있습니다.
+                                        	단 글을 등록하는 사람은 작업실을 보유하고 있어야 하며, 함께 사용할 인원은 몇명인지 내가 사용할 시간은 몇시인지
+                                        	를 명시 해주셔야 합니다. 
                                     </p>
                                 </div>
                             </div>
@@ -138,8 +141,9 @@
                                 <div class="media-body p-2 mt-3">
                                     <h3 class="heading">Lease WorkPlace</h3>
                                     <p>
-                                        <b>UNIFORM</b>에서 소개시켜주는 임대 작업실은 작업 공간을 가지고만 있고 사용하지 않은 사람이 작업
-                                        공간의 정보를 등록합니다. 이 작업실 을 사용하고 싶은 유튜버는 시간을 설정하여 신청할 수 있습니다.
+                                        <b>UNIFORM</b>에서는 작업실을 시간 단위로 이용할 수 있습니다. 작업실을 보유하고 있는 사람이나 기업이 글을
+                                        	등록하게 되면 사용자는 자신이 사용하고 싶은 시간대에 맞춰 예약을 진행 하고 사용할 수 있습니다.
+                                        	 
                                     </p>
                                 </div>
                             </div>
@@ -159,7 +163,7 @@
                         style="background-image: url(/resources/images/indexImg.jpg);">
                         <div class="text text-2 text-center">
                             <h2>
-                                <a href="#">lease</a>
+                                <a href="/uniform/getLeaseAll?selectChoice=imde&location= &SfirstDate=fail&SlastDate=fail">lease</a>
                             </h2>
                         </div>
                     </div>
@@ -169,7 +173,7 @@
                         style="background-image: url(/resources/images/indexImgS.jpg);">
                         <div class="text text-2 text-center">
                             <h2>
-                                <a href="#">share</a>
+                                <a href="/uniform/getShareAll?selectChoice=share&location= &SfirstDate=fail&SlastDate=fail">share</a>
                             </h2>
                         </div>
                     </div>
